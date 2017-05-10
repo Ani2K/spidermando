@@ -24,15 +24,15 @@ import javafx.css.Styleable;
 import javafx.event.EventTarget;
 import javafx.scene.image.ImageView;
 
-public abstract class P4_Avadhani_Anirudh_Actor extends ImageView implements Styleable, EventTarget{
+public abstract class Actor extends ImageView implements Styleable, EventTarget{
 	
 	public void move(double dx, double dy){
 		setX(getX() + dx);
 		setY(getY() + dy);
 	}
 	
-	public P4_Avadhani_Anirudh_World getWorld(){
-		return (P4_Avadhani_Anirudh_World)(getParent());
+	public World getWorld(){
+		return (World)(getParent());
 	}
 	
 	public double getWidth(){
@@ -43,7 +43,7 @@ public abstract class P4_Avadhani_Anirudh_Actor extends ImageView implements Sty
 		return this.getFitHeight();
 	}
 	
-	public <A extends P4_Avadhani_Anirudh_Actor> java.util.List<A> getIntersectingObjects(java.lang.Class<A> cls){
+	public <A extends Actor> java.util.List<A> getIntersectingObjects(java.lang.Class<A> cls){
 		 List<A> list = new ArrayList<A>();
 		 for(A child : getWorld().getObjects(cls)){
 			 if(this != child && this.intersects(child.getBoundsInLocal())){
@@ -53,7 +53,7 @@ public abstract class P4_Avadhani_Anirudh_Actor extends ImageView implements Sty
 		 return list;
 	}
 	
-	public <A extends P4_Avadhani_Anirudh_Actor>A getOneIntersectingObject(Class<A> cls){ 
+	public <A extends Actor>A getOneIntersectingObject(Class<A> cls){ 
 		for(A child : getWorld().getObjects(cls)){
 			if(this != child && this.intersects(child.getBoundsInLocal())){
 				return child;

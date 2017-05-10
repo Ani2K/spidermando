@@ -25,10 +25,10 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import java.util.*;
 
-public abstract class P4_Avadhani_Anirudh_World extends Pane implements EventTarget, Styleable{
+public abstract class World extends Pane implements EventTarget, Styleable{
 	private AnimationTimer timer;
 	
-	public P4_Avadhani_Anirudh_World(){
+	public World(){
 		timer = new AnimationTimer(){
 			long prevTime = 0;
 			
@@ -37,8 +37,8 @@ public abstract class P4_Avadhani_Anirudh_World extends Pane implements EventTar
 				if(now - prevTime >= 100000000){
 					act(now);
 					for(int i = 0; i < getChildren().size(); i++){
-						if(P4_Avadhani_Anirudh_Actor.class.isAssignableFrom(getChildren().get(i).getClass())){
-							P4_Avadhani_Anirudh_Actor act = (P4_Avadhani_Anirudh_Actor)(getChildren().get(i));
+						if(Actor.class.isAssignableFrom(getChildren().get(i).getClass())){
+							Actor act = (Actor)(getChildren().get(i));
 							act.act(now);
 						}
 					}
@@ -50,15 +50,15 @@ public abstract class P4_Avadhani_Anirudh_World extends Pane implements EventTar
 	
 	public abstract void act(long now);
 	
-	public void add(P4_Avadhani_Anirudh_Actor actor){
+	public void add(Actor actor){
 		getChildren().add(actor);
 	}
 	
-	public void remove(P4_Avadhani_Anirudh_Actor actor){
+	public void remove(Actor actor){
 		getChildren().remove(actor);
 	}
 	
-	public <A extends P4_Avadhani_Anirudh_Actor> java.util.List<A> getObjects(java.lang.Class<A> cls){
+	public <A extends Actor> java.util.List<A> getObjects(java.lang.Class<A> cls){
 		ArrayList<A> list = new ArrayList<A>();
 		for(Node node : getChildren()){
 			if(cls.isInstance(node)){
