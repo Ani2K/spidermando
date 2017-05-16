@@ -1,3 +1,4 @@
+package game;
 import engine.*;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
@@ -7,7 +8,8 @@ import javafx.scene.input.KeyEvent;
 public class Hero extends Actor {
 	private int weapon;
 	private int dx = 0;
-	private Image myImage = new Image("file:images/soldier.png");
+	public Image myImage = new Image("file:images/soldier.png");
+	public Image otherImage = new Image("file:images/soldier2.png");
 	public Hero(){
 		weapon = 1;
 		dx = 0;
@@ -15,8 +17,7 @@ public class Hero extends Actor {
 	}
 	@Override
 	public void act(long now) {
-		MoveEvent e = new MoveEvent();
-		this.setOnKeyPressed(e);
+		
 	}
 	
 	public void shoot(){

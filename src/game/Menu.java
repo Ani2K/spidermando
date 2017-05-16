@@ -1,3 +1,4 @@
+package game;
 import engine.*;
 
 public class Menu extends Actor{
