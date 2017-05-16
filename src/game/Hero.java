@@ -10,6 +10,12 @@ public class Hero extends Actor {
 	private int dx = 0;
 	public Image myImage = new Image("file:images/soldier.png");
 	public Image otherImage = new Image("file:images/soldier2.png");
+	public int getDx() {
+		return dx;
+	}
+	public void setDx(int dx) {
+		this.dx = dx;
+	}
 	public Hero(){
 		weapon = 1;
 		dx = 0;
@@ -17,7 +23,7 @@ public class Hero extends Actor {
 	}
 	@Override
 	public void act(long now) {
-		
+		move(dx, 0);
 	}
 	
 	public void shoot(){
