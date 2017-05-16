@@ -1,78 +1,57 @@
-/*//////////////////////////////80 chars////////////////////////////////////////
- * Anirudh Avadhani, 4/2/17, Per 4
- * 
- * This program took 35 minutes to make
- * 
- * This program makes use of the actor and world model classes in the engine 
- * package to create a simple demo which creates a world of moving balls. This 
- * program was interesting to make as I learned about designing an engine for 
- * games which all game classes extend and are children of. This program was not 
- * very difficult to make and I only had a few problems while making it. My 
- * first problem happened when I was writing the BouncyBall class and I 
- * accidentally forgot to set fit sizes for the imageView. This resulted in the 
- * ball not displayed properly and moving oddly. Other problems I had were due 
- * to wrong implementation of the Actor and World classes and not using the 
- * right syntax. This engine demo was overall quite fun to make and I was able 
- * to see how to use engine classes.
- */
-
 package engine;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.animation.AnimationTimer;
-import javafx.css.Styleable;
-import javafx.event.EventTarget;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import java.util.*;
 
-public abstract class World extends Pane implements EventTarget, Styleable{
+public abstract class World extends javafx.scene.layout.Pane implements javafx.css.Styleable, javafx.event.EventTarget {
 	private AnimationTimer timer;
 	
 	public World(){
 		timer = new AnimationTimer(){
-			long prevTime = 0;
-			
+			long old = 0;
 			@Override
 			public void handle(long now) {
-				if(now - prevTime >= 100000000){
+				if(now - old > 100000000){
 					act(now);
 					for(int i = 0; i < getChildren().size(); i++){
 						if(Actor.class.isAssignableFrom(getChildren().get(i).getClass())){
-							Actor act = (Actor)(getChildren().get(i));
-							act.act(now);
+							Actor dude = (Actor) getChildren().get(i);
+							dude.act(now);
 						}
 					}
-					prevTime = now;
+					old = now;
 				}
 			}
 		};
 	}
 	
-	public abstract void act(long now);
+	abstract void act(long now);
 	
-	public void add(Actor actor){
-		getChildren().add(actor);
+	public void add(Actor a){
+		getChildren().add(a);
 	}
 	
-	public void remove(Actor actor){
-		getChildren().remove(actor);
+	<A extends Actor>java.util.List<A> getObjects(java.lang.Class<A> cls){
+		ArrayList<A> l = new ArrayList<A>();
+		
+		for(Node n : getChildren())
+			if(cls.isInstance(n))
+				l.add(cls.cast(n));
+		
+		return l;
 	}
 	
-	public <A extends Actor> java.util.List<A> getObjects(java.lang.Class<A> cls){
-		ArrayList<A> list = new ArrayList<A>();
-		for(Node node : getChildren()){
-			if(cls.isInstance(node)){
-				list.add(cls.cast(node));
-			}
-		}
-		return list;
+	void remove(Actor a){
+		getChildren().remove(a);
 	}
 	
-	public void start(){
+	void start(){
 		timer.start();
 	}
 	
-	public void stop(){
+	void stop(){
 		timer.stop();
 	}
 }

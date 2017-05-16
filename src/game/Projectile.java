@@ -1,9 +1,11 @@
+package game;
 import engine.*;
-public class GameWorld extends World{
+public class Projectile extends Actor{
 
 	@Override
 	public void act(long now) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 }
