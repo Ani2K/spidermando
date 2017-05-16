@@ -1,3 +1,4 @@
+package game;
 import engine.Actor;
 import game.*;
 import javafx.scene.image.Image;
