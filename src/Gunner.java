@@ -1,4 +1,5 @@
 import engine.Actor;
+import game.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

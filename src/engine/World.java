@@ -33,7 +33,7 @@ public abstract class World extends javafx.scene.layout.Pane implements javafx.c
 		getChildren().add(a);
 	}
 	
-	<A extends Actor>java.util.List<A> getObjects(java.lang.Class<A> cls){
+	public <A extends Actor>java.util.List<A> getObjects(java.lang.Class<A> cls){
 		ArrayList<A> l = new ArrayList<A>();
 		
 		for(Node n : getChildren())
