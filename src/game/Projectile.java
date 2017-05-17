@@ -15,7 +15,13 @@ public class Projectile extends Actor{
 		if(this.getIntersectingObjects(Hero.class).size()!=0){
 			getWorld().remove(this);
 		}else{
-			move(10,0);
+			if(this.getX() - this.getWorld().getObjects(Hero.class).get(0).getX()>0){
+				setRotate(180);
+				this.move(-15, 0);
+			}else{
+				setRotate(90);
+				this.move(15, 0);
+			}
 		}
 	}
 	
