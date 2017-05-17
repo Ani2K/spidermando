@@ -68,13 +68,11 @@ public class GameWorldApp extends Application {
 				// TODO Auto-generated method stub
 				if(e.getCode() == KeyCode.D){
 					heroe.setDx(10);
-					//heroe.setImage(heroe.myImage);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
 			    	heroe.setRotate(360);
 				}
 				if(e.getCode() == KeyCode.A){
 					heroe.setDx(-10);
-					//heroe.setImage(heroe.otherImage);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
 			    	heroe.setRotate(180);
 				}
@@ -87,6 +85,9 @@ public class GameWorldApp extends Application {
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.A || event.getCode() == KeyCode.D){
 					heroe.setDx(0);
+				}
+				if(event.getCode() == KeyCode.W && heroe.getDy() == 0){
+					heroe.setDy(-50);
 				}
 			}
 			

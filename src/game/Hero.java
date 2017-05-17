@@ -8,7 +8,16 @@ import javafx.scene.input.KeyEvent;
 public class Hero extends Actor {
 	private int weapon;
 	private int dx = 0;
-	public Image myImage = new Image("file:images/hero_right.png");
+	private int dy = 0;
+	private int gravity = 10;
+	public int getDy() {
+		return dy;
+	}
+	public void setDy(int dy) {
+		this.dy = dy;
+	}
+
+	private Image myImage = new Image("file:images/hero_right.png");
 	public int getDx() {
 		return dx;
 	}
@@ -22,7 +31,18 @@ public class Hero extends Actor {
 	}
 	@Override
 	public void act(long now) {
-		move(dx, 0);
+		if(getY() < 300){
+			dy += gravity;
+		}
+		if(getY() > 300){
+			setY(300);
+			dy = 0;
+		}
+		if(getY() + dy <= 301){
+			move(dx, dy);
+		}else{
+			move(dx, 301 - getY());
+		}
 	}
 	
 	public void shoot(){
