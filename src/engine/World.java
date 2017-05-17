@@ -43,7 +43,7 @@ public abstract class World extends javafx.scene.layout.Pane implements javafx.c
 		return l;
 	}
 	
-	void remove(Actor a){
+	public void remove(Actor a){
 		getChildren().remove(a);
 	}
 	
