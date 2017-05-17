@@ -16,6 +16,9 @@ public class GameWorldApp extends Application {
 	private GameWorld world = new GameWorld();
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
+	HealthPack healthtest = new HealthPack();
+	Munition munitiontest = new Munition();
+	
 	public static void main(String[] args) {
 		launch();
 	}
@@ -36,6 +39,12 @@ public class GameWorldApp extends Application {
 		
 		root.getChildren().addAll(view, world, pane);
 		world.add(heroe);
+		world.add(healthtest);
+		world.add(munitiontest);
+		munitiontest.setX(400);
+		munitiontest.setY(400);
+		healthtest.setX(500);
+		healthtest.setY(400);
 		heroe.setX(50);
 		heroe.setY(300);
 		//Testing Gunner Class
