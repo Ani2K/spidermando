@@ -15,7 +15,7 @@ import game.*;
 public class GameWorldApp extends Application {
 	private GameWorld world = new GameWorld();
 	Hero heroe = new Hero();
-	
+	Gunner gunnerTest = new Gunner();
 	public static void main(String[] args) {
 		launch();
 	}
@@ -38,7 +38,14 @@ public class GameWorldApp extends Application {
 		world.add(heroe);
 		heroe.setX(50);
 		heroe.setY(300);
+		//Testing Gunner Class
+		
+		world.add(gunnerTest);
+		gunnerTest.setX(10);
+		gunnerTest.setY(400);
+		
 		world.start();
+		
 		
 		Scene scene = new Scene(root, 750, 500);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, new MyKeyboardHandler());

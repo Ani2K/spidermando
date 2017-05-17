@@ -8,10 +8,10 @@ public class Gunner extends Actor{
 	Image FLAG = new Image("/bomb_flagged.gif");
 	Image DEATH_SPRITE = new Image("/bomb_flagged.gif");
 	ImageView sprite;
-	double GUNNER_RANGE = 10;
+	double GUNNER_RANGE = 100;
 	
-	public Gunner(int type){
-		sprite = new ImageView(FLAG);
+	public Gunner(){
+		setImage(FLAG);
 	}
 	
 	public void act(long now) {
@@ -19,11 +19,11 @@ public class Gunner extends Actor{
 			die();
 		}else{
 		
-			if(Math.abs(this.getX() - ((Actor) this.getWorld().getObjects(Hero.class)).getX())>GUNNER_RANGE){
-				if(this.getX() - ((Actor) this.getWorld().getObjects(Hero.class)).getX()>0){
-					this.move(5, 0);
-				}else{
+			if(Math.abs(this.getX() -  this.getWorld().getObjects(Hero.class).get(0).getX())>GUNNER_RANGE){
+				if(this.getX() - this.getWorld().getObjects(Hero.class).get(0).getX()>0){
 					this.move(-5, 0);
+				}else{
+					this.move(5, 0);
 				}
 			}else{
 				shoot();
