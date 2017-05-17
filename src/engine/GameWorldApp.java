@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import game.*;
 
@@ -67,11 +68,15 @@ public class GameWorldApp extends Application {
 				// TODO Auto-generated method stub
 				if(e.getCode() == KeyCode.D){
 					heroe.setDx(10);
-					heroe.setImage(heroe.myImage);
+					//heroe.setImage(heroe.myImage);
+					heroe.setRotationAxis(Rotate.Y_AXIS);
+			    	heroe.setRotate(360);
 				}
 				if(e.getCode() == KeyCode.A){
 					heroe.setDx(-10);
-					heroe.setImage(heroe.otherImage);
+					//heroe.setImage(heroe.otherImage);
+					heroe.setRotationAxis(Rotate.Y_AXIS);
+			    	heroe.setRotate(180);
 				}
 			}
 			

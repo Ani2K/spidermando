@@ -31,6 +31,11 @@ public class Gunner extends Actor{
 					}
 					this.move(-5, 0);
 				}else{
+					if(!direction){
+						setRotationAxis(Rotate.Y_AXIS);
+				    	setRotate(360);
+				    	direction = true;
+					}
 					this.move(5, 0);
 				}
 			}else{

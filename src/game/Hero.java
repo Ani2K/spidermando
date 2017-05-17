@@ -9,7 +9,6 @@ public class Hero extends Actor {
 	private int weapon;
 	private int dx = 0;
 	public Image myImage = new Image("file:images/hero_right.png");
-	public Image otherImage = new Image("file:images/hero_left.png");
 	public int getDx() {
 		return dx;
 	}
