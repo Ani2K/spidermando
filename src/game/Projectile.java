@@ -2,7 +2,7 @@ package game;
 import engine.*;
 import javafx.scene.image.Image;
 public class Projectile extends Actor{
-	public Image bullet = new Image("/clash2.png");
+	public Image bullet = new Image("file:images/bullet.png");
 	
 	public Projectile(){
 		setFitWidth(10);

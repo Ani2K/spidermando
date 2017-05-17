@@ -7,7 +7,7 @@ public class Munition extends Actor{
 	private Image munitionImage;
 
 	public Munition(){
-		munitionImage = new Image("file:images/ammo.png");
+		munitionImage = new Image("file:images/ammo.PNG");
 		setImage(munitionImage);
 	}
 

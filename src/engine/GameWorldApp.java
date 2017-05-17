@@ -51,7 +51,7 @@ public class GameWorldApp extends Application {
 		
 		world.add(gunnerTest);
 		gunnerTest.setX(10);
-		gunnerTest.setY(400);
+		gunnerTest.setY(325);
 		
 		world.start();
 		
