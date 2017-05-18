@@ -101,9 +101,14 @@ public class GameWorldApp extends Application {
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
 				double mouseX = e.getX();
-				double heroX = heroe.getX();
+				double heroX;
+				if(heroe.isDirection()){
+					heroX = heroe.getX() + heroe.getImage().getWidth() / 2;
+				}else{
+					heroX = heroe.getX() - heroe.getImage().getWidth() / 2;
+				}
 				double mouseY = e.getY();
-				double heroY = heroe.getY();
+				double heroY = heroe.getY() + heroe.getImage().getHeight() / 2;
 				double speed = 80.0;
 				double tangent = Math.tan(Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX));
 				double angle = Math.atan(tangent);
