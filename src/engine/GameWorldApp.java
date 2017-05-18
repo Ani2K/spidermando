@@ -109,8 +109,8 @@ public class GameWorldApp extends Application {
 				}
 				double mouseY = e.getY();
 				double heroY = heroe.getY() + heroe.getImage().getHeight() / 2;
-				double speed = 80.0;
-				double tangent = Math.tan(Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX));
+				double speed = 10.0;
+				double tangent = Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX);
 				double angle = Math.atan(tangent);
 				double dx;
 				double dy;
@@ -130,6 +130,7 @@ public class GameWorldApp extends Application {
 					dx =  speed * Math.cos(angle);
 					dy = -1 * speed * Math.sin(angle);
 				}
+				angle *= (180.0 / Math.PI);
 				heroe.shoot(dx, dy, angle);
 			}
 			
