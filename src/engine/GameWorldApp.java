@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Rotate;
@@ -70,11 +71,13 @@ public class GameWorldApp extends Application {
 					heroe.setDx(10);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
 			    	heroe.setRotate(360);
+			    	heroe.setDirection(true);
 				}
 				if(e.getCode() == KeyCode.A){
 					heroe.setDx(-10);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
 			    	heroe.setRotate(180);
+			    	heroe.setDirection(false);
 				}
 			}
 			
@@ -89,6 +92,40 @@ public class GameWorldApp extends Application {
 				if(event.getCode() == KeyCode.W && heroe.getDy() == 0){
 					heroe.setDy(-50);
 				}
+			}
+			
+		});
+		scene.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent e) {
+				// TODO Auto-generated method stub
+				double mouseX = e.getX();
+				double heroX = heroe.getX();
+				double mouseY = e.getY();
+				double heroY = heroe.getY();
+				double speed = 80.0;
+				double tangent = Math.tan(Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX));
+				double angle = Math.atan(tangent);
+				double dx;
+				double dy;
+				if(mouseX < heroX && mouseY > heroY){
+					dx = -1 * speed * Math.cos(angle);
+					dy = speed * Math.sin(angle);
+					angle = 3 * Math.PI / 2 - angle;
+				}else if(mouseX > heroX && mouseY > heroY){
+					dx = speed * Math.cos(angle);
+					dy = speed * Math.sin(angle);
+					angle = 2 * Math.PI - angle;
+				}else if(mouseX < heroX && mouseY < heroY){
+					dx =  -1 * speed * Math.cos(angle);
+					dy = -1 * speed * Math.sin(angle);
+					angle = Math.PI - angle;
+				}else{
+					dx =  speed * Math.cos(angle);
+					dy = -1 * speed * Math.sin(angle);
+				}
+				heroe.shoot(dx, dy, angle);
 			}
 			
 		});

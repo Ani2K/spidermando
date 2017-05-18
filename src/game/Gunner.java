@@ -47,7 +47,7 @@ public class Gunner extends Actor{
 		}
 	}
 	public void shoot(){
-		Projectile proj = new Projectile();
+		Projectile proj = new Projectile(1);
 		proj.setX(getX());
 		proj.setY(getY());
 		getWorld().add(proj);

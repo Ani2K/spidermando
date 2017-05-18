@@ -4,12 +4,14 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.transform.Rotate;
 
 public class Hero extends Actor {
 	private int weapon;
 	private int dx = 0;
 	private int dy = 0;
 	private int gravity = 10;
+	private boolean direction;
 	public int getDy() {
 		return dy;
 	}
@@ -28,6 +30,7 @@ public class Hero extends Actor {
 		weapon = 1;
 		dx = 0;
 		setImage(myImage);
+		direction = true;
 	}
 	@Override
 	public void act(long now) {
@@ -45,10 +48,16 @@ public class Hero extends Actor {
 		}
 	}
 	
-	public void shoot(){
-		Projectile proj = new Projectile();
-		proj.setX(getX());
-		proj.setY(getY());
+	public void shoot(double dx, double dy, double angle){
+		Projectile proj = new Projectile(2);
+		if(direction){
+			proj.setX(getX() + getImage().getWidth() / 2);
+		}else{
+			proj.setX(getX() - getImage().getWidth() / 2);
+		}
+		proj.setY(getY() + getImage().getHeight() / 2);
+		proj.setDx(dx);
+		proj.setDy(dy);
 		getWorld().add(proj);
 	}
 	
@@ -78,6 +87,13 @@ public class Hero extends Actor {
 		
 	}
 	
+	public boolean isDirection() {
+		return direction;
+	}
+	public void setDirection(boolean direction) {
+		this.direction = direction;
+	}
+
 	private class MoveEvent implements EventHandler<KeyEvent>{
 
 		@Override
