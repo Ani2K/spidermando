@@ -15,6 +15,7 @@ public class Gunner extends Actor{
 	
 	public Gunner(){
 		setImage(FLAG);
+		
 	}
 
 	public void act(long now) {

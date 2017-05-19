@@ -27,8 +27,9 @@ import javafx.scene.image.ImageView;
 public abstract class Actor extends ImageView implements Styleable, EventTarget{
 	
 	public void move(double dx, double dy){
-		setX(getX() + dx);
-		setY(getY() + dy);
+		setY(getY()+dy);
+		setTranslateX(getTranslateX() + dx);
+//		setTranslateY(getTranslateY() + dy);
 	}
 	
 	public World getWorld(){

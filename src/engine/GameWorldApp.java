@@ -1,5 +1,11 @@
 package engine;
 
+import game.Block;
+import game.Gunner;
+import game.HealthPack;
+import game.Hero;
+import game.Level1;
+import game.Munition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -9,13 +15,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-import game.*;
 
 public class GameWorldApp extends Application {
+	//Dimensions
+	final int BLOCK_SIZE = 60;
+	final int SCREEN_WIDTH = 600;
+	final int SCREEN_HEIGHT = 600;
+	//World
 	private GameWorld world = new GameWorld();
+	//Actors
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
 	HealthPack healthtest = new HealthPack();
@@ -24,22 +36,38 @@ public class GameWorldApp extends Application {
 	public static void main(String[] args) {
 		launch();
 	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		//Background
 		Image background = new Image("file:images/background.png");
 		ImageView view = new ImageView(background);
-		
-		view.setFitWidth(750);
-		view.setFitHeight(500);
-		
+		view.setFitWidth(SCREEN_WIDTH);
+		view.setFitHeight(SCREEN_HEIGHT);
+		//World
 		StackPane root = new StackPane();
-
-		world.setPrefWidth(750);
-		world.setPrefHeight(500);
-		
 		BorderPane pane = new BorderPane();
 		
+		world.setPrefWidth(SCREEN_WIDTH);
+		world.setPrefHeight(SCREEN_HEIGHT);
+		
+		//Build Level
+		Level1 l = new Level1();
+
+		for(int i = 0; i < l.L1.length; i++){
+			String curRow = l.L1[i];
+			for(int j = 0; j < curRow.length();j++){
+				if(curRow.charAt(j)=='1'){
+					Block block = new Block(BLOCK_SIZE);
+					block.setX(j*BLOCK_SIZE);
+					block.setY(i*BLOCK_SIZE);
+					world.add(block);
+				}
+			}
+		}
+		
 		root.getChildren().addAll(view, world, pane);
+		
 		world.add(heroe);
 		world.add(healthtest);
 		world.add(munitiontest);
@@ -48,7 +76,15 @@ public class GameWorldApp extends Application {
 		healthtest.setX(500);
 		healthtest.setY(400);
 		heroe.setX(50);
-		heroe.setY(300);
+		heroe.setY(300); 
+		
+		heroe.translateXProperty().addListener((obs,old,newValue) ->{
+			int offset = newValue.intValue();
+			if(offset>100){
+				System.out.println(offset);
+				root.setLayoutX(-(offset - 100));
+			}
+		});
 		//Testing Gunner Class
 		
 		world.add(gunnerTest);
@@ -56,9 +92,9 @@ public class GameWorldApp extends Application {
 		gunnerTest.setY(325);
 		
 		world.start();
+
 		
-		
-		Scene scene = new Scene(root, 750, 500);
+		Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, new MyKeyboardHandler());
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
