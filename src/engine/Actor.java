@@ -29,6 +29,7 @@ public abstract class Actor extends ImageView implements Styleable, EventTarget{
 	public void move(double dx, double dy){
 		setY(getY()+dy);
 		setTranslateX(getTranslateX() + dx);
+		//setX(getTranslateX());
 //		setTranslateY(getTranslateY() + dy);
 	}
 	
