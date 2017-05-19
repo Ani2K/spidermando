@@ -51,13 +51,14 @@ public class Hero extends Actor {
 	public void shoot(double dx, double dy, double angle){
 		Projectile proj = new Projectile(2);
 		if(direction){
-			proj.setX(getX() + getImage().getWidth() / 2);
+			proj.setX(getX() + getImage().getWidth());
+			
 		}else{
-			proj.setX(getX() - getImage().getWidth() / 2);
+			proj.setX(getX() - getImage().getWidth() / 5);
+			proj.setRotate(-90);
 		}
 //		proj.setRotationAxis(Rotate.Y_AXIS);
 //		proj.setRotate(angle);
-		System.out.println(angle);
 		proj.setY(getY() + getImage().getHeight() / 2);
 		proj.setDx(dx);
 		proj.setDy(dy);
