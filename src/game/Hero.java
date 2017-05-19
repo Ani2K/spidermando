@@ -59,7 +59,7 @@ public class Hero extends Actor {
 //			proj.setRotate(-90);
 		}
 //		proj.setRotationAxis(Rotate.Y_AXIS);
-		proj.setRotate(-1 * (angle - 90)); // used guess and check to get this to work
+		proj.setRotate(-1 * (angle - 90)); 
 		proj.setY(getY() + getImage().getHeight() / 2);
 		proj.setDx(dx);
 		proj.setDy(dy);
