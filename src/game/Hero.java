@@ -34,12 +34,13 @@ public class Hero extends Actor {
 	}
 	@Override
 	public void act(long now) {
-		if(getIntersectingObjects(Block.class).size()==0){
+		if(getY() < 300){
 			dy += gravity;
-		}else{
+		}
+		if(getY() > 300){
+			setY(300);
 			dy = 0;
 		}
-
 		if(getY() + dy <= 301){
 			move(dx, dy);
 		}else{
@@ -58,7 +59,7 @@ public class Hero extends Actor {
 //			proj.setRotate(-90);
 		}
 //		proj.setRotationAxis(Rotate.Y_AXIS);
-		proj.setRotate(-1 * (angle - 90)); 
+		proj.setRotate(-1 * (angle - 90)); // used guess and check to get this to work
 		proj.setY(getY() + getImage().getHeight() / 2);
 		proj.setDx(dx);
 		proj.setDy(dy);
