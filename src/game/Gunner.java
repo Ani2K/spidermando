@@ -23,20 +23,20 @@ public class Gunner extends Actor{
 			die();
 		}else{
 
-			if(Math.abs(this.getX() -  this.getWorld().getObjects(Hero.class).get(0).getX())>GUNNER_RANGE){
+			if(Math.abs(this.getX() - this.getWorld().getObjects(Hero.class).get(0).getX())>GUNNER_RANGE){
 				if(this.getX() - this.getWorld().getObjects(Hero.class).get(0).getX()>0){
-					if(direction){
-						setRotationAxis(Rotate.Y_AXIS);
-				    	setRotate(180);
-				    	direction = false;
-					}
+//					if(direction){
+//						setRotationAxis(Rotate.Y_AXIS);
+//				    	setRotate(180);
+//				    	direction = false;
+//					}
 					this.move(-5, 0);
 				}else{
-					if(!direction){
-						setRotationAxis(Rotate.Y_AXIS);
-				    	setRotate(360);
-				    	direction = true;
-					}
+//					if(!direction){
+//						setRotationAxis(Rotate.Y_AXIS);
+//				    	setRotate(360);
+//				    	direction = true;
+//					}
 					this.move(5, 0);
 				}
 			}else{

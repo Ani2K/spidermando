@@ -39,10 +39,25 @@ public class GameWorldApp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		//Build Level
+				Level1 l = new Level1();
+
+				for(int i = 0; i < l.L1.length; i++){
+					String curRow = l.L1[i];
+					for(int j = 0; j < curRow.length();j++){
+						if(curRow.charAt(j)=='1'){
+							Block block = new Block(BLOCK_SIZE);
+							block.setX(j*BLOCK_SIZE);
+							block.setY(i*BLOCK_SIZE);
+							world.add(block);
+						}
+					}
+				}
+				
 		//Background
 		Image background = new Image("file:images/background.png");
 		ImageView view = new ImageView(background);
-		view.setFitWidth(SCREEN_WIDTH);
+		view.setFitWidth(l.L1[0].length() * BLOCK_SIZE);
 		view.setFitHeight(SCREEN_HEIGHT);
 		//World
 		StackPane root = new StackPane();
@@ -51,20 +66,7 @@ public class GameWorldApp extends Application {
 		world.setPrefWidth(SCREEN_WIDTH);
 		world.setPrefHeight(SCREEN_HEIGHT);
 		
-		//Build Level
-		Level1 l = new Level1();
-
-		for(int i = 0; i < l.L1.length; i++){
-			String curRow = l.L1[i];
-			for(int j = 0; j < curRow.length();j++){
-				if(curRow.charAt(j)=='1'){
-					Block block = new Block(BLOCK_SIZE);
-					block.setX(j*BLOCK_SIZE);
-					block.setY(i*BLOCK_SIZE);
-					world.add(block);
-				}
-			}
-		}
+		
 		
 		root.getChildren().addAll(view, world, pane);
 		
@@ -80,9 +82,9 @@ public class GameWorldApp extends Application {
 		
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
 			int offset = newValue.intValue();
-			if(offset>100){
+			if(offset>100 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH + 100){
 				System.out.println(offset);
-				root.setLayoutX(-(offset - 100));
+				root.setLayoutX(-1*offset + 100);
 			}
 		});
 		//Testing Gunner Class
