@@ -6,8 +6,10 @@ import javafx.scene.image.Image;
 public class HealthPack extends Actor{
 	private Image healthImage;
 	
-	public HealthPack(){
+	public HealthPack(int b){
 		healthImage = new Image("file:images/health.png");
+		setFitHeight(b);
+		setFitWidth(b);
 		setImage(healthImage);
 	}
 
