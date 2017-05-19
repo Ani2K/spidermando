@@ -27,6 +27,7 @@ public class GameWorldApp extends Application {
 	final int BLOCK_SIZE = 64;
 	final int SCREEN_WIDTH = BLOCK_SIZE * 10;
 	final int SCREEN_HEIGHT = BLOCK_SIZE * 10;
+	private int totalOffset = 0;
 	//World
 	private GameWorld world = new GameWorld();
 	//Actors
@@ -89,6 +90,7 @@ public class GameWorldApp extends Application {
 		
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
 			int offset = newValue.intValue();
+			totalOffset += offset;
 			if(offset>100 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH + 100){
 				root.setLayoutX(-1*offset + 100);
 			}
@@ -146,14 +148,16 @@ public class GameWorldApp extends Application {
 			@Override
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
+				//double mouseX = e.getX() + heroe.getTranslateX();
 				double mouseX = e.getX() + heroe.getTranslateX();
-				System.out.println(mouseX);
+				System.out.print(mouseX);
 				double heroX;
 				if(heroe.isDirection()){
 					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 1.5;
 				}else{
 					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.2;
 				}
+				System.out.println("                   " + heroX);
 				double mouseY = e.getY();
 				//System.out.println(mouseY);
 				double heroY = heroe.getY() + heroe.getImage().getHeight() / 2;
@@ -179,6 +183,7 @@ public class GameWorldApp extends Application {
 					dy = -1 * speed * Math.sin(angle);
 				}
 				angle *= (180.0 / Math.PI);
+				System.out.println(angle);
 				heroe.shoot(dx, dy, angle);
 			}
 			
