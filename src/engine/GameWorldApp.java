@@ -1,5 +1,7 @@
 package engine;
 
+import com.sun.security.auth.SolarisNumericGroupPrincipal;
+
 import game.Block;
 import game.Gunner;
 import game.HealthPack;
@@ -83,7 +85,6 @@ public class GameWorldApp extends Application {
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
 			int offset = newValue.intValue();
 			if(offset>100 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH + 100){
-				System.out.println(offset);
 				root.setLayoutX(-1*offset + 100);
 			}
 		});
@@ -110,12 +111,14 @@ public class GameWorldApp extends Application {
 					heroe.setRotationAxis(Rotate.Y_AXIS);
 			    	heroe.setRotate(360);
 			    	heroe.setDirection(true);
+			    	//System.out.println(heroe.getTranslateX());
 				}
 				if(e.getCode() == KeyCode.A){
 					heroe.setDx(-10);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
 			    	heroe.setRotate(180);
 			    	heroe.setDirection(false);
+			    	//System.out.println(heroe.getTranslateX());
 				}
 			}
 			
@@ -138,14 +141,16 @@ public class GameWorldApp extends Application {
 			@Override
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
-				double mouseX = e.getX();
+				double mouseX = e.getX() + heroe.getTranslateX();
+				System.out.println(mouseX);
 				double heroX;
 				if(heroe.isDirection()){
-					heroX = heroe.getX() + heroe.getImage().getWidth() / 2;
+					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 1.5;
 				}else{
-					heroX = heroe.getX() - heroe.getImage().getWidth() / 2;
+					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.2;
 				}
 				double mouseY = e.getY();
+				//System.out.println(mouseY);
 				double heroY = heroe.getY() + heroe.getImage().getHeight() / 2;
 				double speed = 40.0;
 				double tangent = Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX);

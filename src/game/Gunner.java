@@ -23,8 +23,8 @@ public class Gunner extends Actor{
 			die();
 		}else{
 
-			if(Math.abs(this.getX() - this.getWorld().getObjects(Hero.class).get(0).getX())>GUNNER_RANGE){
-				if(this.getX() - this.getWorld().getObjects(Hero.class).get(0).getX()>0){
+			if(Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())>GUNNER_RANGE){
+				if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
 //					if(direction){
 //						setRotationAxis(Rotate.Y_AXIS);
 //				    	setRotate(180);
@@ -49,7 +49,7 @@ public class Gunner extends Actor{
 	}
 	public void shoot(){
 		Projectile proj = new Projectile(1);
-		proj.setX(getX());
+		proj.setX(getTranslateX());
 		proj.setY(getY());
 		getWorld().add(proj);
 	}
