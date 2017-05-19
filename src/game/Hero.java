@@ -36,11 +36,10 @@ public class Hero extends Actor {
 	public void act(long now) {
 		if(getIntersectingObjects(Block.class).size()==0){
 			dy += gravity;
-		}
-		if(getY() > 300){
-			setY(300);
+		}else{
 			dy = 0;
 		}
+
 		if(getY() + dy <= 301){
 			move(dx, dy);
 		}else{

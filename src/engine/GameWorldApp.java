@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 
 public class GameWorldApp extends Application {
 	//Dimensions
-	final int BLOCK_SIZE = 60;
+	final int BLOCK_SIZE = 64;
 	final int SCREEN_WIDTH = BLOCK_SIZE * 10;
 	final int SCREEN_HEIGHT = BLOCK_SIZE * 10;
 	//World
