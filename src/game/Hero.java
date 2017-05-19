@@ -34,7 +34,7 @@ public class Hero extends Actor {
 	}
 	@Override
 	public void act(long now) {
-		if(getY() < 300){
+		if(getIntersectingObjects(Block.class).size()==0){
 			dy += gravity;
 		}
 		if(getY() > 300){
@@ -46,6 +46,7 @@ public class Hero extends Actor {
 		}else{
 			move(dx, 301 - getY());
 		}
+		
 	}
 	
 	public void shoot(double dx, double dy, double angle){
