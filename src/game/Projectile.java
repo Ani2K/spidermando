@@ -6,6 +6,8 @@ public class Projectile extends Actor{
 	private int type;
 	private double dx;
 	private double dy;
+	private boolean enemyDirectionFirstTime = true;
+	private double enemyX = 15;
 	
 	public double getDx() {
 		return dx;
@@ -31,22 +33,25 @@ public class Projectile extends Actor{
 	@Override
 	public void act(long now) {
 		if(type == 1){
-			if(this.getIntersectingObjects(Hero.class).size()!=0){
-				getWorld().remove(this);
-			}else{
+			if(enemyDirectionFirstTime){
+				enemyDirectionFirstTime = false;				
 				if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
 					setRotate(-90);
-					this.move(-15, 0);
+					enemyX *= -1;
 				}else{
 					setRotate(90);
-					this.move(15, 0);
 				}
+			}
+			if(this.getIntersectingObjects(Hero.class).size()!=0){
+				getWorld().remove(this);
+				
+			}else{move(enemyX, 0);
 			}
 		}else if(type == 2){
 			move(dx, dy);
-			if(this.getIntersectingObjects(Gunner.class).size()!=0){
-				getWorld().remove(this);
-			}
+//			if(this.getIntersectingObjects(Gunner.class).size()!=0){
+//				getWorld().remove(this);
+//			}
 		}
 	}
 	
