@@ -7,6 +7,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.transform.Rotate;
 
 public class Hero extends Actor {
+	
+	private int speed = 100;
+	
 	private int weapon;
 	private int dx = 0;
 	private int dy = 0;
@@ -34,6 +37,7 @@ public class Hero extends Actor {
 	}
 	@Override
 	public void act(long now) {
+		
 		if(getY() < 300){
 			dy += gravity;
 		}
@@ -53,7 +57,6 @@ public class Hero extends Actor {
 		Projectile proj = new Projectile(2);
 		if(direction){
 			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 1.5);
-			
 		}else{
 			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 0.2);
 //			proj.setRotate(-90);
@@ -99,18 +102,18 @@ public class Hero extends Actor {
 		this.direction = direction;
 	}
 
-	private class MoveEvent implements EventHandler<KeyEvent>{
-
-		@Override
-		public void handle(KeyEvent e) {
-			while(e.getCode().equals(KeyCode.RIGHT)){
-				dx = 1;
-				move(dx, 0);
-			}
-			while(e.getCode().equals(KeyCode.LEFT)){
-				dx = -1;
-				move(dx, 0);
-			}
-		}
-	}
+//	private class MoveEvent implements EventHandler<KeyEvent>{
+//
+//		@Override
+//		public void handle(KeyEvent e) {
+//			while(e.getCode().equals(KeyCode.D)){
+//				dx = speed;
+//				move(10000, 0);
+//			}
+//			while(e.getCode().equals(KeyCode.A)){
+//				dx = -1 * speed;
+//				move(100000, 0);
+//			}
+//		}
+//	}
 }
