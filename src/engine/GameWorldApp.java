@@ -143,47 +143,58 @@ public class GameWorldApp extends Application {
 			}
 			
 		});
-		scene.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		root.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
 			@Override
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
 				//double mouseX = e.getX() + heroe.getTranslateX();
-				double mouseX = e.getX() + heroe.getTranslateX();
-				System.out.print(mouseX);
+				double mouseX = e.getX();
 				double heroX;
 				if(heroe.isDirection()){
-					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 1.5;
+					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 1.6;
 				}else{
-					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.2;
+					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.4;
 				}
-				System.out.println("                   " + heroX);
 				double mouseY = e.getY();
-				//System.out.println(mouseY);
 				double heroY = heroe.getY() + heroe.getImage().getHeight() / 2;
-				double speed = 40.0;
+				double speed = 80.0;
 				double tangent = Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX);
 				double angle = Math.atan(tangent);
 				double dx;
 				double dy;
 				if(mouseX < heroX && mouseY > heroY){
-					dx = -1 * speed * Math.cos(angle);
-					dy = speed * Math.sin(angle);
-					angle = 3 * Math.PI / 2 - angle;
+					//dx = -1 * speed * Math.cos(angle);
+					//dy = speed * Math.sin(angle);
+					angle = Math.PI + angle;
+					heroe.setDirection(false);
+					heroe.setRotationAxis(Rotate.Y_AXIS);
+			    	heroe.setRotate(180);
 				}else if(mouseX > heroX && mouseY > heroY){
-					dx = speed * Math.cos(angle);
-					dy = speed * Math.sin(angle);
+					//dx = speed * Math.cos(angle);
+					//dy = speed * Math.sin(angle);
 					angle = 2 * Math.PI - angle;
+					heroe.setDirection(true);
+					heroe.setRotationAxis(Rotate.Y_AXIS);
+			    	heroe.setRotate(360);
 				}else if(mouseX < heroX && mouseY < heroY){
-					dx =  -1 * speed * Math.cos(angle);
-					dy = -1 * speed * Math.sin(angle);
+					//dx =  -1 * speed * Math.cos(angle);
+					//dy = -1 * speed * Math.sin(angle);
 					angle = Math.PI - angle;
+					heroe.setDirection(false);
+					heroe.setRotationAxis(Rotate.Y_AXIS);
+			    	heroe.setRotate(180);
 				}else{
-					dx =  speed * Math.cos(angle);
-					dy = -1 * speed * Math.sin(angle);
+					//dx =  speed * Math.cos(angle);
+					//dy = -1 * speed * Math.sin(angle);
+					heroe.setDirection(true);
+					heroe.setRotationAxis(Rotate.Y_AXIS);
+			    	heroe.setRotate(360);
 				}
+				dx = speed * Math.cos(angle);
+				dy = -1 * speed * Math.sin(angle);
+				
 				angle *= (180.0 / Math.PI);
-				System.out.println(angle);
 				heroe.shoot(dx, dy, angle);
 			}
 			

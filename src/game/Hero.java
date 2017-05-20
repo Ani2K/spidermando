@@ -51,19 +51,20 @@ public class Hero extends Actor {
 	
 	public void shoot(double dx, double dy, double angle){
 		Projectile proj = new Projectile(2);
+		double x;
 		if(direction){
-			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 1.5);
-			
+			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 1.6);
+			x = getTranslateX() + getImage().getWidth() * 1.4;
 		}else{
-			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 0.2);
-//			proj.setRotate(-90);
+			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 0.4);
+			x = getTranslateX() + getImage().getWidth() * 0.35;
 		}
-//		proj.setRotationAxis(Rotate.Y_AXIS);
 		proj.setRotate(-1 * (angle - 90)); // used guess and check to get this to work
 		proj.setY(getY() + getImage().getHeight() / 2);
 		proj.setDx(dx);
 		proj.setDy(dy);
 		getWorld().add(proj);
+		getWorld().add(new Flash(x, getY() + getImage().getHeight() / 2.1));
 	}
 	
 	public void changeWeapon(String key){
