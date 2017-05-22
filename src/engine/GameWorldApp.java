@@ -114,17 +114,18 @@ public class GameWorldApp extends Application {
 			@Override
 			public void handle(KeyEvent e) {
 				// TODO Auto-generated method stub
+				
 				if(e.getCode() == KeyCode.D){
 					heroe.setDx(SPEED_OF_HERO);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
-			    	heroe.setRotate(360);
+			    	//heroe.setRotate(360);
 			    	heroe.setDirection(true);
 			    	//System.out.println(heroe.getTranslateX());
 				}
 				if(e.getCode() == KeyCode.A){
 					heroe.setDx(-1 * SPEED_OF_HERO);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
-			    	heroe.setRotate(180);
+			    	//heroe.setRotate(180);
 			    	heroe.setDirection(false);
 			    	//System.out.println(heroe.getTranslateX());
 				}
