@@ -31,28 +31,15 @@ public class Boss extends Actor{
 		if(now - prev >= 500000000){
 			double myX = getTranslateX();
 			Hero heroe = getWorld().getObjects(Hero.class).get(0);
-			double heroX;
-			if(heroe.isDirection()){
-				heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 1.6;
-			}else{
-				heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.4;
-			}
+			double heroX = heroe.getTranslateX();
 			double myY = getY();
-			double heroY = heroe.getY() + heroe.getImage().getHeight() / 2;
-			double speed = 80.0;
-			double tangent = Math.abs(myY - heroY) / Math.abs(myX - heroX);
+			double heroY = heroe.getY();
+			double speed = 120.0;
+			double tangent = Math.abs(heroY - myY) / Math.abs(myX - heroX);
 			double angle = Math.atan(tangent);
 			double dx;
 			double dy;
-			if(myX < heroX && myY > heroY){
-				//dx = -1 * speed * Math.cos(angle);
-				//dy = speed * Math.sin(angle);
-				angle = Math.PI + angle;
-			}else if(myX > heroX && myY > heroY){
-				//dx = speed * Math.cos(angle);
-				//dy = speed * Math.sin(angle);
-				angle = 2 * Math.PI - angle;
-			}else if(myX < heroX && myY < heroY){
+			if(myX < heroX && myY < heroY){
 				//dx =  -1 * speed * Math.cos(angle);
 				//dy = -1 * speed * Math.sin(angle);
 				angle = Math.PI - angle;
@@ -60,8 +47,8 @@ public class Boss extends Actor{
 				//dx =  speed * Math.cos(angle);
 				//dy = -1 * speed * Math.sin(angle);
 			}
-			dx = speed * Math.cos(angle);
-			dy = -1 * speed * Math.sin(angle);
+			dx =  -1 * speed * Math.cos(angle);
+			dy = speed * Math.sin(angle);
 			
 			angle *= (180.0 / Math.PI);
 			shoot(dx, dy, angle);
