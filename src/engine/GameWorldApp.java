@@ -91,8 +91,8 @@ public class GameWorldApp extends Application {
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
 			int offset = newValue.intValue();
 			totalOffset += offset;
-			if(offset>100 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH + 100){
-				root.setLayoutX(-1*offset + 100);
+			if(offset>300 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH - 600 + 300){
+				root.setLayoutX(-1*offset + 300);
 			}
 		});
 		//Testing Gunner Class
@@ -104,7 +104,7 @@ public class GameWorldApp extends Application {
 		world.start();
 
 		
-		Scene scene = new Scene(root, SCREEN_WIDTH, SCREEN_HEIGHT);
+		Scene scene = new Scene(root, SCREEN_WIDTH + 600, SCREEN_HEIGHT);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, new MyKeyboardHandler());
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);

@@ -12,31 +12,32 @@ public class Gunner extends Actor{
 	double GUNNER_RANGE = 200;
 	long latestUpdate = 0;
 	boolean direction = true; // true is right, false is left
-	
+	int life = 3;
 	public Gunner(){
 		setImage(FLAG);
 		
 	}
 
 	public void act(long now) {
-		if(this.getIntersectingObjects(Projectile.class).size()!=0){
+		if(this.getIntersectingObjects(Projectile.class).size()!=0 && this.getIntersectingObjects(Projectile.class).get(0).getT()==2){
+			life--;
 			die();
 		}else{
 
 			if(Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())>GUNNER_RANGE){
 				if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
-//					if(direction){
-//						setRotationAxis(Rotate.Y_AXIS);
-//				    	setRotate(180);
-//				    	direction = false;
-//					}
+					if(direction){
+						setRotationAxis(Rotate.Y_AXIS);
+				    	setRotate(180);
+				    	direction = false;
+					}
 					this.move(-5, 0);
 				}else{
-//					if(!direction){
-//						setRotationAxis(Rotate.Y_AXIS);
-//				    	setRotate(360);
-//				    	direction = true;
-//					}
+					if(!direction){
+						setRotationAxis(Rotate.Y_AXIS);
+				    	setRotate(360);
+				    	direction = true;
+					}
 					this.move(5, 0);
 				}
 			}else{
@@ -55,8 +56,8 @@ public class Gunner extends Actor{
 	}
 
 	public void die(){
-		if(this.getIntersectingObjects(Projectile.class).size()>0){
-			sprite =  new ImageView(DEATH_SPRITE);
+		if(life<=0){
+			this.getWorld().remove(this);
 		}
 	}
 

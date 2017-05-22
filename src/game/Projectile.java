@@ -30,6 +30,10 @@ public class Projectile extends Actor{
 		dx = 0;
 		dy = 0;
 	}
+	
+	public double getT() {
+		return type;
+	}
 	@Override
 	public void act(long now) {
 		if(type == 1){
