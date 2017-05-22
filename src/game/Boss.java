@@ -57,11 +57,12 @@ public class Boss extends Actor{
 	}
 	
 	void shoot(double dx, double dy, double angle){
-		Projectile proj = new Projectile(2);
+		Projectile proj = new Projectile(10);
 		double x;
 		proj.setTranslateX(getTranslateX() + getImage().getWidth() * 1.6);
 		x = getTranslateX() + getImage().getWidth() * 1.4;
-		proj.setRotate(-1 * (angle - 90)); 
+		//proj.setRotate(-1 * (angle - 90)); 
+		proj.setRotate(angle); 
 		proj.setY(getY() + getImage().getHeight() / 2);
 		proj.setDx(dx);
 		proj.setDy(dy);
