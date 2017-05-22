@@ -4,6 +4,7 @@ import com.sun.security.auth.SolarisNumericGroupPrincipal;
 
 import game.Block;
 import game.Gunner;
+import game.Boss;
 import game.HealthPack;
 import game.Hero;
 import game.Level1;
@@ -34,6 +35,7 @@ public class GameWorldApp extends Application {
 	//Actors
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
+	Boss bossTest = new Boss();
 	
 	public static void main(String[] args) {
 		launch();
@@ -101,6 +103,10 @@ public class GameWorldApp extends Application {
 		world.add(gunnerTest);
 		gunnerTest.setX(10);
 		gunnerTest.setY(325);
+		
+		world.add(bossTest);
+		bossTest.setX(50);
+		bossTest.setY(50);
 		
 		world.start();
 
