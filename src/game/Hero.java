@@ -7,6 +7,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.transform.Rotate;
 
 public class Hero extends Actor {
+	
+	private int speed = 100;
+	
 	private int weapon;
 	private int dx = 0;
 	private int dy = 0;
@@ -59,7 +62,7 @@ public class Hero extends Actor {
 			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 0.4);
 			x = getTranslateX() + getImage().getWidth() * 0.35;
 		}
-		proj.setRotate(-1 * (angle - 90)); // used guess and check to get this to work
+		proj.setRotate(-1 * (angle - 90)); 
 		proj.setY(getY() + getImage().getHeight() / 2);
 		proj.setDx(dx);
 		proj.setDy(dy);
@@ -98,20 +101,5 @@ public class Hero extends Actor {
 	}
 	public void setDirection(boolean direction) {
 		this.direction = direction;
-	}
-
-	private class MoveEvent implements EventHandler<KeyEvent>{
-
-		@Override
-		public void handle(KeyEvent e) {
-			while(e.getCode().equals(KeyCode.RIGHT)){
-				dx = 1;
-				move(dx, 0);
-			}
-			while(e.getCode().equals(KeyCode.LEFT)){
-				dx = -1;
-				move(dx, 0);
-			}
-		}
 	}
 }

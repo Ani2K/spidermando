@@ -4,6 +4,7 @@ import com.sun.security.auth.SolarisNumericGroupPrincipal;
 
 import game.Block;
 import game.Gunner;
+import game.Boss;
 import game.HealthPack;
 import game.Hero;
 import game.Level1;
@@ -23,7 +24,8 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 public class GameWorldApp extends Application {
-	//Dimensions
+
+	final int SPEED_OF_HERO = 20;
 	final int BLOCK_SIZE = 64;
 	final int SCREEN_WIDTH = BLOCK_SIZE * 10;
 	final int SCREEN_HEIGHT = BLOCK_SIZE * 10;
@@ -33,6 +35,7 @@ public class GameWorldApp extends Application {
 	//Actors
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
+	Boss bossTest = new Boss();
 	
 	public static void main(String[] args) {
 		launch();
@@ -86,7 +89,7 @@ public class GameWorldApp extends Application {
 		
 		world.add(heroe);
 		heroe.setX(50);
-		heroe.setY(300); 
+		heroe.setY(-500); 
 		
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
 			int offset = newValue.intValue();
@@ -100,6 +103,10 @@ public class GameWorldApp extends Application {
 		world.add(gunnerTest);
 		gunnerTest.setX(10);
 		gunnerTest.setY(325);
+		
+		world.add(bossTest);
+		bossTest.setX(50);
+		bossTest.setY(50);
 		
 		world.start();
 
@@ -115,18 +122,21 @@ public class GameWorldApp extends Application {
 				// TODO Auto-generated method stub
 				
 				if(e.getCode() == KeyCode.D){
-					heroe.setDx(10);
+					heroe.setDx(SPEED_OF_HERO);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
 			    	//heroe.setRotate(360);
 			    	heroe.setDirection(true);
 			    	//System.out.println(heroe.getTranslateX());
 				}
 				if(e.getCode() == KeyCode.A){
-					heroe.setDx(-10);
+					heroe.setDx(-1 * SPEED_OF_HERO);
 					heroe.setRotationAxis(Rotate.Y_AXIS);
 			    	//heroe.setRotate(180);
 			    	heroe.setDirection(false);
 			    	//System.out.println(heroe.getTranslateX());
+				}
+				if(e.getCode() == KeyCode.W && heroe.getDy() == 0){
+					heroe.setDy(-50);	
 				}
 			}
 			
@@ -137,9 +147,6 @@ public class GameWorldApp extends Application {
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.A || event.getCode() == KeyCode.D){
 					heroe.setDx(0);
-				}
-				if(event.getCode() == KeyCode.W && heroe.getDy() == 0){
-					heroe.setDy(-50);
 				}
 			}
 			
@@ -200,6 +207,7 @@ public class GameWorldApp extends Application {
 			}
 			
 		});
+		primaryStage.setTitle("COMMANDARIO");
 		primaryStage.show();
 	}
 	

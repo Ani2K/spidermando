@@ -3,6 +3,7 @@ import engine.*;
 import javafx.scene.image.Image;
 public class Projectile extends Actor{
 	public Image bullet = new Image("file:images/bullet.png");
+	Image fireball = new Image("file:images/fireball.png");
 	private int type;
 	private double dx;
 	private double dy;
@@ -25,7 +26,11 @@ public class Projectile extends Actor{
 		setFitWidth(10);
 		setFitHeight(10);
 		setRotate(90);
-		setImage(bullet);
+		if(typo != 10){
+			setImage(bullet);
+		}else{
+			setImage(fireball);
+		}
 		this.type = typo;
 		dx = 0;
 		dy = 0;
@@ -56,6 +61,8 @@ public class Projectile extends Actor{
 //			if(this.getIntersectingObjects(Gunner.class).size()!=0){
 //				getWorld().remove(this);
 //			}
+		}else{
+			move(dx, dy);
 		}
 	}
 	
