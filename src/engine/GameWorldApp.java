@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 public class GameWorldApp extends Application {
 
 	final int SPEED_OF_HERO = 20;
-	final int BLOCK_SIZE = 64;
+	public static final int BLOCK_SIZE = 64;
 	final int SCREEN_WIDTH = BLOCK_SIZE * 10;
 	final int SCREEN_HEIGHT = BLOCK_SIZE * 10;
 	private int totalOffset = 0;
@@ -36,6 +36,7 @@ public class GameWorldApp extends Application {
 	private ArrayList<Block> steppingBlocks = new ArrayList<Block>();
 	private Point2D playerVelocity = new Point2D(0, 0);
 	boolean canJump = true;
+	public static boolean isAlive = true;
 	
 	//World
 	private GameWorld world = new GameWorld();
@@ -102,6 +103,7 @@ public class GameWorldApp extends Application {
 		root.getChildren().addAll(view, world, pane);
 		
 		world.add(heroe);
+		heroe.setBlocks(steppingBlocks);
 		heroe.setX(50);
 		heroe.setY(100); 
 		
@@ -129,6 +131,12 @@ public class GameWorldApp extends Application {
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, new MyKeyboardHandler());
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
+		
+//		Image deathImage = new Image("file:images/gameOver.jpg");
+//		ImageView newRoot = new ImageView(deathImage);
+//		newRoot.setFitWidth(l.L1[0].length() * BLOCK_SIZE);
+//		Scene deathScene = new Scene(root, SCREEN_WIDTH + 600, SCREEN_HEIGHT);
+		
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
 
 			@Override
@@ -140,7 +148,7 @@ public class GameWorldApp extends Application {
 //			    	heroe.setDirection(true);
 //			    	//System.out.println(heroe.getTranslateX());
 					
-					heroe.setDx(10);
+					heroe.setDx(40);
 					//moveHeroX(SPEED_OF_HERO);
 				}
 				if(e.getCode() == KeyCode.A){
@@ -150,7 +158,7 @@ public class GameWorldApp extends Application {
 //			    	heroe.setDirection(false);
 //			    	//System.out.println(heroe.getTranslateX());
 					//moveHeroX(-1 * SPEED_OF_HERO);
-					heroe.setDx(-10);
+					heroe.setDx(-40);
 				}
 				if(e.getCode() == KeyCode.W){
 //					heroe.setDy(-50);	
@@ -234,6 +242,10 @@ public class GameWorldApp extends Application {
 			public void handle(long arg0) {
 				// TODO Auto-generated method stub
 				update();
+//				if(!isAlive){
+//					primaryStage.setScene(deathScene);
+//					primaryStage.show();
+//				}
 			}
 			
 		};

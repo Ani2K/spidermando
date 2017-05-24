@@ -1,4 +1,6 @@
 package game;
+import java.util.ArrayList;
+
 import engine.*;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
@@ -12,7 +14,15 @@ public class Hero extends Actor {
 	
 	private int weapon;
 	private double dx = 0;
-//	private int dy = 0;
+	private ArrayList<Block> blocks = new ArrayList<Block>();
+public ArrayList<Block> getBlocks() {
+		return blocks;
+	}
+	public void setBlocks(ArrayList<Block> blocks) {
+		this.blocks = blocks;
+	}
+
+	//	private int dy = 0;
 //	private int gravity = 10;
 	private boolean direction;
 	public double getDx() {
@@ -49,8 +59,24 @@ public class Hero extends Actor {
 //		}else{
 //			move(0, 301 - getY());
 //		}
-//		
-		setTranslateX(getTranslateX() + dx);
+		boolean movingRight = dx > 0;
+		for(int i = 0; i < Math.abs(dx); i++){
+			for(Block block : blocks){
+				if(getBoundsInParent().intersects(block.getBoundsInParent())){
+					if(movingRight){
+						if(getTranslateX() + getWidth() == block.getX() - GameWorldApp.BLOCK_SIZE){
+							return;
+						}
+					}else if(getTranslateX() == block.getX()){
+						return;
+					}
+				}
+			}
+			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
+		}
+		if(getTranslateY() > 550){
+			System.exit(0);
+		}
 	}
 	
 	public void shoot(double dx, double dy, double angle){

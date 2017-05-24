@@ -58,9 +58,10 @@ public class Projectile extends Actor{
 			}
 		}else if(type == 2){
 			move(dx, dy);
-//			if(this.getIntersectingObjects(Gunner.class).size()!=0){
-//				getWorld().remove(this);
-//			}
+			if(this.getIntersectingObjects(Gunner.class).size()!=0){
+				getWorld().remove(getIntersectingObjects(Gunner.class).get(0));
+				getWorld().remove(this);
+			}
 		}else{
 			move(dx, dy);
 		}
