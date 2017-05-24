@@ -8,48 +8,48 @@ import javafx.scene.transform.Rotate;
 
 public class Hero extends Actor {
 	
-	private int speed = 100;
+//	private int speed = 100;
 	
 	private int weapon;
-	private int dx = 0;
-	private int dy = 0;
-	private int gravity = 10;
+//	private int dx = 0;
+//	private int dy = 0;
+//	private int gravity = 10;
 	private boolean direction;
-	public int getDy() {
-		return dy;
-	}
-	public void setDy(int dy) {
-		this.dy = dy;
-	}
+//	public int getDy() {
+//		return dy;
+//	}
+//	public void setDy(int dy) {
+//		this.dy = dy;
+//	}
 
 	private Image myImage = new Image("file:images/hero_right.png");
-	public int getDx() {
-		return dx;
-	}
-	public void setDx(int dx) {
-		this.dx = dx;
-	}
+//	public int getDx() {
+//		return dx;
+//	}
+//	public void setDx(int dx) {
+//		this.dx = dx;
+//	}
 	public Hero(){
 		weapon = 1;
-		dx = 0;
+//		dx = 0;
 		setImage(myImage);
 		direction = true;
 	}
 	@Override
 	public void act(long now) {
-		if(getY() < 300){
-			dy += gravity;
-		}
-		if(getY() > 300){
-			setY(300);
-			dy = 0;
-		}
-		if(getY() + dy <= 301){
-			move(dx, dy);
-		}else{
-			move(dx, 301 - getY());
-		}
-		
+//		if(getY() < 300){
+//			dy += gravity;
+//		}
+//		if(getY() > 300){
+//			setY(300);
+//			dy = 0;
+//		}
+//		if(getY() + dy <= 301){
+//			move(0, dy);
+//		}else{
+//			move(0, 301 - getY());
+//		}
+//		
 	}
 	
 	public void shoot(double dx, double dy, double angle){

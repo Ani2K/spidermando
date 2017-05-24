@@ -1,16 +1,18 @@
 package engine;
 
-import com.sun.security.auth.SolarisNumericGroupPrincipal;
+import java.util.ArrayList;
 
 import game.Block;
-import game.Gunner;
 import game.Boss;
+import game.Gunner;
 import game.HealthPack;
 import game.Hero;
 import game.Level1;
 import game.Munition;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,7 +20,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
@@ -30,6 +31,11 @@ public class GameWorldApp extends Application {
 	final int SCREEN_WIDTH = BLOCK_SIZE * 10;
 	final int SCREEN_HEIGHT = BLOCK_SIZE * 10;
 	private int totalOffset = 0;
+	
+	private ArrayList<Block> steppingBlocks = new ArrayList<Block>();
+	private Point2D playerVelocity = new Point2D(0, 0);
+	boolean canJump = true;
+	
 	//World
 	private GameWorld world = new GameWorld();
 	//Actors
@@ -54,6 +60,7 @@ public class GameWorldApp extends Application {
 							block.setX(j*BLOCK_SIZE);
 							block.setY(i*BLOCK_SIZE);
 							world.add(block);
+							steppingBlocks.add(block);
 						}
 						if(curRow.charAt(j)=='2'){
 							HealthPack h = new HealthPack(BLOCK_SIZE);
@@ -89,7 +96,7 @@ public class GameWorldApp extends Application {
 		
 		world.add(heroe);
 		heroe.setX(50);
-		heroe.setY(-500); 
+		heroe.setY(100); 
 		
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
 			int offset = newValue.intValue();
@@ -119,38 +126,40 @@ public class GameWorldApp extends Application {
 
 			@Override
 			public void handle(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
 				if(e.getCode() == KeyCode.D){
-					heroe.setDx(SPEED_OF_HERO);
-					heroe.setRotationAxis(Rotate.Y_AXIS);
-			    	//heroe.setRotate(360);
-			    	heroe.setDirection(true);
-			    	//System.out.println(heroe.getTranslateX());
+//					heroe.setDx(SPEED_OF_HERO);
+//					heroe.setRotationAxis(Rotate.Y_AXIS);
+//			    	//heroe.setRotate(360);
+//			    	heroe.setDirection(true);
+//			    	//System.out.println(heroe.getTranslateX());
+					
+					moveHeroX(SPEED_OF_HERO);
 				}
 				if(e.getCode() == KeyCode.A){
-					heroe.setDx(-1 * SPEED_OF_HERO);
-					heroe.setRotationAxis(Rotate.Y_AXIS);
-			    	//heroe.setRotate(180);
-			    	heroe.setDirection(false);
-			    	//System.out.println(heroe.getTranslateX());
+//					heroe.setDx(-1 * SPEED_OF_HERO);
+//					heroe.setRotationAxis(Rotate.Y_AXIS);
+//			    	//heroe.setRotate(180);
+//			    	heroe.setDirection(false);
+//			    	//System.out.println(heroe.getTranslateX());
+					moveHeroX(-1 * SPEED_OF_HERO);
 				}
-				if(e.getCode() == KeyCode.W && heroe.getDy() == 0){
-					heroe.setDy(-50);	
-				}
-			}
-			
-		});
-		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
-
-			@Override
-			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.A || event.getCode() == KeyCode.D){
-					heroe.setDx(0);
+				if(e.getCode() == KeyCode.W){
+//					heroe.setDy(-50);	
+					jumpHero();
 				}
 			}
 			
 		});
+//		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
+//
+//			@Override
+//			public void handle(KeyEvent event) {
+//				if(event.getCode() == KeyCode.A || event.getCode() == KeyCode.D){
+//					heroe.setDx(0);
+//				}
+//			}
+//			
+//		});
 		root.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
 			@Override
@@ -209,6 +218,70 @@ public class GameWorldApp extends Application {
 		});
 		primaryStage.setTitle("COMMANDARIO");
 		primaryStage.show();
+		
+		AnimationTimer timer = new AnimationTimer(){
+
+			@Override
+			public void handle(long arg0) {
+				// TODO Auto-generated method stub
+				update();
+			}
+			
+		};
+		timer.start();
+	}
+	
+	private void update(){
+		if(playerVelocity.getY() < 10){
+			playerVelocity = playerVelocity.add(0, 1);
+		}
+		moveHeroY((int)playerVelocity.getY());
+	}
+	
+	private void moveHeroX(int velocity){
+		boolean movingRight = velocity > 0;
+		for(int i = 0; i < Math.abs(velocity); i++){
+			for(Block block : steppingBlocks){
+				if(heroe.getBoundsInParent().intersects(block.getBoundsInParent())){
+					if(movingRight){
+						if(heroe.getTranslateX() + heroe.getWidth() == block.getX() - BLOCK_SIZE){
+							return;
+						}
+					}else if(heroe.getTranslateX() == block.getX()){
+						return;
+					}
+				}
+			}
+			heroe.setTranslateX(heroe.getTranslateX() + (movingRight ? 1 : -1));
+		}
+	}
+	
+	private void moveHeroY(int velocity){
+		boolean movingDown = velocity > 0;
+		for(int i = 0; i < Math.abs(velocity); i++){
+			for(Block block : steppingBlocks){
+				if(heroe.getBoundsInParent().intersects(block.getBoundsInParent())){
+					if(movingDown){
+						if(heroe.getTranslateY() + heroe.getHeight() <= block.getY()){
+							heroe.setTranslateY(heroe.getTranslateY() - 1);
+							canJump = true;
+							return;
+						}
+					}else if(heroe.getTranslateY() == block.getY()){
+						return;
+					}
+				}
+			}
+			heroe.setTranslateY(heroe.getTranslateY() + (movingDown ? 1 : -1));
+		}
+	}
+	
+	private void jumpHero(){
+		if(canJump){
+			playerVelocity = playerVelocity.add(0, -30);
+			canJump = false;
+		}
+		
 	}
 	
 	private class MyKeyboardHandler implements EventHandler<KeyEvent> {
