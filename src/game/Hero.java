@@ -11,16 +11,16 @@ public class Hero extends Actor {
 //	private int speed = 100;
 	
 	private int weapon;
-//	private int dx = 0;
+	private double dx = 0;
 //	private int dy = 0;
 //	private int gravity = 10;
 	private boolean direction;
-//	public int getDy() {
-//		return dy;
-//	}
-//	public void setDy(int dy) {
-//		this.dy = dy;
-//	}
+	public double getDx() {
+		return dx;
+	}
+	public void setDx(double dx) {
+		this.dx = dx;
+	}
 
 	private Image myImage = new Image("file:images/hero_right.png");
 //	public int getDx() {
@@ -50,6 +50,7 @@ public class Hero extends Actor {
 //			move(0, 301 - getY());
 //		}
 //		
+		setTranslateX(getTranslateX() + dx);
 	}
 	
 	public void shoot(double dx, double dy, double angle){
@@ -63,11 +64,11 @@ public class Hero extends Actor {
 			x = getTranslateX() + getImage().getWidth() * 0.35;
 		}
 		proj.setRotate(-1 * (angle - 90)); 
-		proj.setY(getY() + getImage().getHeight() / 2);
+		proj.setY(getTranslateY() + getImage().getHeight() * 2);
 		proj.setDx(dx);
 		proj.setDy(dy);
 		getWorld().add(proj);
-		getWorld().add(new Flash(x, getY() + getImage().getHeight() / 2.1));
+		getWorld().add(new Flash(x, getTranslateY() + getImage().getHeight() * 2));
 	}
 	
 	public void changeWeapon(String key){

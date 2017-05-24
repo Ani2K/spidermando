@@ -140,7 +140,8 @@ public class GameWorldApp extends Application {
 //			    	heroe.setDirection(true);
 //			    	//System.out.println(heroe.getTranslateX());
 					
-					moveHeroX(SPEED_OF_HERO);
+					heroe.setDx(10);
+					//moveHeroX(SPEED_OF_HERO);
 				}
 				if(e.getCode() == KeyCode.A){
 //					heroe.setDx(-1 * SPEED_OF_HERO);
@@ -148,7 +149,8 @@ public class GameWorldApp extends Application {
 //			    	//heroe.setRotate(180);
 //			    	heroe.setDirection(false);
 //			    	//System.out.println(heroe.getTranslateX());
-					moveHeroX(-1 * SPEED_OF_HERO);
+					//moveHeroX(-1 * SPEED_OF_HERO);
+					heroe.setDx(-10);
 				}
 				if(e.getCode() == KeyCode.W){
 //					heroe.setDy(-50);	
@@ -157,16 +159,16 @@ public class GameWorldApp extends Application {
 			}
 			
 		});
-//		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
-//
-//			@Override
-//			public void handle(KeyEvent event) {
-//				if(event.getCode() == KeyCode.A || event.getCode() == KeyCode.D){
-//					heroe.setDx(0);
-//				}
-//			}
-//			
-//		});
+		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
+
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.A || event.getCode() == KeyCode.D){
+					heroe.setDx(0);
+				}
+			}
+			
+		});
 		root.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
 			@Override
@@ -181,7 +183,7 @@ public class GameWorldApp extends Application {
 					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.4;
 				}
 				double mouseY = e.getY();
-				double heroY = heroe.getY() + heroe.getImage().getHeight() / 2;
+				double heroY = heroe.getTranslateY() + heroe.getImage().getHeight() * 2;
 				double speed = 80.0;
 				double tangent = Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX);
 				double angle = Math.atan(tangent);
