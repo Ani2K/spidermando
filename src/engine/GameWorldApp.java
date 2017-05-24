@@ -24,6 +24,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -49,7 +51,8 @@ public class GameWorldApp extends Application {
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
 	Boss bossTest = new Boss();
-	
+	Media spiderManSong = new Media("file:images/spiderman.mp3");
+	MediaPlayer spiderPlayer = new MediaPlayer(spiderManSong);
 	public static void main(String[] args) {
 		launch();
 	}
@@ -244,6 +247,7 @@ public class GameWorldApp extends Application {
 		
 		primaryStage.setTitle("COMMANDARIO");
 		primaryStage.show();
+		spiderPlayer.play();
 		
 		StringProperty fpsString = new 	SimpleStringProperty();
 		primaryStage.titleProperty().bind(fpsString);
