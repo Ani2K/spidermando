@@ -12,6 +12,8 @@ import game.Level1;
 import game.Munition;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -38,8 +40,11 @@ public class GameWorldApp extends Application {
 	boolean canJump = true;
 	public static boolean isAlive = true;
 	
+	private long last = 0;;
+	
 	//World
 	private GameWorld world = new GameWorld();
+	public static StackPane root;
 	//Actors
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
@@ -92,7 +97,7 @@ public class GameWorldApp extends Application {
 		view.setFitWidth(l.L1[0].length() * BLOCK_SIZE);
 		view.setFitHeight(SCREEN_HEIGHT);
 		//World
-		StackPane root = new StackPane();
+		root = new StackPane();
 		BorderPane pane = new BorderPane();
 		
 		world.setPrefWidth(SCREEN_WIDTH);
@@ -111,7 +116,8 @@ public class GameWorldApp extends Application {
 			int offset = newValue.intValue();
 			totalOffset += offset;
 			if(offset>300 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH - 600 + 300){
-				root.setLayoutX(-1*offset + 300);
+				root.setLayoutX(-1 * offset + 300);
+				//world.setLayoutx(-1*offset + 300);
 			}
 		});
 		//Testing Gunner Class
@@ -233,15 +239,25 @@ public class GameWorldApp extends Application {
 			}
 			
 		});
+		
+		
+		
 		primaryStage.setTitle("COMMANDARIO");
 		primaryStage.show();
 		
+		StringProperty fpsString = new 	SimpleStringProperty();
+		primaryStage.titleProperty().bind(fpsString);
 		AnimationTimer timer = new AnimationTimer(){
 
 			@Override
 			public void handle(long arg0) {
 				// TODO Auto-generated method stub
 				update();
+				
+				long timeElapsed = arg0 - last;
+				fpsString.setValue(Double.toString(1_000_000_000.0/(timeElapsed)));
+				
+				last = arg0;
 //				if(!isAlive){
 //					primaryStage.setScene(deathScene);
 //					primaryStage.show();
@@ -252,6 +268,10 @@ public class GameWorldApp extends Application {
 		timer.start();
 	}
 	
+	public static StackPane getRoot() {
+		return root;
+	}
+
 	private void update(){
 
 		if(playerVelocity.getY() < 10){

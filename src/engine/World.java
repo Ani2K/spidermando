@@ -13,7 +13,7 @@ public abstract class World extends javafx.scene.layout.Pane implements javafx.c
 			long old = 0;
 			@Override
 			public void handle(long now) {
-				if(now - old > 100000000){
+				if(now - old > 50000000){
 					act(now);
 					for(int i = 0; i < getChildren().size(); i++){
 						if(Actor.class.isAssignableFrom(getChildren().get(i).getClass())){

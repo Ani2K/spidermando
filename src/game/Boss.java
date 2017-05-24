@@ -20,12 +20,16 @@ public class Boss extends Actor{
 	@Override
 	public void act(long now) {
 		// TODO Auto-generated method stub
-		if(getTranslateX() + getWidth() >= getWorld().getWidth() && turn){
+		if(getX() + getWidth() >= GameWorldApp.getRoot().getLayoutX() * -1 + GameWorldApp.getRoot().getWidth() && turn){
 			dx *= -1;
 			turn = false;
-		}else if(getTranslateX() <= 0 && !turn){
+			System.out.print(getTranslateX());
+			System.out.println("                       " + GameWorldApp.getRoot().getLayoutX() * -1 + GameWorldApp.getRoot().getWidth());
+		}else if(getX() <= GameWorldApp.getRoot().getLayoutX() && !turn){
 			dx *= -1;
 			turn = true;
+			System.out.print(getTranslateX());
+			System.out.println("                       " + GameWorldApp.getRoot().getLayoutX());
 		}
 		move(dx, dy);
 		if(now - prev >= 500000000){
@@ -33,7 +37,7 @@ public class Boss extends Actor{
 			Hero heroe = getWorld().getObjects(Hero.class).get(0);
 			double heroX = heroe.getTranslateX();
 			double myY = getY();
-			double heroY = heroe.getY();
+			double heroY = heroe.getTranslateY();
 			double speed = 120.0;
 			double tangent = Math.abs(heroY - myY) / Math.abs(myX - heroX);
 			double angle = Math.atan(tangent);
