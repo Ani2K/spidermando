@@ -42,6 +42,7 @@ public class Gunner extends Actor{
 				}
 			}else{
 				if(now - latestUpdate >= 1000000000){
+					
 					latestUpdate = now;
 					shoot();
 				}

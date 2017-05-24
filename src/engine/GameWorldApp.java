@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import game.Block;
 import game.Boss;
 import game.Gunner;
+import game.GunnerSpawn;
 import game.HealthPack;
 import game.Hero;
 import game.Level1;
@@ -74,6 +75,12 @@ public class GameWorldApp extends Application {
 							m.setX(j*BLOCK_SIZE);
 							m.setY(i*BLOCK_SIZE);
 							world.add(m);
+						}
+						if(curRow.charAt(j)=='4'){
+							GunnerSpawn g = new GunnerSpawn();
+							g.setX(j*BLOCK_SIZE);
+							g.setY(i*BLOCK_SIZE);
+							world.add(g);
 						}
 					}
 				}
@@ -232,6 +239,7 @@ public class GameWorldApp extends Application {
 	}
 	
 	private void update(){
+
 		if(playerVelocity.getY() < 10){
 			playerVelocity = playerVelocity.add(0, 1);
 		}
