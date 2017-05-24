@@ -15,7 +15,7 @@ public class Hero extends Actor {
 	private int weapon;
 	private double dx = 0;
 	private ArrayList<Block> blocks = new ArrayList<Block>();
-public ArrayList<Block> getBlocks() {
+	public ArrayList<Block> getBlocks() {
 		return blocks;
 	}
 	public void setBlocks(ArrayList<Block> blocks) {
