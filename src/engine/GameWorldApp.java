@@ -52,6 +52,9 @@ public class GameWorldApp extends Application {
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
 	Boss bossTest = new Boss();
+	
+	Media gunSound = new Media(new File(new File("images/pistolSound.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
 	public static void main(String[] args) {
 		launch();
 	}
@@ -191,6 +194,7 @@ public class GameWorldApp extends Application {
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
 				//double mouseX = e.getX() + heroe.getTranslateX();
+				gunPlayer.stop();
 				double mouseX = e.getX();
 				double heroX;
 				if(heroe.isDirection()){
@@ -238,6 +242,7 @@ public class GameWorldApp extends Application {
 				
 				angle *= (180.0 / Math.PI);
 				heroe.shoot(dx, dy, angle);
+				gunPlayer.play();
 			}
 			
 		});
@@ -247,6 +252,7 @@ public class GameWorldApp extends Application {
 		String path = song.getAbsolutePath();
 		Media spiderManSong = new Media(new File(path).toURI().toString());
 		MediaPlayer spiderPlayer = new MediaPlayer(spiderManSong);
+		spiderPlayer.setVolume(0.2);
 		spiderPlayer.play();
 		
 		StringProperty fpsString = new 	SimpleStringProperty();
