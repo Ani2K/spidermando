@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import game.Block;
@@ -51,8 +52,6 @@ public class GameWorldApp extends Application {
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
 	Boss bossTest = new Boss();
-	Media spiderManSong = new Media("file:images/spiderman.mp3");
-	MediaPlayer spiderPlayer = new MediaPlayer(spiderManSong);
 	public static void main(String[] args) {
 		launch();
 	}
@@ -247,6 +246,12 @@ public class GameWorldApp extends Application {
 		
 		primaryStage.setTitle("COMMANDARIO");
 		primaryStage.show();
+		File song = new File("images/spiderman.mp3");
+		String path = song.getAbsolutePath();
+		System.out.println(path);
+		System.out.println(new File(path).toURI().toString());
+		Media spiderManSong = new Media(new File(path).toURI().toString());
+		MediaPlayer spiderPlayer = new MediaPlayer(spiderManSong);
 		spiderPlayer.play();
 		
 		StringProperty fpsString = new 	SimpleStringProperty();
