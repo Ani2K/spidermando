@@ -245,8 +245,6 @@ public class GameWorldApp extends Application {
 		primaryStage.show();
 		File song = new File("images/spiderman.mp3");
 		String path = song.getAbsolutePath();
-		System.out.println(path);
-		System.out.println(new File(path).toURI().toString());
 		Media spiderManSong = new Media(new File(path).toURI().toString());
 		MediaPlayer spiderPlayer = new MediaPlayer(spiderManSong);
 		spiderPlayer.play();
