@@ -96,7 +96,7 @@ public class GameWorldApp extends Application {
 		//Background
 		Image background = new Image("file:images/background.png");
 		ImageView view = new ImageView(background);
-		view.setFitWidth(l.L1[0].length() * BLOCK_SIZE);
+		view.setFitWidth(Level1.L1[0].length() * BLOCK_SIZE * 2);
 		view.setFitHeight(SCREEN_HEIGHT);
 		//World
 		root = new StackPane();
@@ -241,10 +241,7 @@ public class GameWorldApp extends Application {
 			}
 			
 		});
-		
-		
-		
-		primaryStage.setTitle("COMMANDARIO");
+		primaryStage.setTitle("Spidermmando");
 		primaryStage.show();
 		File song = new File("images/spiderman.mp3");
 		String path = song.getAbsolutePath();
