@@ -53,7 +53,7 @@ public class GameWorldApp extends Application {
 	Gunner gunnerTest = new Gunner();
 	Boss bossTest = new Boss();
 	
-	Media gunSound = new Media(new File(new File("images/pistolSound.mp3").getAbsolutePath()).toURI().toString());
+	Media gunSound = new Media(new File("images/pistolSound.mp3").toURI().toString());
 	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
 	public static void main(String[] args) {
 		launch();
@@ -249,8 +249,8 @@ public class GameWorldApp extends Application {
 		primaryStage.setTitle("Spidermmando");
 		primaryStage.show();
 		File song = new File("images/spiderman.mp3");
-		String path = song.getAbsolutePath();
-		Media spiderManSong = new Media(new File(path).toURI().toString());
+		//String path = song.getAbsolutePath();
+		Media spiderManSong = new Media(song.toURI().toString());
 		MediaPlayer spiderPlayer = new MediaPlayer(spiderManSong);
 		spiderPlayer.setVolume(0.2);
 		spiderPlayer.play();
