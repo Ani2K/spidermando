@@ -17,6 +17,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +28,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -53,7 +58,7 @@ public class GameWorldApp extends Application {
 	Gunner gunnerTest = new Gunner();
 	Boss bossTest = new Boss();
 	
-	Media gunSound = new Media(new File(new File("images/pistolSound.mp3").getAbsolutePath()).toURI().toString());
+	Media gunSound = new Media(new File(new File("images/pistolsound.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
 	public static void main(String[] args) {
 		launch();
@@ -108,7 +113,12 @@ public class GameWorldApp extends Application {
 		world.setPrefWidth(SCREEN_WIDTH);
 		world.setPrefHeight(SCREEN_HEIGHT);
 		
-		
+		Text title = new Text();
+		title.setText("Spidermmando");
+		title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		title.setFill(Color.WHITE);
+		title.setStroke(Color.web("#0d61e8"));  
+		pane.setTop(title);
 		
 		root.getChildren().addAll(view, world, pane);
 		
