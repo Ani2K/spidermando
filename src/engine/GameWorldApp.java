@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import game.Block;
 import game.Boss;
+import game.EndPoint;
 import game.Gunner;
 import game.GunnerSpawn;
 import game.HealthPack;
@@ -17,7 +18,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -25,13 +29,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 public class GameWorldApp extends Application {
-
+	boolean gameOver = false;
 	final int SPEED_OF_HERO = 20;
 	public static final int BLOCK_SIZE = 64;
 	final int SCREEN_WIDTH = BLOCK_SIZE * 10;
@@ -43,7 +48,10 @@ public class GameWorldApp extends Application {
 	boolean canJump = true;
 	public static boolean isAlive = true;
 	
-	private long last = 0;;
+	private long last = 0;
+	static Stage theStage;
+	
+	Button restart;
 	
 	//World
 	private GameWorld world = new GameWorld();
@@ -53,8 +61,13 @@ public class GameWorldApp extends Application {
 	Gunner gunnerTest = new Gunner();
 	Boss bossTest = new Boss();
 	
-	Media gunSound = new Media(new File("images/pistolSound.mp3").toURI().toString());
+	Media gunSound = new Media(new File(new File("images/pistolSound.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
+	Media spiderManSong;
+	MediaPlayer spiderPlayer;
+	
+	Scene startScene;
+	
 	public static void main(String[] args) {
 		launch();
 	}
@@ -62,6 +75,7 @@ public class GameWorldApp extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//Build Level
+				theStage = primaryStage;
 				Level1 l = new Level1();
 
 				for(int i = 0; i < l.L1.length; i++){
@@ -89,6 +103,13 @@ public class GameWorldApp extends Application {
 						}
 						if(curRow.charAt(j)=='4'){
 							GunnerSpawn g = new GunnerSpawn();
+							g.setX(j*BLOCK_SIZE);
+							g.setY(i*BLOCK_SIZE);
+							world.add(g);
+						}
+						
+						if(curRow.charAt(j)=='5'){
+							EndPoint g = new EndPoint(BLOCK_SIZE);
 							g.setX(j*BLOCK_SIZE);
 							g.setY(i*BLOCK_SIZE);
 							world.add(g);
@@ -134,7 +155,7 @@ public class GameWorldApp extends Application {
 		world.add(bossTest);
 		bossTest.setX(50);
 		bossTest.setY(50);
-		
+
 		world.start();
 
 		
@@ -142,6 +163,7 @@ public class GameWorldApp extends Application {
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, new MyKeyboardHandler());
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(false);
+		startScene = scene;
 		
 //		Image deathImage = new Image("file:images/gameOver.jpg");
 //		ImageView newRoot = new ImageView(deathImage);
@@ -175,6 +197,8 @@ public class GameWorldApp extends Application {
 //					heroe.setDy(-50);	
 					jumpHero();
 				}
+				
+				
 			}
 			
 		});
@@ -249,9 +273,9 @@ public class GameWorldApp extends Application {
 		primaryStage.setTitle("Spidermmando");
 		primaryStage.show();
 		File song = new File("images/spiderman.mp3");
-		//String path = song.getAbsolutePath();
-		Media spiderManSong = new Media(song.toURI().toString());
-		MediaPlayer spiderPlayer = new MediaPlayer(spiderManSong);
+		String path = song.getAbsolutePath();
+		spiderManSong = new Media(new File(path).toURI().toString());
+		spiderPlayer = new MediaPlayer(spiderManSong);
 		spiderPlayer.setVolume(0.2);
 		spiderPlayer.play();
 		
@@ -262,16 +286,18 @@ public class GameWorldApp extends Application {
 			@Override
 			public void handle(long arg0) {
 				// TODO Auto-generated method stub
-				update();
-				
-				long timeElapsed = arg0 - last;
-				fpsString.setValue(Double.toString(1_000_000_000.0/(timeElapsed)));
-				
-				last = arg0;
-//				if(!isAlive){
-//					primaryStage.setScene(deathScene);
-//					primaryStage.show();
-//				}
+				if(gameOver == false){
+					update();
+					
+					long timeElapsed = arg0 - last;
+					//fpsString.setValue(Double.toString(1_000_000_000.0/(timeElapsed)));
+					
+					last = arg0;
+//					if(!isAlive){
+//						primaryStage.setScene(deathScene);
+//						primaryStage.show();
+//					}
+				}
 			}
 			
 		};
@@ -283,11 +309,35 @@ public class GameWorldApp extends Application {
 	}
 
 	private void update(){
-
-		if(playerVelocity.getY() < 10){
-			playerVelocity = playerVelocity.add(0, 1);
+		if(heroe.getTranslateY() < 550){
+			
+			if(playerVelocity.getY() < 10){
+				playerVelocity = playerVelocity.add(0, 1);
+			}
+			moveHeroY((int)playerVelocity.getY());
+		}else{
+			StackPane root = new StackPane();
+			VBox hi = new VBox();
+			restart = new Button("Click to Respawn");
+			restart.setOnAction(e -> {
+				world.start();
+				theStage.setScene(startScene);
+				heroe.setBlocks(steppingBlocks);
+				heroe.setX(50);
+				heroe.setY(100); 
+				spiderPlayer.play();
+				
+			});
+			Label dead = new Label("You have fallen to death");
+			hi.getChildren().addAll(dead,restart);
+			hi.setAlignment(Pos.CENTER);
+			gameOver = true;
+			root.getChildren().add(hi);
+			theStage.setScene(new Scene(root,world.getWidth(),world.getHeight()));
+			spiderPlayer.stop();
+			world.stop();
+			
 		}
-		moveHeroY((int)playerVelocity.getY());
 	}
 	
 	private void moveHeroX(int velocity){

@@ -75,9 +75,7 @@ public class Hero extends Actor {
 			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
 		}
 //		System.out.println(System.currentTimeMillis());
-		if(getTranslateY() > 550){
-			System.exit(0);
-		}
+
 	}
 	
 	public void shoot(double dx, double dy, double angle){
