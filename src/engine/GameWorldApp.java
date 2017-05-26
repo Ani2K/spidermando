@@ -159,7 +159,7 @@ public class GameWorldApp extends Application {
 //			    	heroe.setDirection(true);
 //			    	//System.out.println(heroe.getTranslateX());
 					
-					heroe.setDx(40);
+					heroe.setDx(30);
 					//moveHeroX(SPEED_OF_HERO);
 				}
 				if(e.getCode() == KeyCode.A){
@@ -169,7 +169,7 @@ public class GameWorldApp extends Application {
 //			    	heroe.setDirection(false);
 //			    	//System.out.println(heroe.getTranslateX());
 					//moveHeroX(-1 * SPEED_OF_HERO);
-					heroe.setDx(-40);
+					heroe.setDx(-30);
 				}
 				if(e.getCode() == KeyCode.W){
 //					heroe.setDy(-50);	
