@@ -14,6 +14,7 @@ public class Hero extends Actor {
 	
 	private int weapon;
 	private double dx = 0;
+	private int health = 100;
 	private ArrayList<Block> blocks = new ArrayList<Block>();
 	public ArrayList<Block> getBlocks() {
 		return blocks;
@@ -75,9 +76,7 @@ public class Hero extends Actor {
 			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
 		}
 //		System.out.println(System.currentTimeMillis());
-		if(getTranslateY() > 550){
-			System.exit(0);
-		}
+
 	}
 	
 	public void shoot(double dx, double dy, double angle){
@@ -124,6 +123,12 @@ public class Hero extends Actor {
 		
 	}
 	
+	public int getHealth() {
+		return health;
+	}
+	public void setHealth(int health) {
+		this.health = health;
+	}
 	public boolean isDirection() {
 		return direction;
 	}
