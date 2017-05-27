@@ -51,19 +51,21 @@ public class Projectile extends Actor{
 					setRotate(90);
 				}
 			}
-			if(this.getIntersectingObjects(Hero.class).size()!=0){
-				getWorld().remove(this);
-				
-			}else{move(enemyX, 0);
-			}
+			move(enemyX, 0);
 		}else if(type == 2){
 			move(dx, dy);
-			if(this.getIntersectingObjects(Gunner.class).size()!=0){
-				getWorld().remove(getIntersectingObjects(Gunner.class).get(0));
+			for(Hero h : getIntersectingObjects(Hero.class)){
+				h.setHealth(h.getHealth() - 20);
 				getWorld().remove(this);
+				return ;
 			}
 		}else{
 			move(dx, dy);
+			for(Hero h : getIntersectingObjects(Hero.class)){
+				h.setHealth(h.getHealth() - 20);
+				getWorld().remove(this);
+				return ;
+			}
 		}
 	}
 	

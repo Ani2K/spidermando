@@ -15,37 +15,42 @@ public class Gunner extends Actor{
 	int life = 3;
 	public Gunner(){
 		setImage(FLAG);
-		
+
 	}
 
 	public void act(long now) {
-		if(this.getIntersectingObjects(Projectile.class).size()!=0 && this.getIntersectingObjects(Projectile.class).get(0).getT()==2){
-			life--;
-			die();
-		}else{
+		for(Projectile proj : getIntersectingObjects(Projectile.class)){
+			if(proj.getT() == 2){
+				life--;
+				getWorld().remove(proj);
+				if(life <= 0){
+					getWorld().remove(this);
+					return ;
+				}
+			}
+		}
 
-			if(Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())>GUNNER_RANGE){
-				if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
-					if(direction){
-						setRotationAxis(Rotate.Y_AXIS);
-				    	setRotate(180);
-				    	direction = false;
-					}
-					this.move(-5, 0);
-				}else{
-					if(!direction){
-						setRotationAxis(Rotate.Y_AXIS);
-				    	setRotate(360);
-				    	direction = true;
-					}
-					this.move(5, 0);
+		if(Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())>GUNNER_RANGE){
+			if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
+				if(direction){
+					setRotationAxis(Rotate.Y_AXIS);
+					setRotate(180);
+					direction = false;
 				}
+				this.move(-5, 0);
 			}else{
-				if(now - latestUpdate >= 1000000000){
-					
-					latestUpdate = now;
-					shoot();
+				if(!direction){
+					setRotationAxis(Rotate.Y_AXIS);
+					setRotate(360);
+					direction = true;
 				}
+				this.move(5, 0);
+			}
+		}else{
+			if(now - latestUpdate >= 1000000000){
+
+				latestUpdate = now;
+				shoot();
 			}
 		}
 	}
@@ -55,11 +60,4 @@ public class Gunner extends Actor{
 		proj.setY(getY());
 		getWorld().add(proj);
 	}
-
-	public void die(){
-		if(life<=0){
-			this.getWorld().remove(this);
-		}
-	}
-
 }

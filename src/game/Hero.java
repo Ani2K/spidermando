@@ -75,7 +75,25 @@ public class Hero extends Actor {
 			}
 			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
 		}
-//		System.out.println(System.currentTimeMillis());
+//		for(Projectile proj : getIntersectingObjects(Projectile.class)){
+//			if(proj.getT() == 1){
+//				getWorld().remove(proj);
+//				health -= 20;
+//				if(health <= 0){
+//					System.out.println("am deceased");
+//				}
+//			}
+//		}
+//		
+//		for(Projectile proj : getIntersectingObjects(Projectile.class)){
+//			if(proj.getT() == 10){
+//				getWorld().remove(proj);
+//				health -= 20;
+//				if(health <= 0){
+//					System.out.println("am deceased");
+//				}
+//			}
+//		}
 
 	}
 	
