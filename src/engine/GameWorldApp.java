@@ -63,7 +63,6 @@ public class GameWorldApp extends Application {
 	public static StackPane root;
 	//Actors
 	Hero heroe = new Hero();
-	Gunner gunnerTest = new Gunner();
 	Boss bossTest = new Boss();
 	Label healthText;
 	Label ammoText;
@@ -129,7 +128,7 @@ public class GameWorldApp extends Application {
 					world.add(m);
 				}
 				if(curRow.charAt(j)=='4'){
-					GunnerSpawn g = new GunnerSpawn();
+					GunnerSpawn g = new GunnerSpawn(steppingBlocks);
 					g.setX(j*BLOCK_SIZE);
 					g.setY(i*BLOCK_SIZE);
 					world.add(g);
@@ -182,7 +181,7 @@ public class GameWorldApp extends Application {
 
 		world.add(heroe);
 		heroe.setBlocks(steppingBlocks);
-		heroe.setX(50);
+		heroe.setX(150);
 		heroe.setY(100); 
 
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
@@ -196,9 +195,6 @@ public class GameWorldApp extends Application {
 		});
 		//Testing Gunner Class
 
-		world.add(gunnerTest);
-		gunnerTest.setX(10);
-		gunnerTest.setY(325);
 
 		world.add(bossTest);
 		bossTest.setX(50);
@@ -435,7 +431,7 @@ public class GameWorldApp extends Application {
 				if(heroe.getBoundsInParent().intersects(block.getBoundsInParent())){
 					if(movingDown){
 						if(heroe.getTranslateY() + heroe.getHeight() <= block.getY()){
-							heroe.setTranslateY(heroe.getTranslateY() - 1);
+							heroe.setTranslateY(heroe.getTranslateY()-1);
 							canJump = true;
 							return;
 						}
