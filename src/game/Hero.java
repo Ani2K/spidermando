@@ -11,10 +11,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.transform.Rotate;
 
 public class Hero extends Actor {
-	
-//	private int speed = 100;
-	
+
+	//	private int speed = 100;
+
 	private int weapon;
+	private int ammo = 100;
 	private double dx = 0;
 	private int health = 100;
 	private ArrayList<Block> blocks = new ArrayList<Block>();
@@ -26,7 +27,7 @@ public class Hero extends Actor {
 	}
 
 	//	private int dy = 0;
-//	private int gravity = 10;
+	//	private int gravity = 10;
 	private boolean direction;
 	public double getDx() {
 		return dx;
@@ -36,33 +37,34 @@ public class Hero extends Actor {
 	}
 
 	private Image myImage = new Image("file:images/hero_right.png");
-//	public int getDx() {
-//		return dx;
-//	}
-//	public void setDx(int dx) {
-//		this.dx = dx;
-//	}
+	//	public int getDx() {
+	//		return dx;
+	//	}
+	//	public void setDx(int dx) {
+	//		this.dx = dx;
+	//	}
 	public Hero(){
 		weapon = 1;
-//		dx = 0;
+		//		dx = 0;
 		setImage(myImage);
 		direction = true;
 	}
 	@Override
 	public void act(long now) {
-//		if(getY() < 300){
-//			dy += gravity;
-//		}
-//		if(getY() > 300){
-//			setY(300);
-//			dy = 0;
-//		}
-//		if(getY() + dy <= 301){
-//			move(0, dy);
-//		}else{
-//			move(0, 301 - getY());
-//		}
+		//		if(getY() < 300){
+		//			dy += gravity;
+		//		}
+		//		if(getY() > 300){
+		//			setY(300);
+		//			dy = 0;
+		//		}
+		//		if(getY() + dy <= 301){
+		//			move(0, dy);
+		//		}else{
+		//			move(0, 301 - getY());
+		//		}
 		boolean movingRight = dx > 0;
+		for(int i = 0; i < Math.abs(dx); i++){
 			for(Block block : blocks){
 				if(getBoundsInParent().intersects(block.getBoundsInParent())){
 					if(movingRight){
@@ -74,7 +76,8 @@ public class Hero extends Actor {
 					}
 				}
 			}
-			move(dx, 0);
+			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
+		}
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
 			if(proj.getT() == ProjType.ENEMY){
 				getWorld().remove(proj);
@@ -90,8 +93,23 @@ public class Hero extends Actor {
 				}
 			}
 		}
+		for(HealthPack healthP : getIntersectingObjects(HealthPack.class)){
+			if(health + 25 <= 100){
+				getWorld().remove(healthP);
+				health += 25;
+			}else if(health < 100){
+				getWorld().remove(healthP);
+				health = 100;
+			}
+		}
+		for(Munition munition : getIntersectingObjects(Munition.class)){
+			if(ammo < 100){
+				getWorld().remove(munition);
+				ammo = 100;
+			}
+		}
 	}
-	
+
 	public void shoot(double dx, double dy, double angle){
 		Projectile proj = new Projectile(ProjType.HERO);
 		double x;
@@ -108,8 +126,9 @@ public class Hero extends Actor {
 		proj.setDy(dy);
 		getWorld().add(proj);
 		getWorld().add(new Flash(x, getTranslateY() + getImage().getHeight() * 2));
+		ammo--;
 	}
-	
+
 	public void changeWeapon(String key){
 		if(key.equals("E")){
 			weapon++;
@@ -123,12 +142,19 @@ public class Hero extends Actor {
 			weapon = 9;
 		}
 	}
-	
+
 	public int getHealth() {
 		return health;
 	}
 	public void setHealth(int health) {
 		this.health = health;
+	}
+	
+	public int getAmmo() {
+		return ammo;
+	}
+	public void setAmmo(int ammo) {
+		this.ammo = ammo;
 	}
 	public boolean isDirection() {
 		return direction;

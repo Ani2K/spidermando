@@ -48,10 +48,9 @@ public class Projectile extends Actor{
 	}
 	@Override
 	public void act(long now) {
-		switch(pType){
-		case HERO:
+		if(pType == ProjType.HERO){
 			move(dx, dy);
-		case ENEMY:
+		}else if(pType == ProjType.ENEMY){
 			if(enemyDirectionFirstTime){
 				enemyDirectionFirstTime = false;				
 				if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
@@ -62,8 +61,11 @@ public class Projectile extends Actor{
 				}
 			}
 			move(enemyX, 0);
-		case BOSS:
+		}else if(pType == ProjType.BOSS){
 			move(dx, dy);
+		}
+		if(getIntersectingObjects(Block.class).size() != 0){
+			getWorld().remove(this);
 		}
 //		if(pType == 1){
 //			if(enemyDirectionFirstTime){

@@ -64,6 +64,8 @@ public class GameWorldApp extends Application {
 	Hero heroe = new Hero();
 	Gunner gunnerTest = new Gunner();
 	Boss bossTest = new Boss();
+	Label healthText;
+	Label ammoText;
 	
 	Media gunSound = new Media(new File(new File("images/pistolsound.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
@@ -137,10 +139,25 @@ public class GameWorldApp extends Application {
 		title.setText("Spidermmando");
 		title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
 		title.setFill(Color.WHITE);
-		title.setStroke(Color.web("#0d61e8"));  
+		title.setStroke(Color.web("#0d61e8"));
+		
+		healthText = new Label("Health: " + heroe.getHealth());
+		healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		healthText.setTextFill(Color.WHITE);
+		//healthText.setStroke(Color.web("#0d61e8"));
+		
+		ammoText = new Label("Ammo: " + heroe.getAmmo());
+		ammoText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		ammoText.setTextFill(Color.WHITE);
+		//ammoText.setStroke(Color.web("#0d61e8"));
+		
+		VBox infoBox = new VBox();
+		infoBox.getChildren().addAll(healthText, ammoText);
+		infoBox.setAlignment(Pos.TOP_LEFT);
+		
 		pane.setTop(title);
 		
-		root.getChildren().addAll(view, world, pane);
+		root.getChildren().addAll(view, world, infoBox);
 		
 		world.add(heroe);
 		heroe.setBlocks(steppingBlocks);
@@ -153,6 +170,7 @@ public class GameWorldApp extends Application {
 			if(offset>300 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH - 600 + 300){
 				root.setLayoutX(-1 * offset + 300);
 				world.setLayoutx(-1 * offset + 300);
+				//pane.setLayoutX(-1 * offset + 300);
 			}
 		});
 		//Testing Gunner Class
@@ -191,6 +209,7 @@ public class GameWorldApp extends Application {
 //			    	//System.out.println(heroe.getTranslateX());
 					
 					heroe.setDx(30);
+					heroe.setDirection(true);
 					//moveHeroX(SPEED_OF_HERO);
 				}
 				if(e.getCode() == KeyCode.A){
@@ -201,6 +220,7 @@ public class GameWorldApp extends Application {
 //			    	//System.out.println(heroe.getTranslateX());
 					//moveHeroX(-1 * SPEED_OF_HERO);
 					heroe.setDx(-30);
+					heroe.setDirection(false);
 				}
 				if(e.getCode() == KeyCode.W){
 //					heroe.setDy(-50);	
@@ -227,57 +247,58 @@ public class GameWorldApp extends Application {
 			public void handle(MouseEvent e) {
 				// TODO Auto-generated method stub
 				//double mouseX = e.getX() + heroe.getTranslateX();
-				gunPlayer.stop();
-				double mouseX = e.getX();
-				double heroX;
-				if(heroe.isDirection()){
-					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 1.6;
-				}else{
-					heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.4;
+				if(heroe.getAmmo() > 0){
+					gunPlayer.stop();
+					double mouseX = e.getX();
+					double heroX;
+					if(heroe.isDirection()){
+						heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 1.6;
+					}else{
+						heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.4;
+					}
+					double mouseY = e.getY();
+					double heroY = heroe.getTranslateY() + heroe.getImage().getHeight() * 2;
+					double speed = 80.0;
+					double tangent = Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX);
+					double angle = Math.atan(tangent);
+					double dx;
+					double dy;
+					if(mouseX < heroX && mouseY > heroY){
+						//dx = -1 * speed * Math.cos(angle);
+						//dy = speed * Math.sin(angle);
+						angle = Math.PI + angle;
+						heroe.setDirection(false);
+						heroe.setRotationAxis(Rotate.Y_AXIS);
+				    	heroe.setRotate(180);
+					}else if(mouseX > heroX && mouseY > heroY){
+						//dx = speed * Math.cos(angle);
+						//dy = speed * Math.sin(angle);
+						angle = 2 * Math.PI - angle;
+						heroe.setDirection(true);
+						heroe.setRotationAxis(Rotate.Y_AXIS);
+				    	heroe.setRotate(360);
+					}else if(mouseX < heroX && mouseY < heroY){
+						//dx =  -1 * speed * Math.cos(angle);
+						//dy = -1 * speed * Math.sin(angle);
+						angle = Math.PI - angle;
+						heroe.setDirection(false);
+						heroe.setRotationAxis(Rotate.Y_AXIS);
+				    	heroe.setRotate(180);
+					}else{
+						//dx =  speed * Math.cos(angle);
+						//dy = -1 * speed * Math.sin(angle);
+						heroe.setDirection(true);
+						heroe.setRotationAxis(Rotate.Y_AXIS);
+				    	heroe.setRotate(360);
+					}
+					dx = speed * Math.cos(angle);
+					dy = -1 * speed * Math.sin(angle);
+					
+					angle *= (180.0 / Math.PI);
+					heroe.shoot(dx, dy, angle);
+					gunPlayer.play();
 				}
-				double mouseY = e.getY();
-				double heroY = heroe.getTranslateY() + heroe.getImage().getHeight() * 2;
-				double speed = 80.0;
-				double tangent = Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX);
-				double angle = Math.atan(tangent);
-				double dx;
-				double dy;
-				if(mouseX < heroX && mouseY > heroY){
-					//dx = -1 * speed * Math.cos(angle);
-					//dy = speed * Math.sin(angle);
-					angle = Math.PI + angle;
-					heroe.setDirection(false);
-					heroe.setRotationAxis(Rotate.Y_AXIS);
-			    	heroe.setRotate(180);
-				}else if(mouseX > heroX && mouseY > heroY){
-					//dx = speed * Math.cos(angle);
-					//dy = speed * Math.sin(angle);
-					angle = 2 * Math.PI - angle;
-					heroe.setDirection(true);
-					heroe.setRotationAxis(Rotate.Y_AXIS);
-			    	heroe.setRotate(360);
-				}else if(mouseX < heroX && mouseY < heroY){
-					//dx =  -1 * speed * Math.cos(angle);
-					//dy = -1 * speed * Math.sin(angle);
-					angle = Math.PI - angle;
-					heroe.setDirection(false);
-					heroe.setRotationAxis(Rotate.Y_AXIS);
-			    	heroe.setRotate(180);
-				}else{
-					//dx =  speed * Math.cos(angle);
-					//dy = -1 * speed * Math.sin(angle);
-					heroe.setDirection(true);
-					heroe.setRotationAxis(Rotate.Y_AXIS);
-			    	heroe.setRotate(360);
-				}
-				dx = speed * Math.cos(angle);
-				dy = -1 * speed * Math.sin(angle);
-				
-				angle *= (180.0 / Math.PI);
-				heroe.shoot(dx, dy, angle);
-				gunPlayer.play();
 			}
-			
 		});
 		primaryStage.setTitle("Spidermmando");
 		primaryStage.show();
@@ -306,6 +327,9 @@ public class GameWorldApp extends Application {
 //						primaryStage.setScene(deathScene);
 //						primaryStage.show();
 //					}
+					ammoText.setText("Ammo: " + heroe.getAmmo());
+					healthText.setText("Health: " + heroe.getHealth());
+					infoBox.setTranslateX(-1 * root.getLayoutX());
 				}
 			}
 			
