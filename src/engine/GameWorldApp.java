@@ -152,7 +152,7 @@ public class GameWorldApp extends Application {
 			totalOffset += offset;
 			if(offset>300 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH - 600 + 300){
 				root.setLayoutX(-1 * offset + 300);
-				//world.setLayoutx(-1*offset + 300);
+				world.setLayoutx(-1 * offset + 300);
 			}
 		});
 		//Testing Gunner Class

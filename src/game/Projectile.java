@@ -4,7 +4,14 @@ import javafx.scene.image.Image;
 public class Projectile extends Actor{
 	public Image bullet = new Image("file:images/bullet.png");
 	Image fireball = new Image("file:images/fireball.png");
-	private int type;
+	/*
+	 * type 1 : Hero projectile
+	 * type 2 : Enemy projectile
+	 */
+	public enum ProjType {
+		HERO, ENEMY, BOSS;
+	}
+	private ProjType pType;
 	private double dx;
 	private double dy;
 	private boolean enemyDirectionFirstTime = true;
@@ -22,26 +29,29 @@ public class Projectile extends Actor{
 	public void setDy(double dy) {
 		this.dy = dy;
 	}
-	public Projectile(int typo){
+	public Projectile(ProjType inpType){
 		setFitWidth(10);
 		setFitHeight(10);
 		setRotate(90);
-		if(typo != 10){
+		if(inpType != ProjType.BOSS){
 			setImage(bullet);
 		}else{
 			setImage(fireball);
 		}
-		this.type = typo;
+		this.pType = inpType;
 		dx = 0;
 		dy = 0;
 	}
 	
-	public double getT() {
-		return type;
+	public ProjType getT() {
+		return pType;
 	}
 	@Override
 	public void act(long now) {
-		if(type == 1){
+		switch(pType){
+		case HERO:
+			move(dx, dy);
+		case ENEMY:
 			if(enemyDirectionFirstTime){
 				enemyDirectionFirstTime = false;				
 				if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
@@ -52,21 +62,35 @@ public class Projectile extends Actor{
 				}
 			}
 			move(enemyX, 0);
-		}else if(type == 2){
+		case BOSS:
 			move(dx, dy);
-			for(Hero h : getIntersectingObjects(Hero.class)){
-				h.setHealth(h.getHealth() - 20);
-				getWorld().remove(this);
-				return ;
-			}
-		}else{
-			move(dx, dy);
-			for(Hero h : getIntersectingObjects(Hero.class)){
-				h.setHealth(h.getHealth() - 20);
-				getWorld().remove(this);
-				return ;
-			}
 		}
+//		if(pType == 1){
+//			if(enemyDirectionFirstTime){
+//				enemyDirectionFirstTime = false;				
+//				if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
+//					setRotate(-90);
+//					enemyX *= -1;
+//				}else{
+//					setRotate(90);
+//				}
+//			}
+//			move(enemyX, 0);
+//		}else if(pType == 2){
+//			move(dx, dy);
+////			for(Hero h : getIntersectingObjects(Hero.class)){
+////				h.setHealth(h.getHealth() - 20);
+////				getWorld().remove(this);
+////				return ;
+////			}
+//		}else{
+//			move(dx, dy);
+////			for(Hero h : getIntersectingObjects(Hero.class)){
+////				h.setHealth(h.getHealth() - 20);
+////				getWorld().remove(this);
+////				return ;
+////			}
+//		}
 	}
 	
 }

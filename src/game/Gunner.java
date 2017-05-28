@@ -1,6 +1,7 @@
 package game;
 import engine.Actor;
 import game.*;
+import game.Projectile.ProjType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
@@ -20,7 +21,7 @@ public class Gunner extends Actor{
 
 	public void act(long now) {
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
-			if(proj.getT() == 2){
+			if(proj.getT() == ProjType.HERO){
 				life--;
 				getWorld().remove(proj);
 				if(life <= 0){
@@ -55,7 +56,7 @@ public class Gunner extends Actor{
 		}
 	}
 	public void shoot(){
-		Projectile proj = new Projectile(1);
+		Projectile proj = new Projectile(ProjType.ENEMY);
 		proj.setX(getTranslateX());
 		proj.setY(getY());
 		getWorld().add(proj);

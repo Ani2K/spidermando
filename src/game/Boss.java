@@ -1,6 +1,7 @@
 package game;
 
 import engine.*;
+import game.Projectile.ProjType;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
 
@@ -58,10 +59,17 @@ public class Boss extends Actor{
 			shoot(dx, dy, angle);
 			prev = now;
 		}
+		
+		for(Projectile proj : getIntersectingObjects(Projectile.class)){
+			if(proj.getT() == ProjType.HERO){
+				System.out.println("ooh u got me");
+				getWorld().remove(proj);
+			}
+		}
 	}
 	
 	void shoot(double dx, double dy, double angle){
-		Projectile proj = new Projectile(10);
+		Projectile proj = new Projectile(ProjType.BOSS);
 		double x;
 		proj.setTranslateX(getTranslateX() + getImage().getWidth() * 1.6);
 		x = getTranslateX() + getImage().getWidth() * 1.4;

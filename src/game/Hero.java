@@ -2,7 +2,9 @@ package game;
 import java.util.ArrayList;
 
 import engine.*;
+import game.Projectile.ProjType;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -61,7 +63,6 @@ public class Hero extends Actor {
 //			move(0, 301 - getY());
 //		}
 		boolean movingRight = dx > 0;
-		for(int i = 0; i < Math.abs(dx); i++){
 			for(Block block : blocks){
 				if(getBoundsInParent().intersects(block.getBoundsInParent())){
 					if(movingRight){
@@ -73,32 +74,26 @@ public class Hero extends Actor {
 					}
 				}
 			}
-			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
+			move(dx, 0);
+		for(Projectile proj : getIntersectingObjects(Projectile.class)){
+			if(proj.getT() == ProjType.ENEMY){
+				getWorld().remove(proj);
+				health -= 5;
+				if(health <= 0){
+					System.out.println("am deceased");
+				}
+			}else if(proj.getT() == ProjType.BOSS){
+				getWorld().remove(proj);
+				health -= 20;
+				if(health <= 0){
+					System.out.println("am deceased");
+				}
+			}
 		}
-//		for(Projectile proj : getIntersectingObjects(Projectile.class)){
-//			if(proj.getT() == 1){
-//				getWorld().remove(proj);
-//				health -= 20;
-//				if(health <= 0){
-//					System.out.println("am deceased");
-//				}
-//			}
-//		}
-//		
-//		for(Projectile proj : getIntersectingObjects(Projectile.class)){
-//			if(proj.getT() == 10){
-//				getWorld().remove(proj);
-//				health -= 20;
-//				if(health <= 0){
-//					System.out.println("am deceased");
-//				}
-//			}
-//		}
-
 	}
 	
 	public void shoot(double dx, double dy, double angle){
-		Projectile proj = new Projectile(2);
+		Projectile proj = new Projectile(ProjType.HERO);
 		double x;
 		if(direction){
 			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 1.6);
@@ -127,18 +122,6 @@ public class Hero extends Actor {
 		if(weapon == -1){
 			weapon = 9;
 		}
-	}
-	
-	public void die(){
-		
-	}
-	
-	public void fall(){
-		
-	}
-	
-	public void jump(){
-		
 	}
 	
 	public int getHealth() {

@@ -27,7 +27,7 @@ import javafx.scene.image.ImageView;
 public abstract class Actor extends ImageView implements Styleable, EventTarget{
 	
 	public void move(double dx, double dy){
-		setY(getY()+dy);
+		setTranslateY(getTranslateY() + dy);
 		setTranslateX(getTranslateX() + dx);
 		//setX(getTranslateX());
 //		setTranslateY(getTranslateY() + dy);
@@ -48,7 +48,7 @@ public abstract class Actor extends ImageView implements Styleable, EventTarget{
 	public <A extends Actor> java.util.List<A> getIntersectingObjects(java.lang.Class<A> cls){
 		 List<A> list = new ArrayList<A>();
 		 for(A child : getWorld().getObjects(cls)){
-			 if(this != child && this.intersects(child.getBoundsInLocal())){
+			 if(this != child && this.getBoundsInParent().intersects(child.getBoundsInParent())){
 				 list.add(child);
 			 }
 		 }
@@ -57,7 +57,7 @@ public abstract class Actor extends ImageView implements Styleable, EventTarget{
 	
 	public <A extends Actor>A getOneIntersectingObject(Class<A> cls){ 
 		for(A child : getWorld().getObjects(cls)){
-			if(this != child && this.intersects(child.getBoundsInLocal())){
+			if(this != child && this.getBoundsInParent().intersects(child.getBoundsInParent())){
 				return child;
 			}
 		}
