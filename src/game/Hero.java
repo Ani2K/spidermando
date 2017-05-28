@@ -69,6 +69,7 @@ public class Hero extends Actor {
 				if(getBoundsInParent().intersects(block.getBoundsInParent())){
 					if(movingRight){
 						if(getTranslateX() + getWidth() == block.getX() - GameWorldApp.BLOCK_SIZE){
+							dx = 0;
 							return;
 						}
 					}else if(getTranslateX() == block.getX()){

@@ -3,6 +3,8 @@ package engine;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.sun.webkit.Timer;
+
 import game.Block;
 import game.Boss;
 import game.EndPoint;
@@ -26,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -262,6 +265,30 @@ public class GameWorldApp extends Application {
 			}
 
 		});
+		AnimationTimer timer = new AnimationTimer(){
+
+			@Override
+			public void handle(long arg0) {
+				// TODO Auto-generated method stub
+				if(gameOver == false && levelStart){
+					update();
+
+					long timeElapsed = arg0 - last;
+					//fpsString.setValue(Double.toString(1_000_000_000.0/(timeElapsed)));
+
+					last = arg0;
+					//					if(!isAlive){
+					//						primaryStage.setScene(deathScene);
+					//						primaryStage.show();
+					//					}
+					ammoText.setText("Ammo: " + heroe.getAmmo());
+					healthText.setText("Health: " + heroe.getHealth());
+					infoBox.setTranslateX(-1 * root.getLayoutX());
+				}
+			}
+
+		};
+		timer.start();
 		root.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
 			@Override
@@ -348,30 +375,7 @@ public class GameWorldApp extends Application {
 
 		StringProperty fpsString = new 	SimpleStringProperty();
 		primaryStage.titleProperty().bind(fpsString);
-		AnimationTimer timer = new AnimationTimer(){
-
-			@Override
-			public void handle(long arg0) {
-				// TODO Auto-generated method stub
-				if(gameOver == false && levelStart){
-					update();
-
-					long timeElapsed = arg0 - last;
-					//fpsString.setValue(Double.toString(1_000_000_000.0/(timeElapsed)));
-
-					last = arg0;
-					//					if(!isAlive){
-					//						primaryStage.setScene(deathScene);
-					//						primaryStage.show();
-					//					}
-					ammoText.setText("Ammo: " + heroe.getAmmo());
-					healthText.setText("Health: " + heroe.getHealth());
-					infoBox.setTranslateX(-1 * root.getLayoutX());
-				}
-			}
-
-		};
-		timer.start();
+		
 	}
 
 	public static StackPane getRoot() {
@@ -386,24 +390,27 @@ public class GameWorldApp extends Application {
 			}
 			moveHeroY((int)playerVelocity.getY());
 		}else{
-			StackPane root = new StackPane();
+			StackPane root2 = new StackPane();
 			VBox hi = new VBox();
 			restart = new Button("Click to Respawn");
 			restart.setOnAction(e -> {
 				world.start();
 				theStage.setScene(startScene);
 				heroe.setBlocks(steppingBlocks);
-				heroe.setX(50);
-				heroe.setY(100); 
+				heroe.setTranslateX(50);
+				heroe.setTranslateY(100); 
+				heroe.setHealth(100);
+				heroe.setAmmo(100);
 				spiderPlayer.play();
-
+				root.setLayoutX(0);
+				gameOver = false;
 			});
 			Label dead = new Label("You have fallen to death");
 			hi.getChildren().addAll(dead,restart);
 			hi.setAlignment(Pos.CENTER);
 			gameOver = true;
-			root.getChildren().add(hi);
-			theStage.setScene(new Scene(root,world.getWidth(),world.getHeight()));
+			root2.getChildren().add(hi);
+			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
 			spiderPlayer.stop();
 			world.stop();
 
