@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 
 public class Barrel extends Actor{
-	Image FLAG = new Image("file:images/enemydoge.png");
+	Image FLAG = new Image("file:images/barrel.png");
 	Image DEATH_SPRITE = new Image("file:enemydoge.png");
 	ImageView sprite;
 	double GUNNER_RANGE = 200;
@@ -27,7 +27,7 @@ public class Barrel extends Actor{
 	public void act(long now) {
 		if(this.getTranslateY()>550){
 			this.getWorld().remove(this);			
-
+			return ;
 		}
 		moveGY(20);
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){

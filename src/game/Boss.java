@@ -75,7 +75,9 @@ public class Boss extends Actor{
 			for(Projectile proj : getIntersectingObjects(Projectile.class)){
 				if(proj.getT() == ProjType.HERO){
 					health -= 5;
-					getWorld().remove(proj);
+					if(proj != null){
+						getWorld().remove(proj);
+					}
 					if(health <= 0){
 						getWorld().remove(this);
 					}
