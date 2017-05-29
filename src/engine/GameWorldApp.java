@@ -59,6 +59,8 @@ public class GameWorldApp extends Application {
 	static Stage theStage;
 
 	Button restart;
+	
+	long waitTime = 0;
 
 	//World
 	private GameWorld world = new GameWorld();
@@ -153,7 +155,7 @@ public class GameWorldApp extends Application {
 					obstacles.add(s);
 					world.add(s);
 				}
-				
+
 				if(curRow.charAt(j)=='7'){
 					Obstacle s = new Obstacle(BLOCK_SIZE, 'd');
 					s.setX(j*BLOCK_SIZE);
@@ -238,7 +240,7 @@ public class GameWorldApp extends Application {
 
 
 		Scene scene = new Scene(root, SCREEN_WIDTH + 600, SCREEN_HEIGHT);
-		
+
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, new MyKeyboardHandler());
 
 		primaryStage.setResizable(false);
@@ -399,27 +401,30 @@ public class GameWorldApp extends Application {
 			}
 
 		});
-		
+
 	}
 
 	public static StackPane getRoot() {
 		return root;
 	}
-	
+
 
 	private void update(){
 		for(Obstacle spike : obstacles){
 			if(heroe.getBoundsInParent().intersects(spike.getBoundsInParent())){
-				StackPane root2 = new StackPane();
-				VBox hi = new VBox();
-				Label dead = new Label("This isn't volleyball. Spikes are bad");
-				hi.getChildren().addAll(dead);
-				hi.setAlignment(Pos.CENTER);
-				gameOver = true;
-				root2.getChildren().add(hi);
-				theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-				spiderPlayer.stop();
-				world.stop();
+				heroe.setHealth(heroe.getHealth()-0.5);
+				if(heroe.getHealth() <= 0){
+					StackPane root2 = new StackPane();
+					VBox hi = new VBox();
+					Label dead = new Label("This isn't volleyball. Spikes are bad");
+					hi.getChildren().addAll(dead);
+					hi.setAlignment(Pos.CENTER);
+					gameOver = true;
+					root2.getChildren().add(hi);
+					theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+					spiderPlayer.stop();
+					world.stop();
+				}
 
 			}
 		}
