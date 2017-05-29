@@ -51,6 +51,9 @@ public class Hero extends Actor {
 	}
 	@Override
 	public void act(long now) {
+		 
+		
+
 		//		if(getY() < 300){
 		//			dy += gravity;
 		//		}

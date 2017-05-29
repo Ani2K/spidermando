@@ -77,6 +77,7 @@ public class GameWorldApp extends Application {
 	boolean levelStart = false;
 
 	Scene startScene;
+	Level1 l = new Level1();
 
 	public static void main(String[] args) {
 		launch();
@@ -105,7 +106,7 @@ public class GameWorldApp extends Application {
 
 		//Build Level
 		theStage = primaryStage;
-		Level1 l = new Level1();
+		
 
 		for(int i = 0; i < l.L1.length; i++){
 			String curRow = l.L1[i];
@@ -378,6 +379,18 @@ public class GameWorldApp extends Application {
 	}
 
 	private void update(){
+		if(heroe.getTranslateX()>=(l.L1[0].length() - 1)*BLOCK_SIZE){
+			StackPane root2 = new StackPane();
+			VBox hi = new VBox();
+			Label win = new Label("You have won!!");
+			hi.getChildren().addAll(win);
+			hi.setAlignment(Pos.CENTER);
+			gameOver = true;
+			root2.getChildren().add(hi);
+			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+			world.stop();
+		}
+		
 		if(heroe.getTranslateY() < 550){
 
 			if(playerVelocity.getY() < 10){
@@ -401,7 +414,7 @@ public class GameWorldApp extends Application {
 				gameOver = false;
 			});
 			Label dead = new Label("You have fallen to death");
-			hi.getChildren().addAll(dead,restart);
+			hi.getChildren().addAll(dead);
 			hi.setAlignment(Pos.CENTER);
 			gameOver = true;
 			root2.getChildren().add(hi);

@@ -4,9 +4,9 @@ import engine.Actor;
 import javafx.scene.image.Image;
 
 public class EndPoint extends Actor {
-	Image FLAG = new Image("file:images/face_win.gif");
+	Image FLAG = new Image("file:images/Flagpole 2.png");
 	public EndPoint(int b){
-		setFitHeight(b);
+		setFitHeight(b*6);
 		setFitWidth(b);
 		setImage(FLAG);
 	}

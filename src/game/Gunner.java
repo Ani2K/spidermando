@@ -43,14 +43,14 @@ public class Gunner extends Actor{
 					setRotate(180);
 					direction = false;
 				}
-				moveGX(-5);
+				moveGX(5);
 			}else{
 				if(!direction){
 					setRotationAxis(Rotate.Y_AXIS);
 					setRotate(360);
 					direction = true;
 				}
-				moveGX(5);
+				moveGX(-5);
 				
 			}
 		}else{
