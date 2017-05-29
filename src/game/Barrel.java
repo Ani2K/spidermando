@@ -25,6 +25,12 @@ public class Barrel extends Actor{
 	}
 
 	public void act(long now) {
+		if(this.getTranslateY()>550){
+			this.getWorld().remove(this);
+			System.out.println("Removed");
+			
+
+		}
 		moveGY(20);
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
 			if(proj.getT() == ProjType.HERO){

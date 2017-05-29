@@ -107,7 +107,7 @@ public class GameWorldApp extends Application {
 		menuButtons.setTranslateY(SCREEN_HEIGHT/ 2.5);
 //		BorderPane ro = new BorderPane();
 //		ro.setCenter(menuPane);
-		Scene menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600) * 0.95, SCREEN_HEIGHT * 0.95);
+		Scene menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600), SCREEN_HEIGHT);
 		primaryStage.setScene(menuScene);
 
 		//Build Level
@@ -448,6 +448,18 @@ public class GameWorldApp extends Application {
 
 
 	private void update(){
+		if(world.getObjects(Hero.class).size()<=0){
+			StackPane root2 = new StackPane();
+			VBox hi = new VBox();
+			Label dead = new Label("Oh shoot. Tell Steve Jobs I said hi.");
+			hi.getChildren().addAll(dead);
+			hi.setAlignment(Pos.CENTER);
+			gameOver = true;
+			root2.getChildren().add(hi);
+			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+			spiderPlayer.stop();
+			world.stop();
+		}
 		for(Obstacle spike : obstacles){
 			if(heroe.getBoundsInParent().intersects(spike.getBoundsInParent())){
 				heroe.setHealth(heroe.getHealth()-0.5);
@@ -466,7 +478,7 @@ public class GameWorldApp extends Application {
 
 			}
 		}
-		if(heroe.getTranslateX()>=(l.L1[0].length() - 3)*BLOCK_SIZE){
+		if(heroe.getTranslateX()>=(l.L1[0].length() - 2)*BLOCK_SIZE){
 			StackPane root2 = new StackPane();
 			VBox hi = new VBox();
 			Label win = new Label("You have won!!");

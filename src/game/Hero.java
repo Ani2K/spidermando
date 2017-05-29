@@ -88,15 +88,15 @@ public class Hero extends Actor {
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
 			if(proj.getT() == ProjType.ENEMY){
 				getWorld().remove(proj);
-				health -= 5;
+				health -= 4;
 				if(health <= 0){
-					System.out.println("am deceased");
+					this.getWorld().remove(this);
 				}
 			}else if(proj.getT() == ProjType.BOSS){
 				getWorld().remove(proj);
 				health -= 20;
 				if(health <= 0){
-					System.out.println("am deceased");
+					this.getWorld().remove(this);
 				}
 			}
 		}
