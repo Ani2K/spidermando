@@ -3,11 +3,17 @@ package game;
 import java.util.ArrayList;
 
 import engine.Actor;
+import javafx.scene.image.Image;
 
 public class BarrelSpawn extends Actor{
+
 	ArrayList steppingBlocks;
-	public BarrelSpawn(ArrayList b){
+	public BarrelSpawn(ArrayList b, int a){
 		steppingBlocks = b;
+		Image munitionImage = new Image("file:images/launcher.png");
+		setFitHeight(a);
+		setFitWidth(a);
+		setImage(munitionImage);
 
 	}
 	long latestUpdate = 0;
@@ -21,7 +27,7 @@ public class BarrelSpawn extends Actor{
 			if(seconds==5){
 				seconds = 0;
 				Barrel e = new Barrel(steppingBlocks);
-				e.setX(getX());
+				e.setX(getX() - 64);
 				e.setY(getY());
 				getWorld().add(e);			}
 		}
