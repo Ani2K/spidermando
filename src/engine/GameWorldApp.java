@@ -76,6 +76,7 @@ public class GameWorldApp extends Application {
 	Media spiderManSong;
 	MediaPlayer spiderPlayer;
 	boolean levelStart = false;
+	boolean bossFightStart = false;
 
 	Scene startScene;
 	Level1 l = new Level1();
@@ -255,8 +256,8 @@ public class GameWorldApp extends Application {
 
 
 		world.add(bossTest);
-		bossTest.setX(50);
-		bossTest.setY(50);
+		bossTest.setX(100 * BLOCK_SIZE);
+		bossTest.setY(75);
 
 
 
@@ -336,6 +337,25 @@ public class GameWorldApp extends Application {
 					ammoText.setText("Ammo: " + heroe.getAmmo());
 					healthText.setText("Health: " + heroe.getHealth());
 					infoBox.setTranslateX(-1 * root.getLayoutX());
+					if(heroe.getTranslateX() >= 96 * BLOCK_SIZE && !bossFightStart){
+						Block sealBlock = new Block(BLOCK_SIZE, true);
+						sealBlock.setX(88 * BLOCK_SIZE);
+						sealBlock.setY(0);
+						world.add(sealBlock);
+						steppingBlocks.add(sealBlock);
+						Block sealBlock2 = new Block(BLOCK_SIZE, false);
+						sealBlock2.setX(88 * BLOCK_SIZE);
+						sealBlock2.setY(BLOCK_SIZE);
+						world.add(sealBlock2);
+						steppingBlocks.add(sealBlock2);
+						Block sealBlock3 = new Block(BLOCK_SIZE, true);
+						sealBlock3.setX(112 * BLOCK_SIZE);
+						sealBlock3.setY(0);
+						world.add(sealBlock3);
+						steppingBlocks.add(sealBlock3);
+						bossFightStart = true;
+						bossTest.setFight(true);
+					}
 				}
 			}
 
@@ -424,10 +444,6 @@ public class GameWorldApp extends Application {
 
 		});
 
-	}
-
-	public static StackPane getRoot() {
-		return root;
 	}
 
 
