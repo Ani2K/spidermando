@@ -3,17 +3,15 @@ package engine;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.sun.webkit.Timer;
-
 import game.Block;
 import game.Boss;
 import game.EndPoint;
-import game.Gunner;
 import game.GunnerSpawn;
 import game.HealthPack;
 import game.Hero;
 import game.Level1;
 import game.Munition;
+import game.Obstacle;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,7 +26,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -144,6 +141,13 @@ public class GameWorldApp extends Application {
 					g.setY(i*BLOCK_SIZE);
 					world.add(g);
 				}
+				
+				if(curRow.charAt(j)=='6'){
+					Obstacle s = new Obstacle(BLOCK_SIZE);
+					s.setX(j*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE);
+					world.add(s);
+				}
 			}
 		}
 
@@ -185,7 +189,7 @@ public class GameWorldApp extends Application {
 
 		world.add(heroe);
 		heroe.setBlocks(steppingBlocks);
-		heroe.setX(50);
+		heroe.setX(150);
 		heroe.setY(100); 
 
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
