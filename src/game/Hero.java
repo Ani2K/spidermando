@@ -2,16 +2,15 @@ package game;
 import java.io.File;
 import java.util.ArrayList;
 
-import engine.*;
+import engine.Actor;
+import engine.GameWorldApp;
 import game.Projectile.ProjType;
-import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
 public class Hero extends Actor {
 
@@ -39,7 +38,17 @@ public class Hero extends Actor {
 		this.dx = dx;
 	}
 
-	private Image myImage = new Image("file:images/hero_right.png");
+	private Image hero1 = new Image("file:images/hero1.png");
+	private Image hero2 = new Image("file:images/hero2.png");
+	private Image hero3 = new Image("file:images/hero3.png");
+	private int imageCount = 0;
+//	private ImageView imageView = new ImageView(myImage);
+	int count = 3;
+	int columns = 3;
+	int offsetX = 50;
+	int offsetY = 100;
+	int width = 63;
+	int height = 500;
 	//	public int getDx() {
 	//		return dx;
 	//	}
@@ -49,7 +58,13 @@ public class Hero extends Actor {
 	public Hero(){
 		weapon = 1;
 		//		dx = 0;
-		setImage(myImage);
+		
+		setImage(hero1);
+//		imageView.setFitHeight(height);
+//		imageView.setFitWidth(width);
+//		imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
+//		animation = new SpriteAnimation(this.imageView,Duration.millis(200),count,columns,offsetX,offsetY,width,height);
+		
 		direction = true;
 	}
 	@Override
@@ -70,6 +85,7 @@ public class Hero extends Actor {
 		//			move(0, 301 - getY());
 		//		}
 		boolean movingRight = dx > 0;
+		
 		for(int i = 0; i < Math.abs(dx); i++){
 			for(Block block : blocks){
 				if(getBoundsInParent().intersects(block.getBoundsInParent())){
@@ -85,6 +101,17 @@ public class Hero extends Actor {
 			}
 			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
 		}
+		System.out.println(this.getTranslateX());
+		if((this.getTranslateX() / 30) % 4 == 0){
+			setImage(hero1);
+		}else if((this.getTranslateX() / 30) % 4 == 1){
+			setImage(hero2);
+		}else if((this.getTranslateX() / 30) % 4 == 2){
+			setImage(hero1);
+		}else {
+			setImage(hero3);
+		}
+//		setImage(hero2);
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
 			if(proj.getT() == ProjType.ENEMY){
 				getWorld().remove(proj);
@@ -100,6 +127,7 @@ public class Hero extends Actor {
 				}
 			}
 		}
+//		System.out.println(imageCount);
 		for(HealthPack healthP : getIntersectingObjects(HealthPack.class)){
 			if(health + 25 <= 100){
 				getWorld().remove(healthP);
@@ -135,6 +163,7 @@ public class Hero extends Actor {
 		}
 	}
 
+	
 	public void shoot(double dx, double dy, double angle){
 		Projectile proj = new Projectile(ProjType.HERO);
 		double x;

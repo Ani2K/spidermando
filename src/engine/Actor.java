@@ -23,6 +23,7 @@ import java.util.*;
 import javafx.css.Styleable;
 import javafx.event.EventTarget;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 public abstract class Actor extends ImageView implements Styleable, EventTarget{
 	

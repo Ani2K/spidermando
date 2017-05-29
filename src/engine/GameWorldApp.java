@@ -402,7 +402,7 @@ public class GameWorldApp extends Application {
 				}
 			}
 		});
-		primaryStage.setTitle("Spidermmando");
+		primaryStage.setTitle("Spidermando");
 		primaryStage.show();
 		File song = new File("images/spiderman.mp3");
 		String path = song.getAbsolutePath();
@@ -443,7 +443,7 @@ public class GameWorldApp extends Application {
 			gameOver = true;
 			root2.getChildren().add(hi);
 			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-			spiderPlayer.stop();
+//			spiderPlayer.stop();
 			world.stop();
 		}
 		for(Obstacle spike : obstacles){
