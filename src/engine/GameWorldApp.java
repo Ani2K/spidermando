@@ -71,10 +71,10 @@ public class GameWorldApp extends Application {
 	Label healthText;
 	Label ammoText;
 
-//	Media gunSound = new Media(new File(new File("images/pistolsound.mp3").getAbsolutePath()).toURI().toString());
-//	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
-//	Media spiderManSong;
-//	MediaPlayer spiderPlayer;
+	Media gunSound = new Media(new File(new File("images/pistolsound.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
+	Media spiderManSong;
+	MediaPlayer spiderPlayer;
 	boolean levelStart = false;
 	boolean bossFightStart = false;
 	boolean bossFightWon = false;
@@ -386,7 +386,7 @@ public class GameWorldApp extends Application {
 				// TODO Auto-generated method stub
 				//double mouseX = e.getX() + heroe.getTranslateX();
 				if(heroe.getAmmo() > 0){
-//					gunPlayer.stop();
+					gunPlayer.stop();
 					double mouseX = e.getX();
 					double heroX;
 					if(heroe.isDirection()){
@@ -434,7 +434,7 @@ public class GameWorldApp extends Application {
 
 					angle *= (180.0 / Math.PI);
 					heroe.shoot(dx, dy, angle);
-//					gunPlayer.play();
+					gunPlayer.play();
 				}
 			}
 		});
@@ -442,9 +442,9 @@ public class GameWorldApp extends Application {
 		primaryStage.show();
 		File song = new File("images/spiderman.mp3");
 		String path = song.getAbsolutePath();
-//		spiderManSong = new Media(new File(path).toURI().toString());
-//		spiderPlayer = new MediaPlayer(spiderManSong);
-//		spiderPlayer.setVolume(0.2);
+		spiderManSong = new Media(new File(path).toURI().toString());
+		spiderPlayer = new MediaPlayer(spiderManSong);
+		spiderPlayer.setVolume(0.2);
 
 		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -453,7 +453,7 @@ public class GameWorldApp extends Application {
 				// TODO Auto-generated method stub
 				primaryStage.setScene(scene);
 				world.start();
-//				spiderPlayer.play();
+				spiderPlayer.play();
 				levelStart = true;
 				root.getChildren().addAll(view, world, infoBox);
 				root.setLayoutX(0);
@@ -475,7 +475,7 @@ public class GameWorldApp extends Application {
 			gameOver = true;
 			root2.getChildren().add(hi);
 			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-//			spiderPlayer.stop();
+			spiderPlayer.stop();
 			world.stop();
 		}
 		for(Obstacle spike : obstacles){
@@ -490,7 +490,7 @@ public class GameWorldApp extends Application {
 					gameOver = true;
 					root2.getChildren().add(hi);
 					theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-//					spiderPlayer.stop();
+					spiderPlayer.stop();
 					world.stop();
 				}
 
@@ -523,7 +523,7 @@ public class GameWorldApp extends Application {
 			gameOver = true;
 			root2.getChildren().add(hi);
 			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-//			spiderPlayer.stop();
+			spiderPlayer.stop();
 			world.stop();
 
 		}
