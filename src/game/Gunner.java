@@ -3,6 +3,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import engine.Actor;
+import engine.GameWorldApp;
 import game.Projectile.ProjType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,11 +18,14 @@ public class Gunner extends Actor{
 	double GUNNER_RANGE = 200;
 	long latestUpdate = 0;
 	boolean direction = true; // true is right, false is left
-	int life = 3;
+	int life = 10;
+	int dx = 4;
 	ArrayList<Block> steppingBlocks;
 	String[] level;
 	int row;
 	int col;
+	int rightBound;
+	int leftBound;
 	
 	public Gunner(ArrayList<Block> b, String[] level, int row, int col){
 		steppingBlocks = b;
@@ -31,52 +35,103 @@ public class Gunner extends Actor{
 		this.level = level;
 		this.row = row;
 		this.col = col;
+		for(int i = col + 1; i < level[row].length(); i++){
+			if(level[row].charAt(i) != '0' && level[row].charAt(i) != '2' && level[row].charAt(i) != '3' && level[row].charAt(i) != 'G'){
+				rightBound = (i - 1) * GameWorldApp.BLOCK_SIZE;
+				break;
+			}else if(level[row].charAt(i) == '0' && level[row + 1].charAt(i) == '0'){
+				rightBound = (i - 1) * GameWorldApp.BLOCK_SIZE;
+				break;
+			}
+		}
+		for(int i = col - 1; i >= 0; i--){
+			if(level[row].charAt(i) != '0' && level[row].charAt(i) != '2' && level[row].charAt(i) != '3' && level[row].charAt(i) != 'G'){
+				leftBound = (i + 1) * GameWorldApp.BLOCK_SIZE;
+				break;
+			}else if(level[row].charAt(i) == '0' && level[row + 1].charAt(i) == '0'){
+				leftBound = (i + 1) * GameWorldApp.BLOCK_SIZE;
+				break;
+			}
+		}
 	}
 
 	public void act(long now) {
-		moveGY(20);
+//		moveGY(20);
+//		for(Projectile proj : getIntersectingObjects(Projectile.class)){
+//			if(proj.getT() == ProjType.HERO){
+//				life--;
+//				getWorld().remove(proj);
+//				if(life <= 0){
+//					Media a = new Media(new File(new File("images/pain.mp3").getAbsolutePath()).toURI().toString());
+//					MediaPlayer p = new MediaPlayer(a);
+//					p.play();
+//					getWorld().remove(this);
+//					return ;
+//				}
+//			}
+//		}
+//
+//		if(Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())>GUNNER_RANGE){
+//			if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
+//				if(direction){
+//					setRotationAxis(Rotate.Y_AXIS);
+//					setRotate(180);
+//					direction = false;
+//				}
+//				moveGX(5);
+//			}else{
+//				if(!direction){
+//					setRotationAxis(Rotate.Y_AXIS);
+//					setRotate(360);
+//					direction = true;
+//				}
+//				moveGX(-5);
+//				
+//			}
+//		}else{
+//			if(now - latestUpdate >= 1000000000){
+//
+//				latestUpdate = now;
+//				shoot();
+//			}
+//		}
+		Hero h = getWorld().getObjects(Hero.class).get(0);
+		if(Math.abs(h.getTranslateY() + 100 - getY()) <= 25){
+			if(h.getTranslateX() > getX()){
+				setRotationAxis(Rotate.Y_AXIS);
+				setRotate(360);
+			}else{
+				setRotationAxis(Rotate.Y_AXIS);
+				setRotate(180);
+			}
+			if(now - latestUpdate >= 500000000){
+				shoot();
+				latestUpdate = now;
+			}
+		}else{
+			setX(getX() + dx);
+			setRotationAxis(Rotate.Y_AXIS);
+			setRotate(dx > 0 ? 360 : 180);
+			if(getX() >= rightBound || getX() <= leftBound){
+				dx *= -1;
+				setRotationAxis(Rotate.Y_AXIS);
+				setRotate(getRotate() + 180);
+			}
+		}
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
 			if(proj.getT() == ProjType.HERO){
 				life--;
 				getWorld().remove(proj);
 				if(life <= 0){
-					Media a = new Media(new File(new File("images/pain.mp3").getAbsolutePath()).toURI().toString());
-					MediaPlayer p = new MediaPlayer(a);
-					p.play();
 					getWorld().remove(this);
-					return ;
 				}
 			}
 		}
-
-		if(Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())>GUNNER_RANGE){
-			if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
-				if(direction){
-					setRotationAxis(Rotate.Y_AXIS);
-					setRotate(180);
-					direction = false;
-				}
-				moveGX(5);
-			}else{
-				if(!direction){
-					setRotationAxis(Rotate.Y_AXIS);
-					setRotate(360);
-					direction = true;
-				}
-				moveGX(-5);
-				
-			}
-		}else{
-			if(now - latestUpdate >= 1000000000){
-
-				latestUpdate = now;
-				shoot();
-			}
-		}
+		//System.out.println(leftBound + "           " + getX() + "          " + rightBound);
 	}
 	public void shoot(){
 		Projectile proj = new Projectile(ProjType.ENEMY);
-		proj.setX(getTranslateX());
+		proj.setX(getX());
 		proj.setY(getY());
 		getWorld().add(proj);
 	}

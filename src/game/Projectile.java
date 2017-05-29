@@ -15,7 +15,7 @@ public class Projectile extends Actor{
 	private double dx;
 	private double dy;
 	private boolean enemyDirectionFirstTime = true;
-	private double enemyX = 15;
+	private double enemyX = 30;
 	
 	public double getDx() {
 		return dx;
@@ -53,7 +53,7 @@ public class Projectile extends Actor{
 		}else if(pType == ProjType.ENEMY){
 			if(enemyDirectionFirstTime){
 				enemyDirectionFirstTime = false;				
-				if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
+				if(this.getTranslateX() + this.getX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
 					setRotate(-90);
 					enemyX *= -1;
 				}else{

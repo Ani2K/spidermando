@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import game.Block;
 import game.Boss;
 import game.EndPoint;
+import game.Gunner;
 import game.BarrelSpawn;
 import game.HealthPack;
 import game.Hero;
@@ -89,9 +90,11 @@ public class GameWorldApp extends Application {
 
 		Image menuImage = new Image("file:images/menuBackGround.jpg");
 		ImageView menuView = new ImageView(menuImage);
+		menuView.setFitWidth(SCREEN_WIDTH + 600);
+		menuView.setFitHeight(SCREEN_HEIGHT);
 		Pane menuPane = new Pane();
-		menuPane.setMaxWidth(menuImage.getWidth() * 0.95);
-		menuPane.setMaxHeight(menuImage.getHeight() * 0.95);
+		menuPane.setPrefWidth((SCREEN_WIDTH + 600) * 0.8);
+		menuPane.setPrefHeight(SCREEN_HEIGHT * 0.8);
 		menuPane.getChildren().add(menuView);
 		ImageView play = new ImageView(new Image("file:images/play.png"));
 		ImageView howTo = new ImageView(new Image("file:images/howToPlay.png"));
@@ -101,9 +104,9 @@ public class GameWorldApp extends Application {
 		menuButtons.setAlignment(Pos.CENTER);
 		menuButtons.setTranslateX(menuPane.getMaxWidth() / 3.25);
 		menuButtons.setTranslateY(menuPane.getMaxHeight() / 2.5);
-		BorderPane ro = new BorderPane();
-		ro.setCenter(menuPane);
-		Scene menuScene = new Scene(ro,SCREEN_WIDTH + 600, SCREEN_HEIGHT);
+//		BorderPane ro = new BorderPane();
+//		ro.setCenter(menuPane);
+		Scene menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600) * 0.95, SCREEN_HEIGHT * 0.95);
 		primaryStage.setScene(menuScene);
 
 		//Build Level
@@ -175,6 +178,12 @@ public class GameWorldApp extends Application {
 					s.setY(i*BLOCK_SIZE+15);
 					obstacles.add(s);
 					world.add(s);
+				}
+				if(curRow.charAt(j) == 'G'){
+					Gunner g = new Gunner(steppingBlocks, Level1.L1, i, j);
+					g.setX(j*BLOCK_SIZE);
+					g.setY(i*BLOCK_SIZE);
+					world.add(g);
 				}
 			}
 		}
