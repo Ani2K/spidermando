@@ -30,14 +30,17 @@ public class Projectile extends Actor{
 		this.dy = dy;
 	}
 	public Projectile(ProjType inpType){
-		setFitWidth(10);
-		setFitHeight(10);
-		setRotate(90);
 		if(inpType != ProjType.BOSS){
 			setImage(bullet);
+			setFitWidth(10);
+			setFitHeight(10);
 		}else{
 			setImage(fireball);
+			setFitWidth(20);
+			setFitHeight(10);
 		}
+		
+		setRotate(90);
 		this.pType = inpType;
 		dx = 0;
 		dy = 0;

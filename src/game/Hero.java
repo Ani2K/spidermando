@@ -96,7 +96,7 @@ public class Hero extends Actor {
 				getWorld().remove(proj);
 				health -= 20;
 				if(health <= 0){
-					this.getWorld().remove(this);
+					//this.getWorld().remove(this);
 				}
 			}
 		}
