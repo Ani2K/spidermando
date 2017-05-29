@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 
 public class Barrel extends Actor{
-	Image FLAG = new Image("file:images/enemydoge.png");
+	Image FLAG = new Image("file:images/barrel.png");
 	Image DEATH_SPRITE = new Image("file:enemydoge.png");
 	ImageView sprite;
 	double GUNNER_RANGE = 200;
@@ -27,7 +27,7 @@ public class Barrel extends Actor{
 	public void act(long now) {
 		if(this.getTranslateY()>550){
 			this.getWorld().remove(this);			
-
+			return ;
 		}
 		moveGY(20);
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
@@ -41,36 +41,37 @@ public class Barrel extends Actor{
 			}
 		}
 
-		if(Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())>GUNNER_RANGE){
-			if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
-				if(direction){
-					setRotationAxis(Rotate.Y_AXIS);
-					setRotate(180);
-					direction = false;
-				}
-				moveGX(5);
-			}else{
-				if(!direction){
-					setRotationAxis(Rotate.Y_AXIS);
-					setRotate(360);
-					direction = true;
-				}
-				moveGX(-5);
-				
-			}
-		}else{
-			if(now - latestUpdate >= 1000000000){
-
-				latestUpdate = now;
-				shoot();
-			}
-		}
+//		if(Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())>GUNNER_RANGE){
+//			if(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
+//				if(direction){
+//					setRotationAxis(Rotate.Y_AXIS);
+//					setRotate(180);
+//					direction = false;
+//				}
+//				moveGX(5);
+//			}else{
+//				if(!direction){
+//					setRotationAxis(Rotate.Y_AXIS);
+//					setRotate(360);
+//					direction = true;
+//				}
+//				moveGX(-5);
+//				
+//			}
+//		}
+		moveGX(-5);
+		setRotationAxis(Rotate.Z_AXIS);
+		setRotate(getRotate() - 30);
 	}
 	public void shoot(){
 		Projectile proj = new Projectile(ProjType.ENEMY);
 		proj.setX(getTranslateX());
 		proj.setY(getY());
 		getWorld().add(proj);
+	}
+	
+	public void die(){
+		getWorld().remove(this);
 	}
 	
 	private void moveGX(int velocity){
