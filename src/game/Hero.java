@@ -101,12 +101,12 @@ public class Hero extends Actor {
 			}
 			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
 		}
-		System.out.println(this.getTranslateX());
-		if((this.getTranslateX() / 30) % 4 == 0){
+		System.out.println(this.getTranslateX() / 30);
+		if(Math.floor((double)(this.getTranslateX() / 30)) % 4 == 0){
 			setImage(hero1);
-		}else if((this.getTranslateX() / 30) % 4 == 1){
+		}else if(Math.floor((double)(this.getTranslateX() / 30)) % 4 == 1){
 			setImage(hero2);
-		}else if((this.getTranslateX() / 30) % 4 == 2){
+		}else if(Math.floor((double)(this.getTranslateX() / 30)) % 4 == 2){
 			setImage(hero1);
 		}else {
 			setImage(hero3);
