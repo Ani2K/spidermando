@@ -106,7 +106,7 @@ public class GameWorldApp extends Application {
 		menuButtons.setTranslateY(SCREEN_HEIGHT/ 2.5);
 //		BorderPane ro = new BorderPane();
 //		ro.setCenter(menuPane);
-		Scene menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600) * 0.95, SCREEN_HEIGHT * 0.95);
+		Scene menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600), SCREEN_HEIGHT);
 		primaryStage.setScene(menuScene);
 
 		//Build Level
@@ -117,7 +117,12 @@ public class GameWorldApp extends Application {
 			String curRow = l.L1[i];
 			for(int j = 0; j < curRow.length();j++){
 				if(curRow.charAt(j)=='1'){
-					Block block = new Block(BLOCK_SIZE);
+					Block block;
+					if(i == 0){
+						block = new Block(BLOCK_SIZE, true);
+					}else{
+						block = new Block(BLOCK_SIZE, false);
+					}
 					block.setX(j*BLOCK_SIZE);
 					block.setY(i*BLOCK_SIZE);
 					world.add(block);
@@ -137,7 +142,7 @@ public class GameWorldApp extends Application {
 					world.add(m);
 				}
 				if(curRow.charAt(j)=='4'){
-					BarrelSpawn g = new BarrelSpawn(steppingBlocks);
+					BarrelSpawn g = new BarrelSpawn(steppingBlocks,BLOCK_SIZE);
 					g.setX(j*BLOCK_SIZE);
 					g.setY(i*BLOCK_SIZE);
 					world.add(g);
@@ -186,6 +191,14 @@ public class GameWorldApp extends Application {
 					world.add(g);
 				}
 			}
+		}
+		int topY = -3;
+		for(int a = 0; a < Level1.L1[0].length(); a++){
+			Block block = new Block(BLOCK_SIZE, true);
+			block.setX(a*BLOCK_SIZE);
+			block.setY(topY*BLOCK_SIZE);
+			world.add(block);
+			steppingBlocks.add(block);
 		}
 
 		//Background
@@ -421,6 +434,18 @@ public class GameWorldApp extends Application {
 
 
 	private void update(){
+		if(world.getObjects(Hero.class).size()<=0){
+			StackPane root2 = new StackPane();
+			VBox hi = new VBox();
+			Label dead = new Label("Oh shoot. Tell Steve Jobs I said hi.");
+			hi.getChildren().addAll(dead);
+			hi.setAlignment(Pos.CENTER);
+			gameOver = true;
+			root2.getChildren().add(hi);
+			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+			spiderPlayer.stop();
+			world.stop();
+		}
 		for(Obstacle spike : obstacles){
 			if(heroe.getBoundsInParent().intersects(spike.getBoundsInParent())){
 				heroe.setHealth(heroe.getHealth()-0.5);
@@ -439,10 +464,10 @@ public class GameWorldApp extends Application {
 
 			}
 		}
-		if(heroe.getTranslateX()>=(l.L1[0].length() - 3)*BLOCK_SIZE){
+		if(heroe.getTranslateX()>=(l.L1[0].length() - 2)*BLOCK_SIZE){
 			StackPane root2 = new StackPane();
 			VBox hi = new VBox();
-			Label win = new Label("You have won!!");
+			Label win = new Label("Congrats I guess...");
 			hi.getChildren().addAll(win);
 			hi.setAlignment(Pos.CENTER);
 			gameOver = true;
@@ -496,7 +521,7 @@ public class GameWorldApp extends Application {
 			for(Block block : steppingBlocks){
 				if(heroe.getBoundsInParent().intersects(block.getBoundsInParent())){
 					if(movingDown){
-						if(heroe.getTranslateY() + heroe.getHeight() <= block.getY()){
+						if(heroe.getTranslateY() + heroe.getHeight() <= block.getY() && !block.isCritical()){
 							heroe.setTranslateY(heroe.getTranslateY()-1);
 							canJump = true;
 							return;

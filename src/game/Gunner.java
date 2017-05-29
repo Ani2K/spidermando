@@ -121,7 +121,9 @@ public class Gunner extends Actor{
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
 			if(proj.getT() == ProjType.HERO){
 				life--;
-				getWorld().remove(proj);
+				if(proj != null){
+					getWorld().remove(proj);
+				}
 				if(life <= 0){
 					Media a = new Media(new File(new File("images/pain.mp3").getAbsolutePath()).toURI().toString());
 					MediaPlayer p = new MediaPlayer(a);

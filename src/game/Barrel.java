@@ -14,7 +14,7 @@ public class Barrel extends Actor{
 	double GUNNER_RANGE = 200;
 	long latestUpdate = 0;
 	boolean direction = true; // true is right, false is left
-	int life = 3;
+	int life = 2;
 	ArrayList<Block> steppingBlocks;
 	public Barrel(ArrayList<Block> b){
 		steppingBlocks = b;
@@ -25,6 +25,10 @@ public class Barrel extends Actor{
 	}
 
 	public void act(long now) {
+		if(this.getTranslateY()>550){
+			this.getWorld().remove(this);			
+
+		}
 		moveGY(20);
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
 			if(proj.getT() == ProjType.HERO){

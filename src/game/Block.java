@@ -3,10 +3,12 @@ import engine.*;
 import javafx.scene.image.Image;
 public class Block extends Actor{
 	Image BLOCK = new Image("file:images/blank.gif");
-	public Block(int blockSize){
+	private boolean critical;
+	public Block(int blockSize, boolean isCritical){
 		setImage(BLOCK);
 		setFitWidth(blockSize);
 		setFitHeight(blockSize);
+		critical = isCritical;
 	}
 	
 	@Override
@@ -15,5 +17,7 @@ public class Block extends Actor{
 	}
 	
 	
-	
+	public boolean isCritical(){
+		return critical;
+	}
 }
