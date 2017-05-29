@@ -102,8 +102,8 @@ public class GameWorldApp extends Application {
 		menuButtons.getChildren().addAll(play, howTo);
 		menuPane.getChildren().add(menuButtons);
 		menuButtons.setAlignment(Pos.CENTER);
-		menuButtons.setTranslateX(menuPane.getMaxWidth() / 3.25);
-		menuButtons.setTranslateY(menuPane.getMaxHeight() / 2.5);
+		menuButtons.setTranslateX((SCREEN_WIDTH + 600) / 2.5);
+		menuButtons.setTranslateY(SCREEN_HEIGHT/ 2.5);
 //		BorderPane ro = new BorderPane();
 //		ro.setCenter(menuPane);
 		Scene menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600) * 0.95, SCREEN_HEIGHT * 0.95);
