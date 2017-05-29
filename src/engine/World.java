@@ -18,7 +18,9 @@ public abstract class World extends javafx.scene.layout.Pane implements javafx.c
 					for(int i = 0; i < getChildren().size(); i++){
 						if(Actor.class.isAssignableFrom(getChildren().get(i).getClass())){
 							Actor dude = (Actor) getChildren().get(i);
-							dude.act(now);
+							if(dude != null){
+								dude.act(now);
+							}
 						}
 					}
 					old = now;
@@ -44,7 +46,9 @@ public abstract class World extends javafx.scene.layout.Pane implements javafx.c
 	}
 	
 	public void remove(Actor a){
-		getChildren().remove(a);
+		if(a != null){
+			getChildren().remove(a);
+		}
 	}
 	
 	void start(){

@@ -117,7 +117,12 @@ public class GameWorldApp extends Application {
 			String curRow = l.L1[i];
 			for(int j = 0; j < curRow.length();j++){
 				if(curRow.charAt(j)=='1'){
-					Block block = new Block(BLOCK_SIZE);
+					Block block;
+					if(i == 0){
+						block = new Block(BLOCK_SIZE, true);
+					}else{
+						block = new Block(BLOCK_SIZE, false);
+					}
 					block.setX(j*BLOCK_SIZE);
 					block.setY(i*BLOCK_SIZE);
 					world.add(block);
@@ -186,6 +191,14 @@ public class GameWorldApp extends Application {
 					world.add(g);
 				}
 			}
+		}
+		int topY = -3;
+		for(int a = 0; a < Level1.L1[0].length(); a++){
+			Block block = new Block(BLOCK_SIZE, true);
+			block.setX(a*BLOCK_SIZE);
+			block.setY(topY*BLOCK_SIZE);
+			world.add(block);
+			steppingBlocks.add(block);
 		}
 
 		//Background
@@ -494,7 +507,7 @@ public class GameWorldApp extends Application {
 			for(Block block : steppingBlocks){
 				if(heroe.getBoundsInParent().intersects(block.getBoundsInParent())){
 					if(movingDown){
-						if(heroe.getTranslateY() + heroe.getHeight() <= block.getY()){
+						if(heroe.getTranslateY() + heroe.getHeight() <= block.getY() && !block.isCritical()){
 							heroe.setTranslateY(heroe.getTranslateY()-1);
 							canJump = true;
 							return;
