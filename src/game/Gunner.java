@@ -12,7 +12,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Rotate;
 
 public class Gunner extends Actor{
-	Image FLAG = new Image("file:images/enemydoge.png");
+	Image FLAG = new Image("file:images/gunner.png");
 	Image DEATH_SPRITE = new Image("file:enemydoge.png");
 	ImageView sprite;
 	double GUNNER_RANGE = 200;
@@ -29,7 +29,7 @@ public class Gunner extends Actor{
 	
 	public Gunner(ArrayList<Block> b, String[] level, int row, int col){
 		steppingBlocks = b;
-		setFitWidth(64);
+		setFitWidth(90);
 		setFitHeight(64);
 		setImage(FLAG);
 		this.level = level;
@@ -105,10 +105,12 @@ public class Gunner extends Actor{
 		if(heroAlive && Math.abs(h.getTranslateY() + 100 - getY()) <= 25){
 			if(h.getTranslateX() > getX()){
 				setRotationAxis(Rotate.Y_AXIS);
-				setRotate(360);
+				setRotate(180);
+				direction = true;
 			}else{
 				setRotationAxis(Rotate.Y_AXIS);
-				setRotate(180);
+				setRotate(360);
+				direction = false;
 			}
 			if(now - latestUpdate >= 500000000){
 				shoot();
@@ -117,7 +119,7 @@ public class Gunner extends Actor{
 		}else{
 			setX(getX() + dx);
 			setRotationAxis(Rotate.Y_AXIS);
-			setRotate(dx > 0 ? 360 : 180);
+			setRotate(dx > 0 ? 180 : 360);
 			if(getX() >= rightBound || getX() <= leftBound){
 				dx *= -1;
 				setRotationAxis(Rotate.Y_AXIS);
@@ -142,8 +144,12 @@ public class Gunner extends Actor{
 	}
 	public void shoot(){
 		Projectile proj = new Projectile(ProjType.ENEMY);
-		proj.setX(getX());
-		proj.setY(getY());
+		if(direction){
+			proj.setX(getX() + getFitWidth() / 1.55);
+		}else{
+			proj.setX(getX() + getFitWidth() * 0.2);
+		}
+		proj.setY(getY() + getFitHeight() / 1.55);
 		getWorld().add(proj);
 	}
 	
