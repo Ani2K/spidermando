@@ -26,6 +26,8 @@ public class Gunner extends Actor{
 	int col;
 	int rightBound;
 	int leftBound;
+	Media gunSound = new Media(new File(new File("images/machinegunsound.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
 	
 	public Gunner(ArrayList<Block> b, String[] level, int row, int col){
 		steppingBlocks = b;
@@ -102,7 +104,7 @@ public class Gunner extends Actor{
 		}else{
 			h = null;
 		}
-		if(heroAlive && Math.abs(h.getTranslateY() + 100 - getY()) <= 25){
+		if(heroAlive && Math.abs(h.getTranslateY() + 100 - getY()) <= 25 && Math.abs(h.getTranslateX() - getX()) < 9 * GameWorldApp.BLOCK_SIZE){
 			if(h.getTranslateX() > getX()){
 				setRotationAxis(Rotate.Y_AXIS);
 				setRotate(180);
@@ -114,9 +116,11 @@ public class Gunner extends Actor{
 			}
 			if(now - latestUpdate >= 500000000){
 				shoot();
+				gunPlayer.play();
 				latestUpdate = now;
 			}
 		}else{
+			gunPlayer.stop();
 			setX(getX() + dx);
 			setRotationAxis(Rotate.Y_AXIS);
 			setRotate(dx > 0 ? 180 : 360);
@@ -130,13 +134,24 @@ public class Gunner extends Actor{
 			if(proj.getT() == ProjType.HERO){
 				life--;
 				if(proj != null){
-					getWorld().remove(proj);
+					try{
+						getWorld().remove(proj);
+					}
+					catch(NullPointerException e){
+						
+					}
 				}
 				if(life <= 0){
 					Media a = new Media(new File(new File("images/pain.mp3").getAbsolutePath()).toURI().toString());
 					MediaPlayer p = new MediaPlayer(a);
 					p.play();
-					getWorld().remove(this);
+					gunPlayer.stop();
+					try{
+						getWorld().remove(this);
+					}
+					catch(NullPointerException e){
+						
+					}
 				}
 			}
 		}
