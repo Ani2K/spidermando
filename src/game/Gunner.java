@@ -123,6 +123,9 @@ public class Gunner extends Actor{
 				life--;
 				getWorld().remove(proj);
 				if(life <= 0){
+					Media a = new Media(new File(new File("images/pain.mp3").getAbsolutePath()).toURI().toString());
+					MediaPlayer p = new MediaPlayer(a);
+					p.play();
 					getWorld().remove(this);
 				}
 			}
