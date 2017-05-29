@@ -18,14 +18,12 @@ public class GunnerSpawn extends Actor{
 		if(now - latestUpdate >= 1000000000){
 			latestUpdate = now;
 			seconds++;
-			if(seconds==5 && count < 7 && Math.abs(this.getTranslateX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX())<500){
+			if(seconds==5){
 				seconds = 0;
 				Gunner e = new Gunner(steppingBlocks);
 				e.setX(getX());
 				e.setY(getY());
-				getWorld().add(e);
-				setCount(getCount() + 1);
-			}
+				getWorld().add(e);			}
 		}
 	}
 	public int getCount() {

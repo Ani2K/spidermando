@@ -170,8 +170,8 @@ public class GameWorldApp extends Application {
 				}
 				if(curRow.charAt(j)=='9'){
 					Obstacle s = new Obstacle(BLOCK_SIZE, 'l');
-					s.setX(j*BLOCK_SIZE);
-					s.setY(i*BLOCK_SIZE);
+					s.setX(j*BLOCK_SIZE + 0.3*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE+15);
 					obstacles.add(s);
 					world.add(s);
 				}

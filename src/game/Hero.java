@@ -15,7 +15,7 @@ public class Hero extends Actor {
 	//	private int speed = 100;
 
 	private int weapon;
-	private int ammo = 100;
+	private int ammo = 0;
 	private double dx = 0;
 	private int health = 100;
 	private ArrayList<Block> blocks = new ArrayList<Block>();
@@ -107,10 +107,13 @@ public class Hero extends Actor {
 			}
 		}
 		for(Munition munition : getIntersectingObjects(Munition.class)){
-			if(ammo < 100){
-				getWorld().remove(munition);
+			if(ammo < 90){
+				ammo += 10;
+			}else{
 				ammo = 100;
 			}
+			getWorld().remove(munition);
+
 		}
 	}
 
