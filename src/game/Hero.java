@@ -1,4 +1,5 @@
 package game;
+import java.io.File;
 import java.util.ArrayList;
 
 import engine.*;
@@ -8,6 +9,8 @@ import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Rotate;
 
 public class Hero extends Actor {
@@ -101,10 +104,19 @@ public class Hero extends Actor {
 			if(health + 25 <= 100){
 				getWorld().remove(healthP);
 				health += 25;
+				Media a = new Media(new File(new File("images/regen.mp3").getAbsolutePath()).toURI().toString());
+				MediaPlayer p = new MediaPlayer(a);
+				p.setVolume(0.3);
+				p.play();
 			}else if(health < 100){
 				getWorld().remove(healthP);
 				health = 100;
+				Media a = new Media(new File(new File("images/regen.mp3").getAbsolutePath()).toURI().toString());
+				MediaPlayer p = new MediaPlayer(a);
+				p.setVolume(0.3);
+				p.play();
 			}
+			
 		}
 		for(Munition munition : getIntersectingObjects(Munition.class)){
 			if(ammo < 90){
@@ -112,6 +124,9 @@ public class Hero extends Actor {
 			}else{
 				ammo = 100;
 			}
+			Media a = new Media(new File(new File("images/ammoPickUp.mp3").getAbsolutePath()).toURI().toString());
+			MediaPlayer p = new MediaPlayer(a);
+			p.play();
 			getWorld().remove(munition);
 
 		}

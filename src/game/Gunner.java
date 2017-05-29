@@ -1,10 +1,13 @@
 package game;
+import java.io.File;
 import java.util.ArrayList;
 
 import engine.Actor;
 import game.Projectile.ProjType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Rotate;
 
 public class Gunner extends Actor{
@@ -37,6 +40,9 @@ public class Gunner extends Actor{
 				life--;
 				getWorld().remove(proj);
 				if(life <= 0){
+					Media a = new Media(new File(new File("images/pain.mp3").getAbsolutePath()).toURI().toString());
+					MediaPlayer p = new MediaPlayer(a);
+					p.play();
 					getWorld().remove(this);
 					return ;
 				}
