@@ -184,7 +184,7 @@ public class GameWorldApp extends Application {
 
 		world.add(heroe);
 		heroe.setBlocks(steppingBlocks);
-		heroe.setX(150);
+		heroe.setX(50);
 		heroe.setY(100); 
 
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{
@@ -193,7 +193,6 @@ public class GameWorldApp extends Application {
 			if(offset>300 && offset<l.L1[0].length() * BLOCK_SIZE - SCREEN_WIDTH - 600 + 300){
 				root.setLayoutX(-1 * offset + 300);
 				world.setLayoutx(-1 * offset + 300);
-				//pane.setLayoutX(-1 * offset + 300);
 			}
 		});
 		//Testing Gunner Class
