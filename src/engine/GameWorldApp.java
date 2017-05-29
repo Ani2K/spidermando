@@ -147,7 +147,7 @@ public class GameWorldApp extends Application {
 					world.add(m);
 				}
 				if(curRow.charAt(j)=='4'){
-					BarrelSpawn g = new BarrelSpawn(steppingBlocks);
+					BarrelSpawn g = new BarrelSpawn(steppingBlocks,BLOCK_SIZE);
 					g.setX(j*BLOCK_SIZE);
 					g.setY(i*BLOCK_SIZE);
 					world.add(g);
@@ -497,7 +497,7 @@ public class GameWorldApp extends Application {
 		if(heroe.getTranslateX()>=(l.L1[0].length() - 2)*BLOCK_SIZE){
 			StackPane root2 = new StackPane();
 			VBox hi = new VBox();
-			Label win = new Label("You have won!!");
+			Label win = new Label("Congrats I guess...");
 			hi.getChildren().addAll(win);
 			hi.setAlignment(Pos.CENTER);
 			gameOver = true;
