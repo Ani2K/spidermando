@@ -49,6 +49,8 @@ public class GameWorldApp extends Application {
 	private int totalOffset = 0;
 
 	private ArrayList<Block> steppingBlocks = new ArrayList<Block>();
+	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+
 	private Point2D playerVelocity = new Point2D(0, 0);
 	boolean canJump = true;
 	public static boolean isAlive = true;
@@ -98,12 +100,14 @@ public class GameWorldApp extends Application {
 		menuButtons.setAlignment(Pos.CENTER);
 		menuButtons.setTranslateX(menuPane.getMaxWidth() / 3.25);
 		menuButtons.setTranslateY(menuPane.getMaxHeight() / 2.5);
-		Scene menuScene = new Scene(menuPane, menuImage.getWidth() * 0.95, menuImage.getHeight() * 0.95);
+		BorderPane ro = new BorderPane();
+		ro.setCenter(menuPane);
+		Scene menuScene = new Scene(ro,SCREEN_WIDTH + 600, SCREEN_HEIGHT);
 		primaryStage.setScene(menuScene);
 
 		//Build Level
 		theStage = primaryStage;
-		
+
 
 		for(int i = 0; i < l.L1.length; i++){
 			String curRow = l.L1[i];
@@ -141,11 +145,34 @@ public class GameWorldApp extends Application {
 					g.setY(i*BLOCK_SIZE);
 					world.add(g);
 				}
-				
+
 				if(curRow.charAt(j)=='6'){
-					Obstacle s = new Obstacle(BLOCK_SIZE);
+					Obstacle s = new Obstacle(BLOCK_SIZE, 'u');
+					s.setX(j*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE + 0.5*BLOCK_SIZE);
+					obstacles.add(s);
+					world.add(s);
+				}
+				
+				if(curRow.charAt(j)=='7'){
+					Obstacle s = new Obstacle(BLOCK_SIZE, 'd');
 					s.setX(j*BLOCK_SIZE);
 					s.setY(i*BLOCK_SIZE);
+					obstacles.add(s);
+					world.add(s);
+				}
+				if(curRow.charAt(j)=='8'){
+					Obstacle s = new Obstacle(BLOCK_SIZE, 'r');
+					s.setX(j*BLOCK_SIZE - 0.3*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE+ 15);
+					obstacles.add(s);
+					world.add(s);
+				}
+				if(curRow.charAt(j)=='9'){
+					Obstacle s = new Obstacle(BLOCK_SIZE, 'l');
+					s.setX(j*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE);
+					obstacles.add(s);
 					world.add(s);
 				}
 			}
@@ -185,7 +212,7 @@ public class GameWorldApp extends Application {
 
 		pane.setTop(title);
 
-		
+
 
 		world.add(heroe);
 		heroe.setBlocks(steppingBlocks);
@@ -211,6 +238,7 @@ public class GameWorldApp extends Application {
 
 
 		Scene scene = new Scene(root, SCREEN_WIDTH + 600, SCREEN_HEIGHT);
+		
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, new MyKeyboardHandler());
 
 		primaryStage.setResizable(false);
@@ -356,7 +384,6 @@ public class GameWorldApp extends Application {
 		spiderPlayer = new MediaPlayer(spiderManSong);
 		spiderPlayer.setVolume(0.2);
 
-
 		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
 			@Override
@@ -372,17 +399,30 @@ public class GameWorldApp extends Application {
 			}
 
 		});
-
-		StringProperty fpsString = new 	SimpleStringProperty();
-		primaryStage.titleProperty().bind(fpsString);
 		
 	}
 
 	public static StackPane getRoot() {
 		return root;
 	}
+	
 
 	private void update(){
+		for(Obstacle spike : obstacles){
+			if(heroe.getBoundsInParent().intersects(spike.getBoundsInParent())){
+				StackPane root2 = new StackPane();
+				VBox hi = new VBox();
+				Label dead = new Label("This isn't volleyball. Spikes are bad");
+				hi.getChildren().addAll(dead);
+				hi.setAlignment(Pos.CENTER);
+				gameOver = true;
+				root2.getChildren().add(hi);
+				theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+				spiderPlayer.stop();
+				world.stop();
+
+			}
+		}
 		if(heroe.getTranslateX()>=(l.L1[0].length() - 1)*BLOCK_SIZE){
 			StackPane root2 = new StackPane();
 			VBox hi = new VBox();
@@ -394,7 +434,7 @@ public class GameWorldApp extends Application {
 			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
 			world.stop();
 		}
-		
+
 		if(heroe.getTranslateY() < 550){
 
 			if(playerVelocity.getY() < 10){
@@ -404,19 +444,6 @@ public class GameWorldApp extends Application {
 		}else{
 			StackPane root2 = new StackPane();
 			VBox hi = new VBox();
-			restart = new Button("Click to Respawn");
-			restart.setOnAction(e -> {
-				world.start();
-				theStage.setScene(startScene);
-				heroe.setBlocks(steppingBlocks);
-				heroe.setTranslateX(50);
-				heroe.setTranslateY(100); 
-				heroe.setHealth(100);
-				heroe.setAmmo(100);
-				spiderPlayer.play();
-				root.setLayoutX(0);
-				gameOver = false;
-			});
 			Label dead = new Label("You have fallen to death");
 			hi.getChildren().addAll(dead);
 			hi.setAlignment(Pos.CENTER);
