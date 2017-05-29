@@ -14,8 +14,6 @@ import game.Munition;
 import game.Obstacle;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -34,6 +32,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -191,27 +190,28 @@ public class GameWorldApp extends Application {
 
 		world.setPrefWidth(SCREEN_WIDTH);
 		world.setPrefHeight(SCREEN_HEIGHT);
+		
+		Rectangle bG = new Rectangle(40,40,Color.ALICEBLUE);
 
 		Text title = new Text();
 		title.setText("Spidermmando");
 		title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-		title.setFill(Color.WHITE);
+		title.setFill(Color.RED);
 		title.setStroke(Color.web("#0d61e8"));
 
 		healthText = new Label("Health: " + heroe.getHealth());
 		healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-		healthText.setTextFill(Color.WHITE);
+		healthText.setTextFill(Color.RED);
 		//healthText.setStroke(Color.web("#0d61e8"));
 
 		ammoText = new Label("Ammo: " + heroe.getAmmo());
 		ammoText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-		ammoText.setTextFill(Color.WHITE);
+		ammoText.setTextFill(Color.RED);
 		//ammoText.setStroke(Color.web("#0d61e8"));
 
 		VBox infoBox = new VBox();
 		infoBox.getChildren().addAll(healthText, ammoText);
 		infoBox.setAlignment(Pos.TOP_LEFT);
-
 		pane.setTop(title);
 
 
