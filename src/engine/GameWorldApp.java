@@ -432,6 +432,18 @@ public class GameWorldApp extends Application {
 
 
 	private void update(){
+		if(world.getObjects(Hero.class).size()<=0){
+			StackPane root2 = new StackPane();
+			VBox hi = new VBox();
+			Label dead = new Label("Oh shoot. Tell Steve Jobs I said hi.");
+			hi.getChildren().addAll(dead);
+			hi.setAlignment(Pos.CENTER);
+			gameOver = true;
+			root2.getChildren().add(hi);
+			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+			spiderPlayer.stop();
+			world.stop();
+		}
 		for(Obstacle spike : obstacles){
 			if(heroe.getBoundsInParent().intersects(spike.getBoundsInParent())){
 				heroe.setHealth(heroe.getHealth()-0.5);
