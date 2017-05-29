@@ -91,12 +91,14 @@ public class Hero extends Actor {
 				health -= 4;
 				if(health <= 0){
 					this.getWorld().remove(this);
+					return ;
 				}
 			}else if(proj.getT() == ProjType.BOSS){
 				getWorld().remove(proj);
 				health -= 20;
 				if(health <= 0){
-					//this.getWorld().remove(this);
+					this.getWorld().remove(this);
+					return ;
 				}
 			}
 		}
@@ -131,6 +133,14 @@ public class Hero extends Actor {
 				MediaPlayer p = new MediaPlayer(a);
 				p.play();
 				getWorld().remove(munition);
+			}
+		}
+		for(Barrel b : getIntersectingObjects(Barrel.class)){
+			health -= 10;
+			b.die();
+			if(health <= 0){
+				getWorld().remove(this);
+				return ;
 			}
 		}
 	}

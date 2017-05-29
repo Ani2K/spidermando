@@ -95,8 +95,14 @@ public class Gunner extends Actor{
 //				shoot();
 //			}
 //		}
-		Hero h = getWorld().getObjects(Hero.class).get(0);
-		if(Math.abs(h.getTranslateY() + 100 - getY()) <= 25){
+		boolean heroAlive = getWorld().getObjects(Hero.class).size() > 0;
+		Hero h;
+		if(heroAlive){
+			h = getWorld().getObjects(Hero.class).get(0);
+		}else{
+			h = null;
+		}
+		if(heroAlive && Math.abs(h.getTranslateY() + 100 - getY()) <= 25){
 			if(h.getTranslateX() > getX()){
 				setRotationAxis(Rotate.Y_AXIS);
 				setRotate(360);
