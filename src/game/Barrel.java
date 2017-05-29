@@ -8,8 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 
 public class Barrel extends Actor{
-	Image FLAG = new Image("file:images/enemydoge.png");
-	Image DEATH_SPRITE = new Image("file:enemydoge.png");
+	Image FLAG = new Image("file:images/ethanBoss.jpg");
 	ImageView sprite;
 	double GUNNER_RANGE = 200;
 	long latestUpdate = 0;
