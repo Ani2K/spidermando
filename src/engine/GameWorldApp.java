@@ -428,7 +428,7 @@ public class GameWorldApp extends Application {
 
 			}
 		}
-		if(heroe.getTranslateX()>=(l.L1[0].length() - 1)*BLOCK_SIZE){
+		if(heroe.getTranslateX()>=(l.L1[0].length() - 3)*BLOCK_SIZE){
 			StackPane root2 = new StackPane();
 			VBox hi = new VBox();
 			Label win = new Label("You have won!!");
@@ -449,7 +449,7 @@ public class GameWorldApp extends Application {
 		}else{
 			StackPane root2 = new StackPane();
 			VBox hi = new VBox();
-			Label dead = new Label("You have fallen to death");
+			Label dead = new Label("Groundbreaking Discovery! Don't fall so hard... especially in love");
 			hi.getChildren().addAll(dead);
 			hi.setAlignment(Pos.CENTER);
 			gameOver = true;
