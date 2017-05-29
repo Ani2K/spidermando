@@ -121,14 +121,17 @@ public class Hero extends Actor {
 		for(Munition munition : getIntersectingObjects(Munition.class)){
 			if(ammo < 90){
 				ammo += 10;
-			}else{
+				Media a = new Media(new File(new File("images/ammoPickUp.mp3").getAbsolutePath()).toURI().toString());
+				MediaPlayer p = new MediaPlayer(a);
+				p.play();
+				getWorld().remove(munition);
+			}else if(ammo < 100){
 				ammo = 100;
+				Media a = new Media(new File(new File("images/ammoPickUp.mp3").getAbsolutePath()).toURI().toString());
+				MediaPlayer p = new MediaPlayer(a);
+				p.play();
+				getWorld().remove(munition);
 			}
-			Media a = new Media(new File(new File("images/ammoPickUp.mp3").getAbsolutePath()).toURI().toString());
-			MediaPlayer p = new MediaPlayer(a);
-			p.play();
-			getWorld().remove(munition);
-
 		}
 	}
 
