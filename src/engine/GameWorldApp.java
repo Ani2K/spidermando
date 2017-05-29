@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import game.Block;
 import game.Boss;
 import game.EndPoint;
-import game.GunnerSpawn;
+import game.BarrelSpawn;
 import game.HealthPack;
 import game.Hero;
 import game.Level1;
@@ -134,7 +134,7 @@ public class GameWorldApp extends Application {
 					world.add(m);
 				}
 				if(curRow.charAt(j)=='4'){
-					GunnerSpawn g = new GunnerSpawn(steppingBlocks);
+					BarrelSpawn g = new BarrelSpawn(steppingBlocks);
 					g.setX(j*BLOCK_SIZE);
 					g.setY(i*BLOCK_SIZE);
 					world.add(g);
@@ -218,7 +218,7 @@ public class GameWorldApp extends Application {
 
 		world.add(heroe);
 		heroe.setBlocks(steppingBlocks);
-		heroe.setX(150);
+		heroe.setX(50);
 		heroe.setY(100); 
 
 		heroe.translateXProperty().addListener((obs,old,newValue) ->{

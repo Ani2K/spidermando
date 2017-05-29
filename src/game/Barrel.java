@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 
-public class Gunner extends Actor{
+public class Barrel extends Actor{
 	Image FLAG = new Image("file:images/enemydoge.png");
 	Image DEATH_SPRITE = new Image("file:enemydoge.png");
 	ImageView sprite;
@@ -16,18 +16,12 @@ public class Gunner extends Actor{
 	boolean direction = true; // true is right, false is left
 	int life = 3;
 	ArrayList<Block> steppingBlocks;
-	String[] level;
-	int row;
-	int col;
-	
-	public Gunner(ArrayList<Block> b, String[] level, int row, int col){
+	public Barrel(ArrayList<Block> b){
 		steppingBlocks = b;
 		setFitWidth(64);
 		setFitHeight(64);
 		setImage(FLAG);
-		this.level = level;
-		this.row = row;
-		this.col = col;
+
 	}
 
 	public void act(long now) {
