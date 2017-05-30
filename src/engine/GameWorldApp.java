@@ -440,7 +440,9 @@ public class GameWorldApp extends Application {
 					dy = -1 * speed * Math.sin(angle);
 
 					angle *= (180.0 / Math.PI);
-					heroe.shoot(dx, dy, angle);
+					if(world.getObjects(Hero.class).size() != 0){
+						heroe.shoot(dx, dy, angle);
+					}
 					gunPlayer.play();
 				}
 			}
