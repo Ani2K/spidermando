@@ -24,16 +24,22 @@ public class BarrelSpawn extends Actor{
 		if(now - latestUpdate >= 1000000000){
 			latestUpdate = now;
 			seconds++;
-			if(seconds==5){
+			//this.getWorld().getObjects(Hero.class).get(0).getTranslateX() - this.getTranslateX()<0
+			if(seconds==6 && getCount() <= 20){
 				seconds = 0;
 				Barrel e = new Barrel(steppingBlocks);
 				e.setX(getX() - 64);
 				e.setY(getY());
-				getWorld().add(e);			}
+				getWorld().add(e);			
+			}else if(getCount() > 20){
+				for(int i = 0; i<15; i++){
+					this.getWorld().remove(this.getWorld().getObjects(Barrel.class).get(0));
+				}
+			}
 		}
 	}
 	public int getCount() {
-		return count;
+		return this.getWorld().getObjects(Barrel.class).size();
 	}
 	public void setCount(int count) {
 		this.count = count;
