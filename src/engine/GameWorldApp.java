@@ -197,7 +197,7 @@ public class GameWorldApp extends Application {
 				}
 			}
 		}
-		int topY = -3;
+		int topY = -4;
 		for(int a = 0; a < Level1.L1[0].length(); a++){
 			Block block = new Block(BLOCK_SIZE, true);
 			block.setX(a*BLOCK_SIZE);
