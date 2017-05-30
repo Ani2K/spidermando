@@ -10,7 +10,7 @@ public class Flash extends Actor{
 	FlashType fType;
 	
 	public enum FlashType{
-		HERO, BARREL, BOSS
+		HERO, BARREL, BOSS, BOSSDEATH
 	}
 	
 	public Flash(double x, double y, FlashType f){
@@ -20,7 +20,7 @@ public class Flash extends Actor{
 		if(f == FlashType.HERO){
 			setFitWidth(myImage.getWidth());
 			setFitHeight(myImage.getHeight());
-		}else if(f == FlashType.BARREL){
+		}else if(f == FlashType.BARREL || f == FlashType.BOSSDEATH){
 			setFitWidth(64);
 			setFitHeight(64);
 		}else if(f == FlashType.BOSS){
@@ -52,6 +52,10 @@ public class Flash extends Actor{
 				}
 			}else if(fType == FlashType.BOSS){
 				if(arg0 - init >= 20){
+					death = true;
+				}
+			}else if(fType == FlashType.BOSSDEATH){
+				if(arg0 - init >= 150){
 					death = true;
 				}
 			}

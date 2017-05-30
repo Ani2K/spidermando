@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import engine.*;
+import game.Flash.FlashType;
 import game.Projectile.ProjType;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -50,51 +51,63 @@ public class Boss extends Actor{
 	@Override
 	public void act(long now) {
 		if(fight){
-			Hero heroe = getWorld().getObjects(Hero.class).get(0);
-			setRotationAxis(Rotate.Y_AXIS);
-			double myX = getX() + getImage().getWidth() / 2;
-			if(myX > heroe.getTranslateX()){
-				setRotate(180);
-			}else{
-				setRotate(360);
+			Hero heroe;
+			boolean heroCreated = false;
+			try{
+				heroe = getWorld().getObjects(Hero.class).get(0);
+				heroCreated = true;
 			}
-			// TODO Auto-generated method stub
-			if(getX() + getWidth() >= rightBound){
-				dx *= -1;
-//				setRotationAxis(Rotate.Y_AXIS);
-//				setRotate(getRotate() + 180);
-			}else if(getX() <= leftBound){
-				dx *= -1;
-//				setRotationAxis(Rotate.Y_AXIS);
-//				setRotate(getRotate() + 180);
+			catch(IndexOutOfBoundsException e){
+				heroe = null;
+			}
+			double myX = getX() + getImage().getWidth() / 2;
+			if(heroCreated){
+				setRotationAxis(Rotate.Y_AXIS);
+				if(myX > heroe.getTranslateX()){
+					setRotate(180);
+				}else{
+					setRotate(360);
+				}
+				// TODO Auto-generated method stub
+				if(getX() + getWidth() >= rightBound){
+					dx *= -1;
+	//				setRotationAxis(Rotate.Y_AXIS);
+	//				setRotate(getRotate() + 180);
+				}else if(getX() <= leftBound){
+					dx *= -1;
+	//				setRotationAxis(Rotate.Y_AXIS);
+	//				setRotate(getRotate() + 180);
+				}
 			}
 			setX(getX() + dx);
-			if(now - prev >= 500000000){
-				firePlayer.stop();
-				double myY = getY() + getImage().getHeight() / 1.75;
-				double heroX = heroe.getTranslateX();
-				double heroY = heroe.getTranslateY() + heroe.getImage().getHeight() * 2;
-				double speed = 90.0;
-				double tangent = Math.abs(heroY - myY) / Math.abs(myX - heroX);
-				double angle = Math.atan(tangent);
-				double dx;
-				double dy;
-				if(myX < heroX && myY < heroY){
-					//dx =  -1 * speed * Math.cos(angle);
-					//dy = -1 * speed * Math.sin(angle);
-					angle =  2 * Math.PI - angle;
-				}else{
-					//dx =  speed * Math.cos(angle);
-					//dy = -1 * speed * Math.sin(angle);
-					angle = Math.PI + angle;
+			if(heroCreated){
+				if(now - prev >= 500000000){
+					firePlayer.stop();
+					double myY = getY() + getImage().getHeight() / 1.75;
+					double heroX = heroe.getTranslateX();
+					double heroY = heroe.getTranslateY() + heroe.getImage().getHeight() * 2;
+					double speed = 90.0;
+					double tangent = Math.abs(heroY - myY) / Math.abs(myX - heroX);
+					double angle = Math.atan(tangent);
+					double dx;
+					double dy;
+					if(myX < heroX && myY < heroY){
+						//dx =  -1 * speed * Math.cos(angle);
+						//dy = -1 * speed * Math.sin(angle);
+						angle =  2 * Math.PI - angle;
+					}else{
+						//dx =  speed * Math.cos(angle);
+						//dy = -1 * speed * Math.sin(angle);
+						angle = Math.PI + angle;
+					}
+					dx =  1 * speed * Math.cos(angle);
+					dy = -1 * speed * Math.sin(angle);
+					
+					angle *= (180.0 / Math.PI);
+					shoot(dx, dy, angle);
+					prev = now;
+					firePlayer.play();
 				}
-				dx =  1 * speed * Math.cos(angle);
-				dy = -1 * speed * Math.sin(angle);
-				
-				angle *= (180.0 / Math.PI);
-				shoot(dx, dy, angle);
-				prev = now;
-				firePlayer.play();
 			}
 			if(now - laughUpdate >= 1000000000){
 				seconds++;
@@ -126,6 +139,7 @@ public class Boss extends Actor{
 						laughPlayer.stop();
 						deathPlayer.play();
 						try{
+							getWorld().add(new Flash(getX(), getY(), FlashType.BARREL));
 							getWorld().remove(this);
 						}
 						catch(NullPointerException e){
