@@ -56,7 +56,7 @@ public class Projectile extends Actor{
 		}else if(pType == ProjType.ENEMY){
 			if(enemyDirectionFirstTime){
 				enemyDirectionFirstTime = false;				
-				if(this.getTranslateX() + this.getX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0){
+				if(getWorld().getObjects(Hero.class).size() > 0 && (this.getTranslateX() + this.getX() - this.getWorld().getObjects(Hero.class).get(0).getTranslateX()>0)){
 					setRotate(-90);
 					enemyX *= -1;
 				}else{

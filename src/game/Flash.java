@@ -7,12 +7,28 @@ public class Flash extends Actor{
 	private Image myImage = new Image("file:images/muzzleFlash.png");
 	DeathHandler deathTimer = new DeathHandler();
 	boolean death = false;
+	FlashType fType;
 	
-	public Flash(double x, double y){
-		setX(x);
-		setY(y);
+	public enum FlashType{
+		HERO, BARREL, BOSS
+	}
+	
+	public Flash(double x, double y, FlashType f){
+		setTranslateX(x);
+		setTranslateY(y);
 		setImage(myImage);
+		if(f == FlashType.HERO){
+			setFitWidth(myImage.getWidth());
+			setFitHeight(myImage.getHeight());
+		}else if(f == FlashType.BARREL){
+			setFitWidth(64);
+			setFitHeight(64);
+		}else if(f == FlashType.BOSS){
+			setFitWidth(70);
+			setFitHeight(70);
+		}
 		deathTimer.start();
+		fType = f;
 	}
 	
 	@Override
@@ -26,8 +42,18 @@ public class Flash extends Actor{
 		long init = 0;
 		@Override
 		public void handle(long arg0) {
-			if(arg0 - init >= 20){
-				death = true;
+			if(fType == FlashType.HERO){
+				if(arg0 - init >= 20){
+					death = true;
+				}
+			}else if(fType == FlashType.BARREL){
+				if(arg0 - init >= 100){
+					death = true;
+				}
+			}else if(fType == FlashType.BOSS){
+				if(arg0 - init >= 20){
+					death = true;
+				}
 			}
 		}
 		

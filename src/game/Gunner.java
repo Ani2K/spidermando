@@ -26,8 +26,9 @@ public class Gunner extends Actor{
 	int col;
 	int rightBound;
 	int leftBound;
-	Media gunSound = new Media(new File(new File("images/machinegunsound.mp3").getAbsolutePath()).toURI().toString());
-	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
+	Media machinegunSound = new Media(new File(new File("images/machinegunsound.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer machinegunPlayer = new MediaPlayer(machinegunSound);
+	long playerUpdate = 0;
 	
 	public Gunner(ArrayList<Block> b, String[] level, int row, int col){
 		steppingBlocks = b;
@@ -55,6 +56,7 @@ public class Gunner extends Actor{
 				break;
 			}
 		}
+		machinegunPlayer.setVolume(0.25);
 	}
 
 	public void act(long now) {
@@ -116,11 +118,15 @@ public class Gunner extends Actor{
 			}
 			if(now - latestUpdate >= 500000000){
 				shoot();
-				gunPlayer.play();
+				if(now - playerUpdate >= (15 * 1000000000)){
+					machinegunPlayer.stop();
+					machinegunPlayer.play();
+					playerUpdate = now;
+				}			
 				latestUpdate = now;
 			}
 		}else{
-			gunPlayer.stop();
+			machinegunPlayer.stop();
 			setX(getX() + dx);
 			setRotationAxis(Rotate.Y_AXIS);
 			setRotate(dx > 0 ? 180 : 360);
@@ -145,7 +151,7 @@ public class Gunner extends Actor{
 					Media a = new Media(new File(new File("images/pain.mp3").getAbsolutePath()).toURI().toString());
 					MediaPlayer p = new MediaPlayer(a);
 					p.play();
-					gunPlayer.stop();
+					machinegunPlayer.stop();
 					try{
 						getWorld().remove(this);
 					}

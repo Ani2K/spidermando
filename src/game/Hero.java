@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import engine.Actor;
 import engine.GameWorldApp;
+import game.Flash.FlashType;
 import game.Projectile.ProjType;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -114,7 +115,7 @@ public class Hero extends Actor {
 		for(Projectile proj : getIntersectingObjects(Projectile.class)){
 			if(proj.getT() == ProjType.ENEMY){
 				getWorld().remove(proj);
-				health -= 4;
+				health -= 0;
 				if(health <= 0){
 					this.getWorld().remove(this);
 					return ;
@@ -188,7 +189,7 @@ public class Hero extends Actor {
 		proj.setDx(dx);
 		proj.setDy(dy);
 		getWorld().add(proj);
-		getWorld().add(new Flash(x, getTranslateY() + getImage().getHeight() * 2));
+		getWorld().add(new Flash(x, getTranslateY() + getImage().getHeight() * 2, FlashType.HERO));
 		ammo--;
 	}
 

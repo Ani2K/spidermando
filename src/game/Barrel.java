@@ -1,10 +1,14 @@
 package game;
+import java.io.File;
 import java.util.ArrayList;
 
 import engine.Actor;
+import game.Flash.FlashType;
 import game.Projectile.ProjType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Rotate;
 
 public class Barrel extends Actor{
@@ -16,12 +20,15 @@ public class Barrel extends Actor{
 	boolean direction = true; // true is right, false is left
 	int life = 2;
 	ArrayList<Block> steppingBlocks;
+	Media explosionSound = new Media(new File(new File("images/barrelexplosion.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer explosionPlayer = new MediaPlayer(explosionSound);
+	
 	public Barrel(ArrayList<Block> b){
 		steppingBlocks = b;
 		setFitWidth(64);
 		setFitHeight(64);
 		setImage(FLAG);
-
+		explosionPlayer.setVolume(0.25);
 	}
 
 	public void act(long now) {
@@ -35,7 +42,7 @@ public class Barrel extends Actor{
 				life--;
 				getWorld().remove(proj);
 				if(life <= 0){
-					getWorld().remove(this);
+					die();
 					return ;
 				}
 			}
@@ -63,14 +70,16 @@ public class Barrel extends Actor{
 		setRotationAxis(Rotate.Z_AXIS);
 		setRotate(getRotate() - 30);
 	}
-	public void shoot(){
-		Projectile proj = new Projectile(ProjType.ENEMY);
-		proj.setX(getTranslateX());
-		proj.setY(getY());
-		getWorld().add(proj);
-	}
+//	public void shoot(){
+//		Projectile proj = new Projectile(ProjType.ENEMY);
+//		proj.setX(getTranslateX());
+//		proj.setY(getY());
+//		getWorld().add(proj);
+//	}
 	
 	public void die(){
+		explosionPlayer.play();
+		getWorld().add(new Flash(getX(), getY(), FlashType.BARREL));
 		getWorld().remove(this);
 	}
 	
@@ -80,15 +89,15 @@ public class Barrel extends Actor{
 			for(Block block : steppingBlocks){
 				if(this.getBoundsInParent().intersects(block.getBoundsInParent())){
 					if(movingRight){
-						if(this.getTranslateX() + this.getWidth() == block.getX() - 64){
+						if(this.getX() + this.getWidth() == block.getX() - 64){
 							return;
 						}
-					}else if(this.getTranslateX() == block.getX()){
+					}else if(this.getX() == block.getX()){
 						return;
 					}
 				}
 			}
-			this.setTranslateX(this.getTranslateX() + (movingRight ? 1 : -1));
+			this.setX(this.getX() + (movingRight ? 1 : -1));
 		}
 	}
 
@@ -98,16 +107,16 @@ public class Barrel extends Actor{
 			for(Block block : steppingBlocks){
 				if(this.getBoundsInParent().intersects(block.getBoundsInParent())){
 					if(movingDown){
-						if(this.getTranslateY() + this.getHeight() <= block.getY()){
-							this.setTranslateY(this.getTranslateY()-1);
+						if(this.getY() + this.getHeight() <= block.getY()){
+							this.setY(this.getY()-1);
 							return;
 						}
-					}else if(this.getTranslateY() == block.getY()){
+					}else if(this.getY() == block.getY()){
 						return;
 					}
 				}
 			}
-			this.setTranslateY(this.getTranslateY() + (movingDown ? 1 : -1));
+			this.setY(this.getY() + (movingDown ? 1 : -1));
 		}
 	}
 }
