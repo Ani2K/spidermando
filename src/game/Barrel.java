@@ -25,8 +25,8 @@ public class Barrel extends Actor{
 	
 	public Barrel(ArrayList<Block> b){
 		steppingBlocks = b;
-		setFitWidth(64);
-		setFitHeight(64);
+		setFitWidth(60);
+		setFitHeight(60);
 		setImage(FLAG);
 		explosionPlayer.setVolume(0.25);
 	}
