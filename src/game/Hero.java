@@ -121,6 +121,12 @@ public class Hero extends Actor {
 				getWorld().remove(proj);
 				health -= 4;
 				if(health <= 0){
+					if(getWorld().getObjects(Gunner.class).size() != 0){
+						for(Gunner g : getWorld().getObjects(Gunner.class)){
+							g.machinegunPlayer.stop();
+						}
+					}
+					
 					this.getWorld().remove(this);
 					return ;
 				}
