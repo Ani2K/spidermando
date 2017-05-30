@@ -27,7 +27,7 @@ public class Gunner extends Actor{
 	int rightBound;
 	int leftBound;
 	Media machinegunSound = new Media(new File(new File("images/machinegunsound.mp3").getAbsolutePath()).toURI().toString());
-	MediaPlayer machinegunPlayer = new MediaPlayer(machinegunSound);
+	public MediaPlayer machinegunPlayer = new MediaPlayer(machinegunSound);
 	long playerUpdate = 0;
 	
 	public Gunner(ArrayList<Block> b, String[] level, int row, int col){
@@ -154,12 +154,17 @@ public class Gunner extends Actor{
 					machinegunPlayer.stop();
 					try{
 						getWorld().remove(this);
+						return ;
 					}
 					catch(NullPointerException e){
 						
 					}
 				}
 			}
+		}
+		if(getWorld().getObjects(Hero.class).size() <= 0){
+			machinegunPlayer.stop();
+			System.out.println("time to stop");
 		}
 		//System.out.println(leftBound + "           " + getX() + "          " + rightBound);
 	}
