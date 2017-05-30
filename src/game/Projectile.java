@@ -1,6 +1,11 @@
 package game;
+import java.io.File;
+
 import engine.*;
+import game.Flash.FlashType;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 public class Projectile extends Actor{
 	public Image bullet = new Image("file:images/bullet.png");
 	Image fireball = new Image("file:images/fireball.png");
@@ -15,8 +20,9 @@ public class Projectile extends Actor{
 	private double dx;
 	private double dy;
 	private boolean enemyDirectionFirstTime = true;
-	private double enemyX = 30;
-	
+	private double enemyX = 35;
+	Media fireImpact = new Media(new File(new File("images/firethrow.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer impactPlayer = new MediaPlayer(fireImpact);
 	public double getDx() {
 		return dx;
 	}
@@ -39,7 +45,7 @@ public class Projectile extends Actor{
 			setFitWidth(20);
 			setFitHeight(10);
 		}
-		
+		impactPlayer.setVolume(0.5);
 		setRotate(90);
 		this.pType = inpType;
 		dx = 0;
@@ -65,9 +71,16 @@ public class Projectile extends Actor{
 			}
 			move(enemyX, 0);
 		}else if(pType == ProjType.BOSS){
-			move(dx, dy);
+			setX(getX() + dx);
+			setY(getY() + dy);
+			//move(dx, dy);
 		}
 		if(getIntersectingObjects(Block.class).size() != 0){
+			impactPlayer.stop();
+			if(getT() == ProjType.BOSS){
+				getWorld().add(new Flash(getX(), getY(), FlashType.BOSS));
+				impactPlayer.play();
+			}
 			getWorld().remove(this);
 		}
 //		if(pType == 1){

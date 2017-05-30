@@ -18,7 +18,7 @@ public class Hero extends Actor {
 	//	private int speed = 100;
 
 	private int weapon;
-	private int ammo = 0;
+	private int ammo = 10;
 	private double dx = 0;
 	private double health = 100;
 	private ArrayList<Block> blocks = new ArrayList<Block>();
@@ -50,6 +50,9 @@ public class Hero extends Actor {
 	int offsetY = 100;
 	int width = 63;
 	int height = 500;
+	int ex = 50;
+	Media fireImpact = new Media(new File(new File("images/firethrow.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer impactPlayer = new MediaPlayer(fireImpact);
 	//	public int getDx() {
 	//		return dx;
 	//	}
@@ -65,7 +68,7 @@ public class Hero extends Actor {
 //		imageView.setFitWidth(width);
 //		imageView.setViewport(new Rectangle2D(offsetX, offsetY, width, height));
 //		animation = new SpriteAnimation(this.imageView,Duration.millis(200),count,columns,offsetX,offsetY,width,height);
-		
+		impactPlayer.setVolume(0.5);
 		direction = true;
 	}
 	@Override
@@ -101,6 +104,7 @@ public class Hero extends Actor {
 				}
 			}
 			setTranslateX(getTranslateX() + (movingRight ? 1 : -1));
+			ex += (movingRight ? 1 : -1); 
 		}
 		if(Math.floor((double)(this.getTranslateX() / 30)) % 4 == 0){
 			setImage(hero1);
@@ -121,8 +125,11 @@ public class Hero extends Actor {
 					return ;
 				}
 			}else if(proj.getT() == ProjType.BOSS){
+				impactPlayer.stop();
 				getWorld().remove(proj);
-				health -= 20;
+				health -= 0;
+				getWorld().add(new Flash(getEx(), getTranslateY() + 100, FlashType.BOSS));
+				impactPlayer.play();
 				if(health <= 0){
 					this.getWorld().remove(this);
 					return ;
@@ -226,4 +233,12 @@ public class Hero extends Actor {
 	public void setDirection(boolean direction) {
 		this.direction = direction;
 	}
+	public int getEx() {
+		return ex;
+	}
+	public void setEx(int ex) {
+		this.ex = ex;
+	}
+	
+	
 }

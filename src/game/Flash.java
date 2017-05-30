@@ -24,8 +24,8 @@ public class Flash extends Actor{
 			setFitWidth(64);
 			setFitHeight(64);
 		}else if(f == FlashType.BOSS){
-			setFitWidth(70);
-			setFitHeight(70);
+			setFitWidth(40);
+			setFitHeight(40);
 		}
 		deathTimer.start();
 		fType = f;

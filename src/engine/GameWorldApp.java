@@ -73,8 +73,11 @@ public class GameWorldApp extends Application {
 
 	Media gunSound = new Media(new File(new File("images/pistolsound.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
-	Media spiderManSong;
-	MediaPlayer spiderPlayer;
+	Media tauntSound = new Media(new File(new File("images/comeouttoplay.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer tauntPlayer = new MediaPlayer(tauntSound);
+	boolean taunt = true;
+	Media levelTheme;
+	MediaPlayer lvlThemePlayer;
 	boolean levelStart = false;
 	boolean bossFightStart = false;
 	boolean bossFightWon = false;
@@ -343,6 +346,10 @@ public class GameWorldApp extends Application {
 					ammoText.setText("Ammo: " + heroe.getAmmo());
 					healthText.setText("Health: " + heroe.getHealth());
 					infoBox.setTranslateX(-1 * root.getLayoutX());
+					if(heroe.getTranslateX() >= 85 * BLOCK_SIZE && heroe.getTranslateY() <= 3 * BLOCK_SIZE && taunt){
+						tauntPlayer.play();
+						taunt = false;
+					}
 					if(heroe.getTranslateX() >= 96 * BLOCK_SIZE && !bossFightStart){
 						sealBlock = new Block(BLOCK_SIZE, true);
 						sealBlock.setX(88 * BLOCK_SIZE);
@@ -440,11 +447,12 @@ public class GameWorldApp extends Application {
 		});
 		primaryStage.setTitle("Spidermando");
 		primaryStage.show();
-		File song = new File("images/spiderman.mp3");
+		File song = new File("images/leveltheme.mp3");
 		String path = song.getAbsolutePath();
-		spiderManSong = new Media(new File(path).toURI().toString());
-		spiderPlayer = new MediaPlayer(spiderManSong);
-		spiderPlayer.setVolume(0.2);
+		levelTheme = new Media(new File(path).toURI().toString());
+		lvlThemePlayer = new MediaPlayer(levelTheme);
+		lvlThemePlayer.setVolume(0.1);
+		lvlThemePlayer.setCycleCount(4);
 
 		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -453,7 +461,7 @@ public class GameWorldApp extends Application {
 				// TODO Auto-generated method stub
 				primaryStage.setScene(scene);
 				world.start();
-				spiderPlayer.play();
+				lvlThemePlayer.play();
 				levelStart = true;
 				root.getChildren().addAll(view, world, infoBox);
 				root.setLayoutX(0);
@@ -475,7 +483,7 @@ public class GameWorldApp extends Application {
 			gameOver = true;
 			root2.getChildren().add(hi);
 			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-//			spiderPlayer.stop();
+			lvlThemePlayer.stop();
 			world.stop();
 		}
 		for(Obstacle spike : obstacles){
@@ -490,7 +498,7 @@ public class GameWorldApp extends Application {
 					gameOver = true;
 					root2.getChildren().add(hi);
 					theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-//					spiderPlayer.stop();
+					lvlThemePlayer.stop();
 					world.stop();
 				}
 
@@ -523,7 +531,7 @@ public class GameWorldApp extends Application {
 			gameOver = true;
 			root2.getChildren().add(hi);
 			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-//			spiderPlayer.stop();
+			lvlThemePlayer.stop();
 			world.stop();
 
 		}

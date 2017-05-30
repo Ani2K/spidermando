@@ -1,8 +1,13 @@
 package game;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import engine.*;
 import game.Projectile.ProjType;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Rotate;
 
 public class Boss extends Actor{
@@ -11,10 +16,23 @@ public class Boss extends Actor{
 	private double dy;
 	private boolean turn = true;
 	private boolean fight = false;
+	int seconds = 2;
 	long prev = 0;
+	long laughUpdate = 0;
 	int leftBound = 89 * GameWorldApp.BLOCK_SIZE;
 	int rightBound = 110 * GameWorldApp.BLOCK_SIZE;
 	int health = 100;
+	Media laugh1 = new Media(new File(new File("images/laugh1.mp3").getAbsolutePath()).toURI().toString());
+	Media laugh2 = new Media(new File(new File("images/laugh2.mp3").getAbsolutePath()).toURI().toString());
+	Media laugh3 = new Media(new File(new File("images/laugh3.mp3").getAbsolutePath()).toURI().toString());
+	Media laugh4 = new Media(new File(new File("images/laugh4.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer laughPlayer = new MediaPlayer(laugh1);
+	ArrayList<Media> laughList = new ArrayList<Media>();
+	Media deathSound = new Media(new File(new File("images/deathnoise.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer deathPlayer = new MediaPlayer(deathSound);
+	Media fireShoot = new Media(new File(new File("images/firethrow.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer firePlayer = new MediaPlayer(fireShoot);
+	int count = 0;
 	
 	public Boss(){
 		setImage(mySprite);
@@ -22,6 +40,11 @@ public class Boss extends Actor{
 		dy = 0;
 		setRotationAxis(Rotate.Y_AXIS);
 		setRotate(180);
+		laughList.add(laugh1);
+		laughList.add(laugh2);
+		laughList.add(laugh3);
+		laughList.add(laugh4);
+		firePlayer.setVolume(0.2);
 	}
 
 	@Override
@@ -47,6 +70,7 @@ public class Boss extends Actor{
 			}
 			setX(getX() + dx);
 			if(now - prev >= 500000000){
+				firePlayer.stop();
 				double myY = getY() + getImage().getHeight() / 1.75;
 				double heroX = heroe.getTranslateX();
 				double heroY = heroe.getTranslateY() + heroe.getImage().getHeight() * 2;
@@ -70,16 +94,43 @@ public class Boss extends Actor{
 				angle *= (180.0 / Math.PI);
 				shoot(dx, dy, angle);
 				prev = now;
+				firePlayer.play();
+			}
+			if(now - laughUpdate >= 1000000000){
+				seconds++;
+				laughUpdate = now;
+			}
+			
+			if(seconds >= 5){
+				laughPlayer.stop();
+				count++;
+				if(count == 4){
+					count = 0;
+				}
+				laughPlayer = new MediaPlayer(laughList.get(count));
+				laughPlayer.play();
+				seconds = 0;
 			}
 			
 			for(Projectile proj : getIntersectingObjects(Projectile.class)){
 				if(proj.getT() == ProjType.HERO){
 					health -= 5;
 					if(proj != null){
-						getWorld().remove(proj);
+						try{
+							getWorld().remove(proj);
+						}catch(NullPointerException e){
+							
+						}
 					}
 					if(health <= 0){
-						getWorld().remove(this);
+						laughPlayer.stop();
+						deathPlayer.play();
+						try{
+							getWorld().remove(this);
+						}
+						catch(NullPointerException e){
+							
+						}
 					}
 				}
 			}
