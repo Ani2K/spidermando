@@ -1,3 +1,4 @@
+//done :)
 package engine;
 
 import java.io.File;
@@ -145,7 +146,6 @@ public class GameWorldApp extends Application {
 		Scene howToPlayScene = new Scene(howToPlayRoot, 500, 500);
 		Button howToPlayCloseButton = new Button("OK");
 		howToPlayCloseButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
 			@Override
 			public void handle(MouseEvent arg0) {
 				howToPlayStage.close();
@@ -534,6 +534,24 @@ public class GameWorldApp extends Application {
 						genLevel2(primaryStage);
 					}
 				}else if(e.getX() >= 1 && e.getX() <= 243 && e.getY() >= 48 && e.getY() <= 105){
+					Stage howToPlayStage = new Stage();
+					VBox howToPlayRoot = new VBox();
+					howToPlayRoot.setAlignment(Pos.BOTTOM_CENTER);
+					howToPlayRoot.setStyle("-fx-background-color: grey");
+					Scene howToPlayScene = new Scene(howToPlayRoot, 500, 500);
+					Button howToPlayCloseButton = new Button("OK");
+					howToPlayCloseButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+						@Override
+						public void handle(MouseEvent arg0) {
+							howToPlayStage.close();
+						}
+					});
+					WebView howToPlayView = new WebView();
+					WebEngine webEngine2 = howToPlayView.getEngine();
+					File howToPlayFile = new File("index.html");
+					webEngine2.load("file:///" + howToPlayFile.getAbsolutePath());
+					howToPlayRoot.getChildren().addAll(howToPlayView, howToPlayCloseButton);
+					howToPlayStage.setScene(howToPlayScene);
 					howToPlayStage.show();
 				}
 			}
