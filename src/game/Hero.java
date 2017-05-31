@@ -140,6 +140,16 @@ public class Hero extends Actor {
 					this.getWorld().remove(this);
 					return ;
 				}
+			}else if(proj.getT() == ProjType.BOSSVEN){
+				impactPlayer.stop();
+				getWorld().remove(proj);
+				health -= 5;
+				getWorld().add(new Flash(getEx(), getTranslateY() + 100, FlashType.BOSS));
+				impactPlayer.play();
+				if(health <= 0){
+					this.getWorld().remove(this);
+					return ;
+				}
 			}
 		}
 //		System.out.println(imageCount);

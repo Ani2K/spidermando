@@ -14,6 +14,7 @@ import game.Level1;
 import game.Level2;
 import game.Munition;
 import game.Obstacle;
+import game.Venom;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -73,6 +74,7 @@ public class GameWorldApp extends Application {
 	//Actors
 	Hero heroe = new Hero();
 	GreenGoblin bossTest = new GreenGoblin();
+	Venom boss2 = new Venom();
 	Label healthText;
 	Label ammoText;
 
@@ -80,6 +82,8 @@ public class GameWorldApp extends Application {
 	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
 	Media tauntSound = new Media(new File(new File("images/comeouttoplay.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer tauntPlayer = new MediaPlayer(tauntSound);
+	Media ventauntSound = new Media(new File(new File("images/venomTaunt.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer ventauntPlayer = new MediaPlayer(ventauntSound);
 	Media levelTheme = new Media(new File(new File("images/leveltheme.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer lvlThemePlayer = new MediaPlayer(levelTheme);
 	boolean taunt = true;
@@ -634,6 +638,7 @@ public class GameWorldApp extends Application {
 	
 	public void genLevel1(Stage primaryStage){
 		lvlThemePlayer.stop();
+		tauntPlayer.stop();
 		theStage = primaryStage;
 		world = new GameWorld();
 		heroe = new Hero();
@@ -876,7 +881,7 @@ public class GameWorldApp extends Application {
 					ammoText.setText("Ammo: " + heroe.getAmmo());
 					healthText.setText("Health: " + heroe.getHealth());
 					infoBox.setTranslateX(-1 * root.getLayoutX());
-					if(heroe.getTranslateX() >= 85 * BLOCK_SIZE && heroe.getTranslateY() <= 2 * BLOCK_SIZE && taunt){
+					if(heroe.getTranslateX() >= 83 * BLOCK_SIZE && heroe.getTranslateY() <= 4 * BLOCK_SIZE && taunt){
 						tauntPlayer.play();
 						taunt = false;
 					}
@@ -983,7 +988,7 @@ public class GameWorldApp extends Application {
 		String path = song.getAbsolutePath();
 //		levelTheme = new Media(new File(path).toURI().toString());
 //		lvlThemePlayer = new MediaPlayer(levelTheme);
-		lvlThemePlayer.setVolume(0.1);
+		lvlThemePlayer.setVolume(0.075);
 		lvlThemePlayer.setCycleCount(4);
 		lvlThemePlayer.play();
 		primaryStage.setScene(scene);
@@ -993,11 +998,12 @@ public class GameWorldApp extends Application {
 	//level 2 start heeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeee
 	public void genLevel2(Stage primaryStage){
 		level = 2;
+		ventauntPlayer.stop();
 		lvlThemePlayer.stop();
 		theStage = primaryStage;
 		world = new GameWorld();
 		heroe = new Hero();
-		bossTest = new GreenGoblin();
+		boss2 = new Venom();
 		gameOver = false;
 		isAlive = true;
 		playerVelocity = new Point2D(0, 0);
@@ -1149,9 +1155,9 @@ public class GameWorldApp extends Application {
 		//Testing Gunner Class
 
 
-		world.add(bossTest);
-		bossTest.setX(100 * BLOCK_SIZE);
-		bossTest.setY(20);
+		world.add(boss2);
+		boss2.setX(100 * BLOCK_SIZE);
+		boss2.setY(20);
 
 
 
@@ -1236,7 +1242,7 @@ public class GameWorldApp extends Application {
 					healthText.setText("Health: " + heroe.getHealth());
 					infoBox.setTranslateX(-1 * root.getLayoutX());
 					if(heroe.getTranslateX() >= 85 * BLOCK_SIZE && heroe.getTranslateY() <= 2 * BLOCK_SIZE && taunt){
-						tauntPlayer.play();
+						ventauntPlayer.play();
 						taunt = false;
 					}
 					if(heroe.getTranslateX() >= 96 * BLOCK_SIZE && !bossFightStart){
@@ -1256,9 +1262,9 @@ public class GameWorldApp extends Application {
 						world.add(sealBlock3);
 						steppingBlocks.add(sealBlock3);
 						bossFightStart = true;
-						bossTest.setFight(true);
+						boss2.setFight(true);
 					}
-					if(bossTest.getHealth() <= 0){
+					if(boss2.getHealth() <= 0){
 						bossFightWon = true;
 					}
 					if(bossFightWon){
@@ -1342,7 +1348,7 @@ public class GameWorldApp extends Application {
 		String path = song.getAbsolutePath();
 //		levelTheme = new Media(new File(path).toURI().toString());
 //		lvlThemePlayer = new MediaPlayer(levelTheme);
-		lvlThemePlayer.setVolume(0.1);
+		lvlThemePlayer.setVolume(0.075);
 		lvlThemePlayer.setCycleCount(4);
 		lvlThemePlayer.play();
 		primaryStage.setScene(scene);

@@ -14,7 +14,7 @@ public class Projectile extends Actor{
 	 * type 2 : Enemy projectile
 	 */
 	public enum ProjType {
-		HERO, ENEMY, BOSS;
+		HERO, ENEMY, BOSS, BOSSVEN;
 	}
 	private ProjType pType;
 	private double dx;
@@ -36,7 +36,7 @@ public class Projectile extends Actor{
 		this.dy = dy;
 	}
 	public Projectile(ProjType inpType){
-		if(inpType != ProjType.BOSS){
+		if(inpType != ProjType.BOSS && inpType != ProjType.BOSSVEN){
 			setImage(bullet);
 			setFitWidth(10);
 			setFitHeight(10);
@@ -70,14 +70,14 @@ public class Projectile extends Actor{
 				}
 			}
 			move(enemyX, 0);
-		}else if(pType == ProjType.BOSS){
+		}else if(pType == ProjType.BOSS || pType == ProjType.BOSSVEN){
 			setX(getX() + dx);
 			setY(getY() + dy);
 			//move(dx, dy);
 		}
 		if(getIntersectingObjects(Block.class).size() != 0){
 			impactPlayer.stop();
-			if(getT() == ProjType.BOSS){
+			if(getT() == ProjType.BOSS || getT() == ProjType.BOSSVEN){
 				getWorld().add(new Flash(getX(), getY(), FlashType.BOSS));
 				impactPlayer.play();
 			}
