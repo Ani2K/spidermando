@@ -133,7 +133,7 @@ public class Hero extends Actor {
 			}else if(proj.getT() == ProjType.BOSS){
 				impactPlayer.stop();
 				getWorld().remove(proj);
-				health -= 20;
+				//health -= 20;
 				getWorld().add(new Flash(getEx(), getTranslateY() + 100, FlashType.BOSS));
 				impactPlayer.play();
 				if(health <= 0){

@@ -4,13 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 
 import game.Block;
-import game.Boss;
+import game.GreenGoblin;
 import game.EndPoint;
 import game.Gunner;
 import game.BarrelSpawn;
 import game.HealthPack;
 import game.Hero;
 import game.Level1;
+import game.Level2;
 import game.Munition;
 import game.Obstacle;
 import javafx.animation.AnimationTimer;
@@ -48,6 +49,7 @@ public class GameWorldApp extends Application {
 	final int SCREEN_WIDTH = BLOCK_SIZE * 10;
 	final int SCREEN_HEIGHT = BLOCK_SIZE * 10;
 	private int totalOffset = 0;
+	int level = 1;
 	AnimationTimer timer;
 	Scene menuScene;
 	
@@ -70,7 +72,7 @@ public class GameWorldApp extends Application {
 	public static StackPane root;
 	//Actors
 	Hero heroe = new Hero();
-	Boss bossTest = new Boss();
+	GreenGoblin bossTest = new GreenGoblin();
 	Label healthText;
 	Label ammoText;
 
@@ -90,6 +92,7 @@ public class GameWorldApp extends Application {
 
 	Scene startScene;
 	Level1 l = new Level1();
+	Level2 l2 = new Level2();
 
 	public static void main(String[] args) {
 		launch();
@@ -472,10 +475,14 @@ public class GameWorldApp extends Application {
 //			}
 //
 //		});
-		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		menuButtons.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
 			@Override
-			public void handle(MouseEvent arg0) {
+			public void handle(MouseEvent e) {
+				//Play X: 58-182
+				//Play Y: 2- 41
+				//HOWTOPLAY X: 1-243
+				//HOWTOPLAY Y : 48-105
 				// TODO Auto-generated method stub
 //				primaryStage.setScene(scene);
 //				world.start();
@@ -484,7 +491,13 @@ public class GameWorldApp extends Application {
 //				root.getChildren().addAll(view, world, infoBox);
 //				root.setLayoutX(0);
 //				infoBox.setAlignment(Pos.TOP_LEFT);
-				genLevel1(primaryStage);
+				if(e.getX() >= 58 && e.getX() <= 182 && e.getY() >= 2 && e.getY() <= 41){
+					if(level == 1){
+						genLevel1(primaryStage);
+					}else{
+						genLevel2(primaryStage);
+					}
+				}
 			}
 
 		});
@@ -541,25 +554,35 @@ public class GameWorldApp extends Application {
 			}
 		}
 		if(heroe.getTranslateX()>=(l.L1[0].length() - 2)*BLOCK_SIZE){
-			StackPane root2 = new StackPane();
-			VBox hi = new VBox();
-			Label win = new Label("Congrats I guess...");
-			hi.getChildren().addAll(win);
-			hi.setAlignment(Pos.BOTTOM_CENTER);
-			gameOver = true;
-			Button menuReturn = new Button("Return to Menu");
-			menuReturn.setAlignment(Pos.CENTER);
-			root2.getChildren().addAll(hi, menuReturn);
-			lvlThemePlayer.stop();
-			world.stop();
-			timer.stop();
-			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
-			menuReturn.setOnAction(new EventHandler<ActionEvent>(){
-				@Override
-				public void handle(ActionEvent arg0) {
-					theStage.setScene(menuScene);
-				}
-			});
+			if(level == 1){
+				gameOver = true;
+				lvlThemePlayer.stop();
+				world.stop();
+				timer.stop();
+				genLevel2(theStage);
+				level = 2;
+			}else{
+				gameOver = true;
+				lvlThemePlayer.stop();
+				world.stop();
+				timer.stop();
+				level = 1;
+				StackPane root2 = new StackPane();
+				VBox hi = new VBox();
+				Label win = new Label("Congrats I guess...");
+				hi.getChildren().addAll(win);
+				hi.setAlignment(Pos.BOTTOM_CENTER);
+				Button menuReturn = new Button("Return to Menu");
+				menuReturn.setAlignment(Pos.CENTER);
+				root2.getChildren().addAll(hi, menuReturn);
+				theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+				menuReturn.setOnAction(new EventHandler<ActionEvent>(){
+					@Override
+					public void handle(ActionEvent arg0) {
+						theStage.setScene(menuScene);
+					}
+				});
+			}
 		}
 
 		if(heroe.getTranslateY() < 550){
@@ -614,7 +637,7 @@ public class GameWorldApp extends Application {
 		theStage = primaryStage;
 		world = new GameWorld();
 		heroe = new Hero();
-		bossTest = new Boss();
+		bossTest = new GreenGoblin();
 		gameOver = false;
 		isAlive = true;
 		playerVelocity = new Point2D(0, 0);
@@ -735,12 +758,12 @@ public class GameWorldApp extends Application {
 		title.setStroke(Color.web("#0d61e8"));
 
 		healthText = new Label("Health: " + heroe.getHealth());
-		healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
 		healthText.setTextFill(Color.RED);
 		//healthText.setStroke(Color.web("#0d61e8"));
 
 		ammoText = new Label("Ammo: " + heroe.getAmmo());
-		ammoText.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		ammoText.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
 		ammoText.setTextFill(Color.RED);
 		//ammoText.setStroke(Color.web("#0d61e8"));
 
@@ -865,6 +888,365 @@ public class GameWorldApp extends Application {
 						steppingBlocks.add(sealBlock);
 						sealBlock2 = new Block(BLOCK_SIZE, false);
 						sealBlock2.setX(88 * BLOCK_SIZE);
+						sealBlock2.setY(BLOCK_SIZE);
+						world.add(sealBlock2);
+						steppingBlocks.add(sealBlock2);
+						sealBlock3 = new Block(BLOCK_SIZE, true);
+						sealBlock3.setX(112 * BLOCK_SIZE);
+						sealBlock3.setY(0);
+						world.add(sealBlock3);
+						steppingBlocks.add(sealBlock3);
+						bossFightStart = true;
+						bossTest.setFight(true);
+					}
+					if(bossTest.getHealth() <= 0){
+						bossFightWon = true;
+					}
+					if(bossFightWon){
+						bossFightWon = false;
+						world.remove(sealBlock);
+						steppingBlocks.remove(sealBlock);
+						world.remove(sealBlock2);
+						steppingBlocks.remove(sealBlock2);
+						world.remove(sealBlock3);
+						steppingBlocks.remove(sealBlock3);
+					}
+				}
+			}
+
+		};
+		timer.start();
+		root.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent e) {
+				// TODO Auto-generated method stub
+				//double mouseX = e.getX() + heroe.getTranslateX();
+				if(heroe.getAmmo() > 0){
+					gunPlayer.stop();
+					double mouseX = e.getX();
+					double heroX;
+					if(heroe.isDirection()){
+						heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 1.6;
+					}else{
+						heroX = heroe.getTranslateX() + heroe.getImage().getWidth() * 0.4;
+					}
+					double mouseY = e.getY();
+					double heroY = heroe.getTranslateY() + heroe.getImage().getHeight() * 2;
+					double speed = 80.0;
+					double tangent = Math.abs(mouseY - heroY) / Math.abs(mouseX - heroX);
+					double angle = Math.atan(tangent);
+					double dx;
+					double dy;
+					if(mouseX < heroX && mouseY > heroY){
+						//dx = -1 * speed * Math.cos(angle);
+						//dy = speed * Math.sin(angle);
+						angle = Math.PI + angle;
+						heroe.setDirection(false);
+						heroe.setRotationAxis(Rotate.Y_AXIS);
+						heroe.setRotate(180);
+					}else if(mouseX > heroX && mouseY > heroY){
+						//dx = speed * Math.cos(angle);
+						//dy = speed * Math.sin(angle);
+						angle = 2 * Math.PI - angle;
+						heroe.setDirection(true);
+						heroe.setRotationAxis(Rotate.Y_AXIS);
+						heroe.setRotate(360);
+					}else if(mouseX < heroX && mouseY < heroY){
+						//dx =  -1 * speed * Math.cos(angle);
+						//dy = -1 * speed * Math.sin(angle);
+						angle = Math.PI - angle;
+						heroe.setDirection(false);
+						heroe.setRotationAxis(Rotate.Y_AXIS);
+						heroe.setRotate(180);
+					}else{
+						//dx =  speed * Math.cos(angle);
+						//dy = -1 * speed * Math.sin(angle);
+						heroe.setDirection(true);
+						heroe.setRotationAxis(Rotate.Y_AXIS);
+						heroe.setRotate(360);
+					}
+					dx = speed * Math.cos(angle);
+					dy = -1 * speed * Math.sin(angle);
+
+					angle *= (180.0 / Math.PI);
+					if(world.getObjects(Hero.class).size() != 0){
+						heroe.shoot(dx, dy, angle);
+					}
+					gunPlayer.play();
+				}
+			}
+		});
+		primaryStage.setTitle("Spidermando");
+		primaryStage.show();
+		File song = new File("images/leveltheme.mp3");
+		String path = song.getAbsolutePath();
+//		levelTheme = new Media(new File(path).toURI().toString());
+//		lvlThemePlayer = new MediaPlayer(levelTheme);
+		lvlThemePlayer.setVolume(0.1);
+		lvlThemePlayer.setCycleCount(4);
+		lvlThemePlayer.play();
+		primaryStage.setScene(scene);
+	}
+	
+	
+	//level 2 start heeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeee
+	public void genLevel2(Stage primaryStage){
+		level = 2;
+		lvlThemePlayer.stop();
+		theStage = primaryStage;
+		world = new GameWorld();
+		heroe = new Hero();
+		bossTest = new GreenGoblin();
+		gameOver = false;
+		isAlive = true;
+		playerVelocity = new Point2D(0, 0);
+		canJump = true;
+		steppingBlocks = new ArrayList<Block>();
+		obstacles = new ArrayList<Obstacle>();
+		taunt = true;
+		levelStart = false;
+		bossFightStart = false;
+		bossFightWon = false;
+
+		for(int i = 0; i < l2.L2.length; i++){
+			String curRow = l2.L2[i];
+			for(int j = 0; j < curRow.length();j++){
+				if(curRow.charAt(j)=='1'){
+					Block block;
+					if(i == 0){
+						block = new Block(BLOCK_SIZE, true);
+					}else{
+						block = new Block(BLOCK_SIZE, false);
+					}
+					block.setX(j*BLOCK_SIZE);
+					block.setY(i*BLOCK_SIZE);
+					world.add(block);
+					steppingBlocks.add(block);
+				}
+				if(curRow.charAt(j)=='2'){
+					HealthPack h = new HealthPack(BLOCK_SIZE);
+
+					h.setX(j*BLOCK_SIZE);
+					h.setY(i*BLOCK_SIZE);
+					world.add(h);
+				}
+				if(curRow.charAt(j)=='3'){
+					Munition m = new Munition(BLOCK_SIZE);
+					m.setX(j*BLOCK_SIZE);
+					m.setY(i*BLOCK_SIZE);
+					world.add(m);
+				}
+				if(curRow.charAt(j)=='4'){
+					BarrelSpawn g = new BarrelSpawn(steppingBlocks,BLOCK_SIZE);
+					g.setX(j*BLOCK_SIZE);
+					g.setY(i*BLOCK_SIZE);
+					world.add(g);
+				}
+
+				if(curRow.charAt(j)=='5'){
+					EndPoint g = new EndPoint(BLOCK_SIZE);
+					g.setX(j*BLOCK_SIZE);
+					g.setY(i*BLOCK_SIZE);
+					world.add(g);
+				}
+
+				if(curRow.charAt(j)=='6'){
+					Obstacle s = new Obstacle(BLOCK_SIZE, 'u');
+					s.setX(j*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE + 0.5*BLOCK_SIZE);
+					obstacles.add(s);
+					world.add(s);
+				}
+
+				if(curRow.charAt(j)=='7'){
+					Obstacle s = new Obstacle(BLOCK_SIZE, 'd');
+					s.setX(j*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE);
+					obstacles.add(s);
+					world.add(s);
+				}
+				if(curRow.charAt(j)=='8'){
+					Obstacle s = new Obstacle(BLOCK_SIZE, 'r');
+					s.setX(j*BLOCK_SIZE - 0.3*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE+ 15);
+					obstacles.add(s);
+					world.add(s);
+				}
+				if(curRow.charAt(j)=='9'){
+					Obstacle s = new Obstacle(BLOCK_SIZE, 'l');
+					s.setX(j*BLOCK_SIZE + 0.3*BLOCK_SIZE);
+					s.setY(i*BLOCK_SIZE+15);
+					obstacles.add(s);
+					world.add(s);
+				}
+				if(curRow.charAt(j) == 'G'){
+					Gunner g = new Gunner(steppingBlocks, Level2.L2, i, j);
+					g.setX(j*BLOCK_SIZE);
+					g.setY(i*BLOCK_SIZE);
+					world.add(g);
+				}
+			}
+		}
+		int topY = -4;
+		for(int a = 0; a < Level2.L2[0].length(); a++){
+			Block block = new Block(BLOCK_SIZE, true);
+			block.setX(a*BLOCK_SIZE);
+			block.setY(topY*BLOCK_SIZE);
+			world.add(block);
+			steppingBlocks.add(block);
+		}
+
+		//Background
+		Image background = new Image("file:images/background.png");
+		ImageView view = new ImageView(background);
+		view.setFitWidth(Level1.L1[0].length() * BLOCK_SIZE * 2);
+		view.setFitHeight(SCREEN_HEIGHT);
+		//World
+		root = new StackPane();
+		BorderPane pane = new BorderPane();
+
+		world.setPrefWidth(SCREEN_WIDTH);
+		world.setPrefHeight(SCREEN_HEIGHT);
+		
+		Rectangle bG = new Rectangle(40,40,Color.ALICEBLUE);
+		Text title = new Text();
+		title.setText("Spidermmando");
+		title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		title.setFill(Color.RED);
+		title.setStroke(Color.web("#0d61e8"));
+
+		healthText = new Label("Health: " + heroe.getHealth());
+		healthText.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+		healthText.setTextFill(Color.RED);
+		//healthText.setStroke(Color.web("#0d61e8"));
+
+		ammoText = new Label("Ammo: " + heroe.getAmmo());
+		ammoText.setFont(Font.font("Verdana", FontWeight.BOLD, 30));
+		ammoText.setTextFill(Color.RED);
+		//ammoText.setStroke(Color.web("#0d61e8"));
+
+		VBox infoBox = new VBox();
+		infoBox.getChildren().addAll(healthText, ammoText);
+		infoBox.setAlignment(Pos.TOP_LEFT);
+		pane.setTop(title);
+
+
+
+		world.add(heroe);
+		heroe.setBlocks(steppingBlocks);
+		heroe.setX(50);
+		heroe.setY(100); 
+
+		heroe.translateXProperty().addListener((obs,old,newValue) ->{
+			int offset = newValue.intValue();
+			totalOffset += offset;
+			if(offset>300 && offset<l2.L2[0].length() * BLOCK_SIZE - SCREEN_WIDTH - 600 + 300){
+				root.setLayoutX(-1 * offset + 300);
+				world.setLayoutx(-1 * offset + 300);
+			}
+		});
+		//Testing Gunner Class
+
+
+		world.add(bossTest);
+		bossTest.setX(100 * BLOCK_SIZE);
+		bossTest.setY(20);
+
+
+
+
+		Scene scene = new Scene(root, SCREEN_WIDTH + 600, SCREEN_HEIGHT);
+		root.getChildren().addAll(view, world, infoBox);
+		world.start();
+		levelStart = true;
+		scene.addEventHandler(KeyEvent.KEY_PRESSED, new MyKeyboardHandler());
+
+		primaryStage.setResizable(false);
+		startScene = scene;
+
+		//		Image deathImage = new Image("file:images/gameOver.jpg");
+		//		ImageView newRoot = new ImageView(deathImage);
+		//		newRoot.setFitWidth(l.L1[0].length() * BLOCK_SIZE);
+		//		Scene deathScene = new Scene(root, SCREEN_WIDTH + 600, SCREEN_HEIGHT);
+
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+
+			@Override
+			public void handle(KeyEvent e) {
+				if(e.getCode() == KeyCode.D){
+					//					heroe.setDx(SPEED_OF_HERO);
+					//					heroe.setRotationAxis(Rotate.Y_AXIS);
+					//			    	//heroe.setRotate(360);
+					//			    	heroe.setDirection(true);
+					//			    	//System.out.println(heroe.getTranslateX());
+
+					heroe.setDx(30);
+					heroe.setDirection(true);
+					
+					//moveHeroX(SPEED_OF_HERO);
+				}
+				if(e.getCode() == KeyCode.A){
+					//					heroe.setDx(-1 * SPEED_OF_HERO);
+					//					heroe.setRotationAxis(Rotate.Y_AXIS);
+					//			    	//heroe.setRotate(180);
+					//			    	heroe.setDirection(false);
+					//			    	//System.out.println(heroe.getTranslateX());
+					//moveHeroX(-1 * SPEED_OF_HERO);
+					heroe.setDx(-30);
+					heroe.setDirection(false);
+				}
+				if(e.getCode() == KeyCode.W){
+					//					heroe.setDy(-50);	
+					jumpHero();
+				}
+
+
+			}
+
+		});
+		scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
+
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.A || event.getCode() == KeyCode.D){
+					heroe.setDx(0);
+					
+				}
+			}
+
+		});
+		timer = new AnimationTimer(){
+
+			@Override
+			public void handle(long arg0) {
+				// TODO Auto-generated method stub
+				if(gameOver == false && levelStart){
+					update();
+
+					long timeElapsed = arg0 - last;
+					//fpsString.setValue(Double.toString(1_000_000_000.0/(timeElapsed)));
+
+					last = arg0;
+					//					if(!isAlive){
+					//						primaryStage.setScene(deathScene);
+					//						primaryStage.show();
+					//					}
+					ammoText.setText("Ammo: " + heroe.getAmmo());
+					healthText.setText("Health: " + heroe.getHealth());
+					infoBox.setTranslateX(-1 * root.getLayoutX());
+					if(heroe.getTranslateX() >= 85 * BLOCK_SIZE && heroe.getTranslateY() <= 2 * BLOCK_SIZE && taunt){
+						tauntPlayer.play();
+						taunt = false;
+					}
+					if(heroe.getTranslateX() >= 96 * BLOCK_SIZE && !bossFightStart){
+						sealBlock = new Block(BLOCK_SIZE, true);
+						sealBlock.setX(86 * BLOCK_SIZE);
+						sealBlock.setY(0);
+						world.add(sealBlock);
+						steppingBlocks.add(sealBlock);
+						sealBlock2 = new Block(BLOCK_SIZE, false);
+						sealBlock2.setX(86 * BLOCK_SIZE);
 						sealBlock2.setY(BLOCK_SIZE);
 						world.add(sealBlock2);
 						steppingBlocks.add(sealBlock2);

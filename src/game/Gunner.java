@@ -51,7 +51,7 @@ public class Gunner extends Actor{
 			if(level[row].charAt(i) != '0' && level[row].charAt(i) != '2' && level[row].charAt(i) != '3' && level[row].charAt(i) != 'G'){
 				leftBound = (i + 1) * GameWorldApp.BLOCK_SIZE;
 				break;
-			}else if(level[row].charAt(i) == '0' && level[row + 1].charAt(i) == '0'){
+			}else if(level[row].charAt(i) == '0' && (level[row + 1].charAt(i) == '0' || level[row + 1].charAt(i) == '6')){
 				leftBound = (i + 1) * GameWorldApp.BLOCK_SIZE;
 				break;
 			}

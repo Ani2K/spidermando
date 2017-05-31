@@ -11,7 +11,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.transform.Rotate;
 
-public class Boss extends Actor{
+public class GreenGoblin extends Actor{
 	private Image mySprite = new Image("file:images/ethanBoss.jpg");
 	private double dx;
 	private double dy;
@@ -35,7 +35,7 @@ public class Boss extends Actor{
 	MediaPlayer firePlayer = new MediaPlayer(fireShoot);
 	int count = 0;
 	
-	public Boss(){
+	public GreenGoblin(){
 		setImage(mySprite);
 		dx = 40;
 		dy = 0;
