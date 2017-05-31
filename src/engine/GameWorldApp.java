@@ -41,6 +41,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class GameWorldApp extends Application {
@@ -125,6 +127,26 @@ public class GameWorldApp extends Application {
 		menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600), SCREEN_HEIGHT);
 		primaryStage.setScene(menuScene);
 		primaryStage.show();
+		
+		Stage howToPlayStage = new Stage();
+		VBox howToPlayRoot = new VBox();
+		howToPlayRoot.setAlignment(Pos.BOTTOM_CENTER);
+		howToPlayRoot.setStyle("-fx-background-color: grey");
+		Scene howToPlayScene = new Scene(howToPlayRoot, 500, 500);
+		Button howToPlayCloseButton = new Button("OK");
+		howToPlayCloseButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				howToPlayStage.close();
+			}
+		});
+		WebView howToPlayView = new WebView();
+		WebEngine webEngine2 = howToPlayView.getEngine();
+		File howToPlayFile = new File("index.html");
+		webEngine2.load("file:///" + howToPlayFile.getAbsolutePath());
+		howToPlayRoot.getChildren().addAll(howToPlayView, howToPlayCloseButton);
+		howToPlayStage.setScene(howToPlayScene);
 //		//Build Level
 //		theStage = primaryStage;
 //
@@ -501,6 +523,8 @@ public class GameWorldApp extends Application {
 					}else{
 						genLevel2(primaryStage);
 					}
+				}else if(e.getX() >= 1 && e.getX() <= 243 && e.getY() >= 48 && e.getY() <= 105){
+					howToPlayStage.show();
 				}
 			}
 
