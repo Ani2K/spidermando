@@ -88,6 +88,8 @@ public class GameWorldApp extends Application {
 	MediaPlayer ventauntPlayer = new MediaPlayer(ventauntSound);
 	Media levelTheme = new Media(new File(new File("images/leveltheme.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer lvlThemePlayer = new MediaPlayer(levelTheme);
+	Media menuTheme = new Media(new File(new File("images/menuTheme.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer menuThemePlayer = new MediaPlayer(menuTheme);
 	boolean taunt = true;
 	boolean levelStart = false;
 	boolean bossFightStart = false;
@@ -122,6 +124,9 @@ public class GameWorldApp extends Application {
 		menuButtons.setAlignment(Pos.CENTER);
 		menuButtons.setTranslateX((SCREEN_WIDTH + 600) / 2.5);
 		menuButtons.setTranslateY(SCREEN_HEIGHT/ 2.5);
+		menuThemePlayer.setVolume(0.5);
+		menuThemePlayer.setCycleCount(4);
+		menuThemePlayer.play();
 //		BorderPane ro = new BorderPane();
 //		ro.setCenter(menuPane);
 		menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600), SCREEN_HEIGHT);
@@ -551,6 +556,9 @@ public class GameWorldApp extends Application {
 				@Override
 				public void handle(ActionEvent arg0) {
 					theStage.setScene(menuScene);
+					menuThemePlayer.setVolume(0.5);
+					menuThemePlayer.setCycleCount(4);
+					menuThemePlayer.play();
 				}
 			});
 		}
@@ -575,6 +583,9 @@ public class GameWorldApp extends Application {
 						@Override
 						public void handle(ActionEvent arg0) {
 							theStage.setScene(menuScene);
+							menuThemePlayer.setVolume(0.5);
+							menuThemePlayer.setCycleCount(4);
+							menuThemePlayer.play();
 						}
 					});
 				}
@@ -608,6 +619,9 @@ public class GameWorldApp extends Application {
 					@Override
 					public void handle(ActionEvent arg0) {
 						theStage.setScene(menuScene);
+						menuThemePlayer.setVolume(0.5);
+						menuThemePlayer.setCycleCount(4);
+						menuThemePlayer.play();
 					}
 				});
 			}
@@ -637,6 +651,9 @@ public class GameWorldApp extends Application {
 				@Override
 				public void handle(ActionEvent arg0) {
 					theStage.setScene(menuScene);
+					menuThemePlayer.setVolume(0.5);
+					menuThemePlayer.setCycleCount(4);
+					menuThemePlayer.play();
 				}
 			});
 		}
@@ -661,6 +678,7 @@ public class GameWorldApp extends Application {
 	}
 	
 	public void genLevel1(Stage primaryStage){
+		menuThemePlayer.stop();
 		lvlThemePlayer.stop();
 		tauntPlayer.stop();
 		theStage = primaryStage;
@@ -1021,6 +1039,7 @@ public class GameWorldApp extends Application {
 	
 	//level 2 start heeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeee
 	public void genLevel2(Stage primaryStage){
+		menuThemePlayer.stop();
 		level = 2;
 		ventauntPlayer.stop();
 		lvlThemePlayer.stop();
