@@ -97,6 +97,11 @@ public class GameWorldApp extends Application {
 	Block sealBlock;
 	Block sealBlock2;
 	Block sealBlock3;
+	Image deathImg = new Image("file:images/gameover.png");
+	ImageView deathView = new ImageView();
+	Image winImg = new Image("file:images/youwin.png");
+	ImageView winView = new ImageView();
+	
 
 	Scene startScene;
 	Level1 l = new Level1();
@@ -539,19 +544,20 @@ public class GameWorldApp extends Application {
 
 	private void update(){
 		if(world.getObjects(Hero.class).size()<=0){
-			StackPane root2 = new StackPane();
+			deathView.setFitWidth(SCREEN_WIDTH + 600);
+			deathView.setFitHeight(SCREEN_HEIGHT);
+			deathView.setImage(deathImg);
 			VBox hi = new VBox();
-			Label dead = new Label("Oh shoot. Tell Steve Jobs I said hi.");
-			hi.getChildren().addAll(dead);
 			hi.setAlignment(Pos.BOTTOM_CENTER);
 			gameOver = true;
 			Button menuReturn = new Button("Return to Menu");
 			menuReturn.setAlignment(Pos.CENTER);
-			root2.getChildren().addAll(hi, menuReturn);
+			hi.getChildren().addAll(deathView, menuReturn);
 			lvlThemePlayer.stop();
 			world.stop();
 			timer.stop();
-			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+			hi.setStyle("-fx-background-color: grey");
+			theStage.setScene(new Scene(hi,SCREEN_WIDTH + 600,SCREEN_HEIGHT));
 			menuReturn.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent arg0) {
@@ -566,19 +572,19 @@ public class GameWorldApp extends Application {
 			if(heroe.getBoundsInParent().intersects(spike.getBoundsInParent())){
 				heroe.setHealth(heroe.getHealth()-0.25);
 				if(heroe.getHealth() <= 0){
-					StackPane root2 = new StackPane();
+					deathView.setFitWidth(SCREEN_WIDTH + 600);
+					deathView.setFitHeight(SCREEN_HEIGHT);
+					deathView.setImage(deathImg);
 					VBox hi = new VBox();
-					Label dead = new Label("This isn't volleyball. Spikes are bad");
-					hi.getChildren().addAll(dead);
 					hi.setAlignment(Pos.BOTTOM_CENTER);
 					gameOver = true;
 					Button menuReturn = new Button("Return to Menu");
-					menuReturn.setAlignment(Pos.CENTER);
-					root2.getChildren().addAll(hi, menuReturn);
+					hi.getChildren().addAll(deathView, menuReturn);
 					lvlThemePlayer.stop();
 					world.stop();
 					timer.stop();
-					theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+					hi.setStyle("-fx-background-color: grey");
+					theStage.setScene(new Scene(hi,SCREEN_WIDTH + 600,SCREEN_HEIGHT));
 					menuReturn.setOnAction(new EventHandler<ActionEvent>(){
 						@Override
 						public void handle(ActionEvent arg0) {
@@ -601,20 +607,20 @@ public class GameWorldApp extends Application {
 				genLevel2(theStage);
 				level = 2;
 			}else{
+				winView.setImage(winImg);
+				winView.setFitWidth(SCREEN_WIDTH + 600);
+				winView.setFitHeight(SCREEN_HEIGHT);
 				gameOver = true;
 				lvlThemePlayer.stop();
 				world.stop();
 				timer.stop();
 				level = 1;
-				StackPane root2 = new StackPane();
 				VBox hi = new VBox();
-				Label win = new Label("Congrats I guess...");
-				hi.getChildren().addAll(win);
 				hi.setAlignment(Pos.BOTTOM_CENTER);
+				hi.setStyle("-fx-background-color: grey");
 				Button menuReturn = new Button("Return to Menu");
-				menuReturn.setAlignment(Pos.CENTER);
-				root2.getChildren().addAll(hi, menuReturn);
-				theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+				hi.getChildren().addAll(winView, menuReturn);
+				theStage.setScene(new Scene(hi,SCREEN_WIDTH + 600,SCREEN_HEIGHT));
 				menuReturn.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent arg0) {
@@ -634,19 +640,20 @@ public class GameWorldApp extends Application {
 			}
 			moveHeroY((int)playerVelocity.getY());
 		}else{
-			StackPane root2 = new StackPane();
+			deathView.setFitWidth(SCREEN_WIDTH + 600);
+			deathView.setFitHeight(SCREEN_HEIGHT);
+			deathView.setImage(deathImg);
 			VBox hi = new VBox();
-			Label dead = new Label("Groundbreaking Discovery! Don't fall so hard... especially in love");
-			hi.getChildren().addAll(dead);
 			hi.setAlignment(Pos.BOTTOM_CENTER);
 			gameOver = true;
 			Button menuReturn = new Button("Return to Menu");
 			menuReturn.setAlignment(Pos.CENTER);
-			root2.getChildren().addAll(hi, menuReturn);
+			hi.setStyle("-fx-background-color: grey");
+			hi.getChildren().addAll(deathView, menuReturn);
 			lvlThemePlayer.stop();
 			world.stop();
 			timer.stop();
-			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+			theStage.setScene(new Scene(hi,SCREEN_WIDTH + 600,SCREEN_HEIGHT));
 			menuReturn.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent arg0) {

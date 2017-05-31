@@ -133,7 +133,7 @@ public class Hero extends Actor {
 			}else if(proj.getT() == ProjType.BOSS){
 				impactPlayer.stop();
 				getWorld().remove(proj);
-				//health -= 20;
+				health -= 20;
 				getWorld().add(new Flash(getEx(), getTranslateY() + 100, FlashType.BOSS));
 				impactPlayer.play();
 				if(health <= 0){
@@ -201,18 +201,19 @@ public class Hero extends Actor {
 		Projectile proj = new Projectile(ProjType.HERO);
 		double x;
 		if(direction){
-			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 1.6);
-			x = getTranslateX() + getImage().getWidth() * 1.4;
+			x = getTranslateX() + getImage().getWidth() * 1.8;
+			proj.setTranslateX(x);
 		}else{
-			proj.setTranslateX(getTranslateX() + getImage().getWidth() * 0.4);
-			x = getTranslateX() + getImage().getWidth() * 0.35;
+			x = getTranslateX() + getImage().getWidth() * 0.62;
+			proj.setTranslateX(x);
 		}
+		double y = getTranslateY() + getImage().getHeight() * 1.75;
 		proj.setRotate(-1 * (angle - 90)); 
-		proj.setY(getTranslateY() + getImage().getHeight() * 2);
+		proj.setY(y);
 		proj.setDx(dx);
 		proj.setDy(dy);
 		getWorld().add(proj);
-		getWorld().add(new Flash(x, getTranslateY() + getImage().getHeight() * 2, FlashType.HERO));
+		getWorld().add(new Flash(x, y, FlashType.HERO));
 		ammo--;
 	}
 
