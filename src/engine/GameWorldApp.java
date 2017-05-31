@@ -14,6 +14,7 @@ import game.Level1;
 import game.Level2;
 import game.Munition;
 import game.Obstacle;
+import game.Venom;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -40,6 +41,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 public class GameWorldApp extends Application {
@@ -73,6 +76,7 @@ public class GameWorldApp extends Application {
 	//Actors
 	Hero heroe = new Hero();
 	GreenGoblin bossTest = new GreenGoblin();
+	Venom boss2 = new Venom();
 	Label healthText;
 	Label ammoText;
 
@@ -80,8 +84,12 @@ public class GameWorldApp extends Application {
 	MediaPlayer gunPlayer = new MediaPlayer(gunSound);
 	Media tauntSound = new Media(new File(new File("images/comeouttoplay.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer tauntPlayer = new MediaPlayer(tauntSound);
+	Media ventauntSound = new Media(new File(new File("images/venomTaunt.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer ventauntPlayer = new MediaPlayer(ventauntSound);
 	Media levelTheme = new Media(new File(new File("images/leveltheme.mp3").getAbsolutePath()).toURI().toString());
 	MediaPlayer lvlThemePlayer = new MediaPlayer(levelTheme);
+	Media menuTheme = new Media(new File(new File("images/menuTheme.mp3").getAbsolutePath()).toURI().toString());
+	MediaPlayer menuThemePlayer = new MediaPlayer(menuTheme);
 	boolean taunt = true;
 	boolean levelStart = false;
 	boolean bossFightStart = false;
@@ -89,6 +97,11 @@ public class GameWorldApp extends Application {
 	Block sealBlock;
 	Block sealBlock2;
 	Block sealBlock3;
+	Image deathImg = new Image("file:images/gameover.png");
+	ImageView deathView = new ImageView();
+	Image winImg = new Image("file:images/youwin.png");
+	ImageView winView = new ImageView();
+	
 
 	Scene startScene;
 	Level1 l = new Level1();
@@ -116,11 +129,34 @@ public class GameWorldApp extends Application {
 		menuButtons.setAlignment(Pos.CENTER);
 		menuButtons.setTranslateX((SCREEN_WIDTH + 600) / 2.5);
 		menuButtons.setTranslateY(SCREEN_HEIGHT/ 2.5);
+		menuThemePlayer.setVolume(0.5);
+		menuThemePlayer.setCycleCount(4);
+		menuThemePlayer.play();
 //		BorderPane ro = new BorderPane();
 //		ro.setCenter(menuPane);
 		menuScene = new Scene(menuPane,(SCREEN_WIDTH + 600), SCREEN_HEIGHT);
 		primaryStage.setScene(menuScene);
 		primaryStage.show();
+		
+		Stage howToPlayStage = new Stage();
+		VBox howToPlayRoot = new VBox();
+		howToPlayRoot.setAlignment(Pos.BOTTOM_CENTER);
+		howToPlayRoot.setStyle("-fx-background-color: grey");
+		Scene howToPlayScene = new Scene(howToPlayRoot, 500, 500);
+		Button howToPlayCloseButton = new Button("OK");
+		howToPlayCloseButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent arg0) {
+				howToPlayStage.close();
+			}
+		});
+		WebView howToPlayView = new WebView();
+		WebEngine webEngine2 = howToPlayView.getEngine();
+		File howToPlayFile = new File("index.html");
+		webEngine2.load("file:///" + howToPlayFile.getAbsolutePath());
+		howToPlayRoot.getChildren().addAll(howToPlayView, howToPlayCloseButton);
+		howToPlayStage.setScene(howToPlayScene);
 //		//Build Level
 //		theStage = primaryStage;
 //
@@ -497,6 +533,8 @@ public class GameWorldApp extends Application {
 					}else{
 						genLevel2(primaryStage);
 					}
+				}else if(e.getX() >= 1 && e.getX() <= 243 && e.getY() >= 48 && e.getY() <= 105){
+					howToPlayStage.show();
 				}
 			}
 
@@ -506,23 +544,27 @@ public class GameWorldApp extends Application {
 
 	private void update(){
 		if(world.getObjects(Hero.class).size()<=0){
-			StackPane root2 = new StackPane();
+			deathView.setFitWidth(SCREEN_WIDTH + 600);
+			deathView.setFitHeight(SCREEN_HEIGHT);
+			deathView.setImage(deathImg);
 			VBox hi = new VBox();
-			Label dead = new Label("Oh shoot. Tell Steve Jobs I said hi.");
-			hi.getChildren().addAll(dead);
 			hi.setAlignment(Pos.BOTTOM_CENTER);
 			gameOver = true;
 			Button menuReturn = new Button("Return to Menu");
 			menuReturn.setAlignment(Pos.CENTER);
-			root2.getChildren().addAll(hi, menuReturn);
+			hi.getChildren().addAll(deathView, menuReturn);
 			lvlThemePlayer.stop();
 			world.stop();
 			timer.stop();
-			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+			hi.setStyle("-fx-background-color: grey");
+			theStage.setScene(new Scene(hi,SCREEN_WIDTH + 600,SCREEN_HEIGHT));
 			menuReturn.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent arg0) {
 					theStage.setScene(menuScene);
+					menuThemePlayer.setVolume(0.5);
+					menuThemePlayer.setCycleCount(4);
+					menuThemePlayer.play();
 				}
 			});
 		}
@@ -530,23 +572,26 @@ public class GameWorldApp extends Application {
 			if(heroe.getBoundsInParent().intersects(spike.getBoundsInParent())){
 				heroe.setHealth(heroe.getHealth()-0.25);
 				if(heroe.getHealth() <= 0){
-					StackPane root2 = new StackPane();
+					deathView.setFitWidth(SCREEN_WIDTH + 600);
+					deathView.setFitHeight(SCREEN_HEIGHT);
+					deathView.setImage(deathImg);
 					VBox hi = new VBox();
-					Label dead = new Label("This isn't volleyball. Spikes are bad");
-					hi.getChildren().addAll(dead);
 					hi.setAlignment(Pos.BOTTOM_CENTER);
 					gameOver = true;
 					Button menuReturn = new Button("Return to Menu");
-					menuReturn.setAlignment(Pos.CENTER);
-					root2.getChildren().addAll(hi, menuReturn);
+					hi.getChildren().addAll(deathView, menuReturn);
 					lvlThemePlayer.stop();
 					world.stop();
 					timer.stop();
-					theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+					hi.setStyle("-fx-background-color: grey");
+					theStage.setScene(new Scene(hi,SCREEN_WIDTH + 600,SCREEN_HEIGHT));
 					menuReturn.setOnAction(new EventHandler<ActionEvent>(){
 						@Override
 						public void handle(ActionEvent arg0) {
 							theStage.setScene(menuScene);
+							menuThemePlayer.setVolume(0.5);
+							menuThemePlayer.setCycleCount(4);
+							menuThemePlayer.play();
 						}
 					});
 				}
@@ -562,24 +607,27 @@ public class GameWorldApp extends Application {
 				genLevel2(theStage);
 				level = 2;
 			}else{
+				winView.setImage(winImg);
+				winView.setFitWidth(SCREEN_WIDTH + 600);
+				winView.setFitHeight(SCREEN_HEIGHT);
 				gameOver = true;
 				lvlThemePlayer.stop();
 				world.stop();
 				timer.stop();
 				level = 1;
-				StackPane root2 = new StackPane();
 				VBox hi = new VBox();
-				Label win = new Label("Congrats I guess...");
-				hi.getChildren().addAll(win);
 				hi.setAlignment(Pos.BOTTOM_CENTER);
+				hi.setStyle("-fx-background-color: grey");
 				Button menuReturn = new Button("Return to Menu");
-				menuReturn.setAlignment(Pos.CENTER);
-				root2.getChildren().addAll(hi, menuReturn);
-				theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+				hi.getChildren().addAll(winView, menuReturn);
+				theStage.setScene(new Scene(hi,SCREEN_WIDTH + 600,SCREEN_HEIGHT));
 				menuReturn.setOnAction(new EventHandler<ActionEvent>(){
 					@Override
 					public void handle(ActionEvent arg0) {
 						theStage.setScene(menuScene);
+						menuThemePlayer.setVolume(0.5);
+						menuThemePlayer.setCycleCount(4);
+						menuThemePlayer.play();
 					}
 				});
 			}
@@ -592,23 +640,27 @@ public class GameWorldApp extends Application {
 			}
 			moveHeroY((int)playerVelocity.getY());
 		}else{
-			StackPane root2 = new StackPane();
+			deathView.setFitWidth(SCREEN_WIDTH + 600);
+			deathView.setFitHeight(SCREEN_HEIGHT);
+			deathView.setImage(deathImg);
 			VBox hi = new VBox();
-			Label dead = new Label("Groundbreaking Discovery! Don't fall so hard... especially in love");
-			hi.getChildren().addAll(dead);
 			hi.setAlignment(Pos.BOTTOM_CENTER);
 			gameOver = true;
 			Button menuReturn = new Button("Return to Menu");
 			menuReturn.setAlignment(Pos.CENTER);
-			root2.getChildren().addAll(hi, menuReturn);
+			hi.setStyle("-fx-background-color: grey");
+			hi.getChildren().addAll(deathView, menuReturn);
 			lvlThemePlayer.stop();
 			world.stop();
 			timer.stop();
-			theStage.setScene(new Scene(root2,world.getWidth(),world.getHeight()));
+			theStage.setScene(new Scene(hi,SCREEN_WIDTH + 600,SCREEN_HEIGHT));
 			menuReturn.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent arg0) {
 					theStage.setScene(menuScene);
+					menuThemePlayer.setVolume(0.5);
+					menuThemePlayer.setCycleCount(4);
+					menuThemePlayer.play();
 				}
 			});
 		}
@@ -633,7 +685,9 @@ public class GameWorldApp extends Application {
 	}
 	
 	public void genLevel1(Stage primaryStage){
+		menuThemePlayer.stop();
 		lvlThemePlayer.stop();
+		tauntPlayer.stop();
 		theStage = primaryStage;
 		world = new GameWorld();
 		heroe = new Hero();
@@ -876,7 +930,7 @@ public class GameWorldApp extends Application {
 					ammoText.setText("Ammo: " + heroe.getAmmo());
 					healthText.setText("Health: " + heroe.getHealth());
 					infoBox.setTranslateX(-1 * root.getLayoutX());
-					if(heroe.getTranslateX() >= 85 * BLOCK_SIZE && heroe.getTranslateY() <= 2 * BLOCK_SIZE && taunt){
+					if(heroe.getTranslateX() >= 83 * BLOCK_SIZE && heroe.getTranslateY() <= 4 * BLOCK_SIZE && taunt){
 						tauntPlayer.play();
 						taunt = false;
 					}
@@ -983,7 +1037,7 @@ public class GameWorldApp extends Application {
 		String path = song.getAbsolutePath();
 //		levelTheme = new Media(new File(path).toURI().toString());
 //		lvlThemePlayer = new MediaPlayer(levelTheme);
-		lvlThemePlayer.setVolume(0.1);
+		lvlThemePlayer.setVolume(0.075);
 		lvlThemePlayer.setCycleCount(4);
 		lvlThemePlayer.play();
 		primaryStage.setScene(scene);
@@ -992,12 +1046,14 @@ public class GameWorldApp extends Application {
 	
 	//level 2 start heeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeee
 	public void genLevel2(Stage primaryStage){
+		menuThemePlayer.stop();
 		level = 2;
+		ventauntPlayer.stop();
 		lvlThemePlayer.stop();
 		theStage = primaryStage;
 		world = new GameWorld();
 		heroe = new Hero();
-		bossTest = new GreenGoblin();
+		boss2 = new Venom();
 		gameOver = false;
 		isAlive = true;
 		playerVelocity = new Point2D(0, 0);
@@ -1149,9 +1205,9 @@ public class GameWorldApp extends Application {
 		//Testing Gunner Class
 
 
-		world.add(bossTest);
-		bossTest.setX(100 * BLOCK_SIZE);
-		bossTest.setY(20);
+		world.add(boss2);
+		boss2.setX(100 * BLOCK_SIZE);
+		boss2.setY(20);
 
 
 
@@ -1236,7 +1292,7 @@ public class GameWorldApp extends Application {
 					healthText.setText("Health: " + heroe.getHealth());
 					infoBox.setTranslateX(-1 * root.getLayoutX());
 					if(heroe.getTranslateX() >= 85 * BLOCK_SIZE && heroe.getTranslateY() <= 2 * BLOCK_SIZE && taunt){
-						tauntPlayer.play();
+						ventauntPlayer.play();
 						taunt = false;
 					}
 					if(heroe.getTranslateX() >= 96 * BLOCK_SIZE && !bossFightStart){
@@ -1256,9 +1312,9 @@ public class GameWorldApp extends Application {
 						world.add(sealBlock3);
 						steppingBlocks.add(sealBlock3);
 						bossFightStart = true;
-						bossTest.setFight(true);
+						boss2.setFight(true);
 					}
-					if(bossTest.getHealth() <= 0){
+					if(boss2.getHealth() <= 0){
 						bossFightWon = true;
 					}
 					if(bossFightWon){
@@ -1342,7 +1398,7 @@ public class GameWorldApp extends Application {
 		String path = song.getAbsolutePath();
 //		levelTheme = new Media(new File(path).toURI().toString());
 //		lvlThemePlayer = new MediaPlayer(levelTheme);
-		lvlThemePlayer.setVolume(0.1);
+		lvlThemePlayer.setVolume(0.075);
 		lvlThemePlayer.setCycleCount(4);
 		lvlThemePlayer.play();
 		primaryStage.setScene(scene);
